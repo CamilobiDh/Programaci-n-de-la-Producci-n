@@ -1,0 +1,912 @@
+<!DOCTYPE html><script type="application/json" id="cowork-artifact-meta">
+{
+  "name": "Bosquejo Programacion Produccion",
+  "schemaVersion": 1,
+  "description": "Bosquejo interactivo de la herramienta de programación de producción Distrihogar — 6 módulos navegables basados en el Excel, Word y flujo SVG analizados."
+}
+</script>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Bosquejo — Programación de Producción Distrihogar</title>
+<style>
+:root{color-scheme:light;--primary:#4B3FC5;--primary-light:#EEEDFE;--green:#0F6E56;--green-light:#E1F5EE;--orange:#993C1D;--orange-light:#FAECE7;--olive:#3B6D11;--olive-light:#EAF3DE;--amber:#85490B;--amber-light:#FAEEDA;--border:#E2E1DC;--bg:#F7F6F2;--card:#FFFFFF;--text:#1A1916;--text2:#5C5B57;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);height:100vh;display:flex;flex-direction:column;overflow:hidden}
+
+/* NAV */
+.nav{background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 16px;gap:2px;height:44px;flex-shrink:0;overflow-x:auto}
+.nav-title{font-weight:700;font-size:14px;color:var(--primary);margin-right:12px;white-space:nowrap}
+.nav-btn{padding:5px 11px;border-radius:6px;border:none;background:transparent;cursor:pointer;font-size:12px;color:var(--text2);white-space:nowrap;transition:background .15s}
+.nav-btn:hover{background:var(--bg)}
+.nav-btn.active{background:var(--primary-light);color:var(--primary);font-weight:600}
+
+/* CONTENT */
+.content{flex:1;overflow:hidden;display:flex;flex-direction:column}
+.screen{display:none;height:100%;overflow:hidden}.screen.active{display:flex;flex-direction:column}
+.screen-scroll{flex:1;overflow-y:auto;padding:14px}
+
+/* CARDS */
+.card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:10px}
+.card-title{font-weight:700;font-size:13px;margin-bottom:10px;display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.badge{font-size:10px;padding:2px 7px;border-radius:20px;font-weight:600}
+.badge-p{background:var(--primary-light);color:var(--primary)}
+.badge-g{background:var(--green-light);color:var(--green)}
+.badge-o{background:var(--orange-light);color:var(--orange)}
+.badge-a{background:var(--olive-light);color:var(--olive)}
+.badge-t{background:var(--amber-light);color:var(--amber)}
+
+/* GRID */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+
+/* ALERT */
+.alert{border-radius:8px;padding:8px 12px;font-size:11px;margin-bottom:7px;display:flex;align-items:flex-start;gap:8px}
+.alert-warn{background:#FEF3C7;border:1px solid #FCD34D;color:#92400E}
+.alert-info{background:var(--primary-light);border:1px solid #C4BFFF;color:var(--primary)}
+.alert-ok{background:#D1FAE5;border:1px solid #6EE7B7;color:#065F46}
+.alert-err{background:#FEE2E2;border:1px solid #FCA5A5;color:#991B1B}
+.alert-icon{font-size:14px;margin-top:1px;flex-shrink:0}
+
+/* KPI */
+.kpi-box{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center}
+.kpi-val{font-size:26px;font-weight:800;line-height:1}
+.kpi-lbl{font-size:10px;color:var(--text2);margin-top:4px}
+
+/* TAG */
+.tag{display:inline-block;padding:2px 6px;border-radius:4px;font-size:10px;font-weight:600}
+.tag-ok{background:#D1FAE5;color:#065F46}
+.tag-pend{background:#FEF3C7;color:#92400E}
+.tag-proc{background:#DBEAFE;color:#1E40AF}
+.tag-ext{background:var(--amber-light);color:var(--amber)}
+.tag-int{background:var(--primary-light);color:var(--primary)}
+.tag-alert{background:#FEE2E2;color:#991B1B}
+.tag-siesa{background:#F0F9FF;color:#0369A1;border:1px solid #BAE6FD}
+
+/* CAP BAR */
+.cap-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.cap-label{width:90px;font-size:11px;font-weight:600;color:var(--text2);flex-shrink:0}
+.cap-bar-bg{flex:1;background:var(--bg);border-radius:6px;height:18px;position:relative;border:1px solid var(--border)}
+.cap-bar-fill{height:100%;border-radius:6px;position:absolute;top:0;left:0;display:flex;align-items:center;padding-left:6px;font-size:10px;font-weight:700;color:#fff}
+.cap-pct{font-size:11px;font-weight:700;width:36px;text-align:right;flex-shrink:0}
+
+/* RUTA */
+.ruta{display:flex;flex-wrap:wrap;align-items:center;gap:4px}
+.ruta-step{padding:3px 9px;border-radius:20px;font-size:10px;font-weight:700}
+.ruta-arrow{color:var(--border);font-size:11px}
+
+/* TOGGLE */
+.toggle-row{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap}
+.t-btn{padding:4px 10px;border-radius:6px;border:1px solid var(--border);background:#fff;cursor:pointer;font-size:11px;color:var(--text2)}
+.t-btn.sel{background:var(--primary);color:#fff;border-color:var(--primary)}
+
+/* GANTT */
+.gantt-wrap{overflow-x:auto}
+.gantt{border-collapse:collapse;font-size:10px;min-width:600px}
+.gantt th{padding:3px 5px;background:var(--bg);border:1px solid var(--border);text-align:center;font-weight:600;color:var(--text2);min-width:28px}
+.gantt td{padding:3px 5px;border:1px solid var(--border);text-align:center}
+.gantt .op-col{text-align:left;min-width:120px;font-weight:600;color:var(--text)}
+.gc-libre{background:#DCFCE7}.gc-ocup{background:#BBDEFB}
+.gc-prog{background:#3B6D11;border-radius:3px;color:#fff;font-size:9px;padding:1px 3px}
+.gc-block{background:#FCA5A5}
+
+/* FORM */
+.field{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:4px 8px;font-size:11.5px;color:var(--text2);width:100%}
+.lbl{font-size:10px;color:var(--text2);font-weight:600;margin-bottom:3px}
+.page-header{margin-bottom:12px}
+.page-header h2{font-size:15px;font-weight:800;color:var(--text)}
+.page-header p{font-size:11px;color:var(--text2);margin-top:3px}
+.section-hd{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--text2);margin-bottom:8px;padding-bottom:4px;border-bottom:1px solid var(--border)}
+hr.subtle{border:none;border-top:1px solid var(--border);margin:10px 0}
+
+/* ─── PEDIDO LAYOUT ─── */
+.pedido-layout{display:flex;gap:10px;height:100%;overflow:hidden}
+.pedido-sidebar{width:200px;flex-shrink:0;overflow-y:auto;padding:14px 0 14px 14px}
+.pedido-main{flex:1;overflow-y:auto;padding:14px 14px 14px 0;min-width:0}
+
+/* ORDER ITEMS */
+.order-item{background:#fff;border:1.5px solid var(--border);border-radius:8px;padding:9px 11px;margin-bottom:7px;cursor:pointer;transition:all .15s}
+.order-item:hover{border-color:var(--primary);background:var(--primary-light)}
+.order-item.active-order{border-color:var(--primary);background:var(--primary-light)}
+.order-item .oi-num{font-weight:700;font-size:12px;color:var(--primary)}
+.order-item .oi-client{font-size:10px;color:var(--text2);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.order-item .oi-date{font-size:10px;color:var(--text2);margin-top:3px}
+.order-item .oi-badge{display:inline-block;font-size:9px;padding:1px 5px;border-radius:10px;font-weight:600;margin-top:3px}
+.oi-pend{background:#FEF3C7;color:#92400E}
+.oi-prog{background:#DBEAFE;color:#1E40AF}
+
+/* ─── STICKY TABLE ─── */
+.items-table-wrap{overflow-x:auto;border-radius:8px;border:1px solid var(--border)}
+
+.items-table{width:100%;border-collapse:collapse;font-size:11px;table-layout:fixed}
+.items-table th,.items-table td{padding:5px 7px;border-bottom:1px solid var(--border);vertical-align:middle;white-space:nowrap}
+.items-table th{background:#F0EFF8;color:var(--text2);font-weight:600;border-bottom:2px solid var(--border)}
+.items-table tr:last-child td{border-bottom:none}
+.items-table tr.selected-row td{background:#F5F4FF}
+.items-table tr.selected-row td.sticky-col{background:#EDEBFE}
+.items-table td.sticky-col{background:#fff}
+
+/* STICKY COLUMNS */
+.sticky-col{position:sticky;z-index:2}
+.sticky-cb  {left:0;   width:28px; min-width:28px; max-width:28px}
+.sticky-ref {left:28px; width:80px; min-width:80px; max-width:80px; border-right:none}
+.sticky-ext {left:108px;width:68px; min-width:68px; max-width:68px; border-right:none}
+.sticky-desc{left:176px;width:130px;min-width:130px;max-width:130px;border-right:2px solid #C4BFFF !important; overflow:hidden;text-overflow:ellipsis}
+
+/* shadow on last sticky col */
+.items-table th.sticky-desc,.items-table td.sticky-desc{box-shadow:3px 0 6px -2px rgba(75,63,197,.12)}
+
+/* non-sticky cols */
+.col-cant  {width:48px}
+.col-uemp  {width:68px}
+.col-sam   {width:68px}
+.col-met   {width:120px}
+.col-ruta  {width:54px}
+.col-fdesp {width:98px}
+.col-fent  {width:98px}
+.col-notas {width:110px;max-width:110px;overflow:hidden;text-overflow:ellipsis}
+.col-acc   {width:200px;min-width:200px}
+
+/* MÉTODO PILLS */
+.met-pills{display:flex;gap:3px}
+.met-pill{width:22px;height:22px;border-radius:5px;border:1.5px solid var(--border);background:#fff;cursor:pointer;font-size:10px;font-weight:700;color:var(--text2);display:flex;align-items:center;justify-content:center;transition:all .12s}
+.met-pill:hover{border-color:var(--primary);color:var(--primary)}
+.met-pill.active{background:var(--primary);border-color:var(--primary);color:#fff}
+
+/* CHECKBOX */
+.cb{width:13px;height:13px;border:1.5px solid var(--border);border-radius:3px;display:inline-block;background:#fff;flex-shrink:0;cursor:pointer;vertical-align:middle}
+.cb.checked{background:var(--primary);border-color:var(--primary)}
+
+/* ROW ACTION BUTTONS */
+.row-actions{display:flex;gap:3px}
+.ra-btn{padding:2px 7px;border-radius:4px;border:1px solid var(--border);background:#fff;cursor:pointer;font-size:9px;font-weight:600;color:var(--text2);white-space:nowrap;transition:all .12s}
+.ra-btn:hover{background:var(--primary-light);border-color:var(--primary);color:var(--primary)}
+.ra-btn.hijos{border-color:#D8B4FE;color:#7E22CE;background:#FAF5FF}
+.ra-btn.hijos:hover{background:#EDE9FE}
+
+/* ─── FECHA RÁPIDA BAR ─── */
+.fechas-bar{background:#FFFBEB;border:1.5px solid #FCD34D;border-radius:9px;padding:10px 14px;margin-bottom:10px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.fechas-bar-title{font-size:11px;font-weight:700;color:#92400E;white-space:nowrap}
+.fechas-bar-input{display:flex;flex-direction:column;gap:2px}
+.fechas-bar-input .lbl{color:#92400E}
+.date-input{border:1.5px solid #FCD34D;border-radius:6px;padding:4px 8px;font-size:11px;background:#fff;color:var(--text);width:108px}
+.date-input:focus{outline:none;border-color:var(--amber)}
+.apply-btn{background:var(--amber);color:#fff;border:none;border-radius:7px;padding:6px 13px;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;transition:background .15s}
+.apply-btn:hover{background:#6B3A08}
+.apply-hint{font-size:10px;color:#92400E;line-height:1.4;max-width:220px}
+.apply-count{font-size:11px;font-weight:700;color:var(--amber);background:#FEF9C3;border-radius:20px;padding:2px 9px;white-space:nowrap}
+
+/* individual date fields in table */
+.tdate{border:1px solid var(--border);border-radius:4px;padding:2px 5px;font-size:10px;background:#fff;width:90px;color:var(--text)}
+.tdate:focus{outline:none;border-color:var(--primary);background:#FAFAFE}
+.tdate.bulk-applied{border-color:var(--amber);background:#FFFBEB}
+
+/* PROC INDICATOR */
+.proc-indicator{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:600;padding:6px 12px;background:#F0FDF4;border:1px solid #86EFAC;border-radius:7px;color:#14532D;margin-bottom:8px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spinner{width:12px;height:12px;border:2px solid #86EFAC;border-top-color:#14532D;border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
+
+/* SIESA LEGEND */
+.siesa-legend{display:flex;align-items:center;gap:5px;font-size:10px;color:#0369A1;background:#F0F9FF;border:1px solid #BAE6FD;border-radius:5px;padding:3px 8px;width:fit-content}
+
+/* TOAST */
+.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#1A1916;color:#fff;padding:10px 20px;border-radius:10px;font-size:12px;font-weight:600;display:flex;align-items:center;gap:10px;z-index:999;box-shadow:0 4px 20px rgba(0,0,0,.25);transition:opacity .3s;opacity:0;pointer-events:none;max-width:90vw}
+.toast.show{opacity:1;pointer-events:auto}
+.toast-close{cursor:pointer;font-size:16px;opacity:.7;background:none;border:none;color:#fff;padding:0}
+</style>
+</head>
+<body>
+
+<div class="toast" id="toast">
+  <div class="spinner"></div>
+  <span id="toast-msg"></span>
+  <button class="toast-close" onclick="hideToast()">✕</button>
+</div>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-title">🏭 Prog. Producción</div>
+  <button class="nav-btn active" onclick="show('pedido',event)">① Pedido</button>
+  <button class="nav-btn" onclick="show('programador',event)">② Programador</button>
+  <button class="nav-btn" onclick="show('tablero',event)">③ Tablero OP</button>
+  <button class="nav-btn" onclick="show('plantas',event)">④ Plantas</button>
+  <button class="nav-btn" onclick="show('capacidad',event)">⑤ Capacidad</button>
+  <button class="nav-btn" onclick="show('dashboard',event)">⑥ Dashboard</button>
+</nav>
+
+<div class="content">
+
+<!-- ══════════════════════════════════════════════════
+     MÓDULO 1 — PEDIDO
+══════════════════════════════════════════════════ -->
+<div class="screen active" id="screen-pedido">
+  <div class="pedido-layout">
+
+    <!-- SIDEBAR -->
+    <div class="pedido-sidebar">
+      <div class="section-hd" style="margin-bottom:10px">Pedidos pendientes</div>
+      <div class="order-item active-order" onclick="selectOrder(this,'DI-1223','Hilton Cartagena','2026-03-22')">
+        <div class="oi-num">DI-1223</div><div class="oi-client">Hilton Cartagena</div>
+        <div class="oi-date">📅 22-mar-2026</div><span class="oi-badge oi-prog">En prog.</span>
+      </div>
+      <div class="order-item" onclick="selectOrder(this,'DI-1224','Éxito Cali','2026-04-05')">
+        <div class="oi-num">DI-1224</div><div class="oi-client">Éxito Cali</div>
+        <div class="oi-date">📅 05-abr-2026</div><span class="oi-badge oi-pend">Pendiente</span>
+      </div>
+      <div class="order-item" onclick="selectOrder(this,'DI-1225','Falabella Bogotá','2026-04-10')">
+        <div class="oi-num">DI-1225</div><div class="oi-client">Falabella Bogotá</div>
+        <div class="oi-date">📅 10-abr-2026</div><span class="oi-badge oi-pend">Pendiente</span>
+      </div>
+      <div class="order-item" onclick="selectOrder(this,'DI-1226','Hotel Intercontinental','2026-04-15')">
+        <div class="oi-num">DI-1226</div><div class="oi-client">Hotel Intercontinental</div>
+        <div class="oi-date">📅 15-abr-2026</div><span class="oi-badge oi-pend">Pendiente</span>
+      </div>
+      <div class="order-item" onclick="selectOrder(this,'DI-1227','Alkosto Medellín','2026-04-18')">
+        <div class="oi-num">DI-1227</div><div class="oi-client">Alkosto Medellín</div>
+        <div class="oi-date">📅 18-abr-2026</div><span class="oi-badge oi-pend">Pendiente</span>
+      </div>
+      <div style="margin-top:10px">
+        <button style="width:100%;background:var(--bg);color:var(--text2);border:1px dashed var(--border);border-radius:7px;padding:6px;font-size:11px;cursor:pointer">+ Cargar desde SIESA</button>
+      </div>
+    </div>
+
+    <!-- MAIN -->
+    <div class="pedido-main">
+
+      <!-- PROC INDICATOR -->
+      <div id="proc-indicator" style="display:none" class="proc-indicator">
+        <div class="spinner"></div>
+        <span>Creando OPs y RQTs para <b id="proc-order">DI-1223</b> en segundo plano…</span>
+        <span style="margin-left:auto;font-size:10px;color:#065F46">Puedes continuar con otro pedido</span>
+      </div>
+
+      <!-- CABECERA -->
+      <div class="card">
+        <div class="card-title">
+          <span class="badge badge-p">Cabecera</span>
+          <span id="order-title">Pedido DI-1223 · Hilton Cartagena</span>
+          <span class="siesa-legend">📥 SIESA</span>
+        </div>
+        <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:center">
+          <div><div class="lbl">N° Pedido</div><div style="font-weight:800;font-size:14px;color:var(--primary)" id="order-num">DI-1223</div></div>
+          <div><div class="lbl">Cliente</div><div style="font-weight:600;font-size:13px" id="order-client">Hilton Cartagena</div></div>
+          <div><div class="lbl">Fecha entrega cliente</div><div style="font-weight:600;font-size:13px;color:var(--orange)" id="order-date">2026-03-22</div></div>
+          <div style="margin-left:auto">
+            <div class="alert alert-info" style="margin-bottom:0;padding:5px 10px">
+              <span class="alert-icon" style="font-size:12px">📥</span>
+              <div style="font-size:10px"><b>Cant · Und. Empaque · SAM · Ruta</b> automáticos desde SIESA</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TABLA ÍTEMS -->
+      <div class="card">
+        <div class="card-title">
+          <span class="badge badge-p">Ítems</span>
+          Referencias del pedido
+          <span style="margin-left:auto;display:flex;gap:6px;flex-wrap:wrap">
+            <button onclick="crearOPs()" id="btn-crear" style="background:var(--primary);color:#fff;border:none;border-radius:7px;padding:5px 13px;font-size:11.5px;font-weight:700;cursor:pointer">⚡ Crear OPs y RQTs</button>
+            <button style="background:var(--olive-light);color:var(--olive);border:1px solid var(--olive);border-radius:7px;padding:5px 13px;font-size:11.5px;font-weight:600;cursor:pointer">🔮 Simular</button>
+          </span>
+        </div>
+
+        <!-- ════ BARRA FECHAS RÁPIDAS ════ -->
+        <div class="fechas-bar">
+          <div class="fechas-bar-title">📅 Fechas CEDI rápidas</div>
+          <div class="fechas-bar-input">
+            <div class="lbl">F. Despacho CEDI</div>
+            <input type="date" id="bulk-desp" class="date-input" value="2026-03-20"/>
+          </div>
+          <div class="fechas-bar-input">
+            <div class="lbl">F. Entrega CEDI</div>
+            <input type="date" id="bulk-ent" class="date-input" value="2026-03-22"/>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:5px">
+            <button class="apply-btn" onclick="applyBulkDates()">📋 Aplicar a seleccionados</button>
+            <button style="background:#fff;color:var(--amber);border:1.5px solid #FCD34D;border-radius:7px;padding:4px 13px;font-size:10px;font-weight:600;cursor:pointer" onclick="applyBulkDates(true)">Aplicar a TODOS los ítems</button>
+          </div>
+          <div class="apply-hint">
+            <b>Escenario 1:</b> Misma fecha para todos → <i>Aplicar a TODOS</i><br/>
+            <b>Escenario 2:</b> Fechas distintas → marca los ítems que quieras y usa <i>Aplicar a seleccionados</i>, o edita celda por celda directamente.
+          </div>
+          <div class="apply-count" id="apply-count">4 seleccionados</div>
+        </div>
+
+        <!-- LEYENDA MÉTODO -->
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap;font-size:10px;color:var(--text2)">
+          <b>Método (clic por ítem):</b>
+          <span><span style="background:var(--primary);color:#fff;padding:1px 5px;border-radius:3px;font-weight:700">1</span> Int.</span>
+          <span><span style="background:var(--primary);color:#fff;padding:1px 5px;border-radius:3px;font-weight:700">2</span> Conf.ext.</span>
+          <span><span style="background:var(--primary);color:#fff;padding:1px 5px;border-radius:3px;font-weight:700">3</span> Mixto</span>
+          <span><span style="background:var(--primary);color:#fff;padding:1px 5px;border-radius:3px;font-weight:700">7</span> Maquila</span>
+          <span><span style="background:var(--primary);color:#fff;padding:1px 5px;border-radius:3px;font-weight:700">8</span> Especial</span>
+          <span style="margin-left:auto;color:#6B6A66;font-style:italic">← columnas fijas | desplaza →</span>
+        </div>
+
+        <!-- ════ STICKY TABLE ════ -->
+        <div class="items-table-wrap">
+        <table class="items-table">
+          <colgroup>
+            <col class="sticky-cb"/><col class="sticky-ref"/><col class="sticky-ext"/><col class="sticky-desc"/>
+            <col class="col-cant"/><col class="col-uemp"/><col class="col-sam"/>
+            <col class="col-met"/><col class="col-ruta"/>
+            <col class="col-fdesp"/><col class="col-fent"/>
+            <col class="col-notas"/><col class="col-acc"/>
+          </colgroup>
+          <thead>
+            <tr>
+              <th class="sticky-col sticky-cb">
+                <div class="cb checked" id="cb-all" onclick="toggleAll(this)" title="Sel. todas"></div>
+              </th>
+              <th class="sticky-col sticky-ref">Referencia</th>
+              <th class="sticky-col sticky-ext">Extensión</th>
+              <th class="sticky-col sticky-desc">Descripción</th>
+              <th class="col-cant">Cant.<br/><span class="tag-siesa tag" style="font-size:8px">S</span></th>
+              <th class="col-uemp">Und.Emp.<br/><span class="tag-siesa tag" style="font-size:8px">S</span></th>
+              <th class="col-sam">SAM<br/><span class="tag-siesa tag" style="font-size:8px">S</span></th>
+              <th class="col-met">Método ✏</th>
+              <th class="col-ruta">Ruta<br/><span class="tag-siesa tag" style="font-size:8px">S</span></th>
+              <th class="col-fdesp">F. Despacho<br/>CEDI</th>
+              <th class="col-fent">F. Entrega<br/>CEDI</th>
+              <th class="col-notas">Notas<br/><span class="tag-siesa tag" style="font-size:8px">S</span></th>
+              <th class="col-acc">Acciones ítem</th>
+            </tr>
+          </thead>
+          <tbody id="items-tbody">
+
+            <!-- FILA 1 -->
+            <tr class="selected-row">
+              <td class="sticky-col sticky-cb"><div class="cb checked row-cb" onclick="toggleRow(this)"></div></td>
+              <td class="sticky-col sticky-ref"><b>PT01833</b></td>
+              <td class="sticky-col sticky-ext">E10094</td>
+              <td class="sticky-col sticky-desc" title="PROTECTOR 200X200X40 ANTIFLUIDO 100% POL">PROTECTOR 200X200X40 ANTIF…</td>
+              <td>20</td><td>10</td><td>240</td>
+              <td><div class="met-pills">
+                <div class="met-pill active" onclick="selMet(this)">1</div>
+                <div class="met-pill" onclick="selMet(this)">2</div>
+                <div class="met-pill" onclick="selMet(this)">3</div>
+                <div class="met-pill" onclick="selMet(this)">7</div>
+                <div class="met-pill" onclick="selMet(this)">8</div>
+              </div></td>
+              <td><span class="tag tag-int">INT</span></td>
+              <td><input type="date" class="tdate desp-field" value="2026-03-20"/></td>
+              <td><input type="date" class="tdate ent-field"  value="2026-03-22"/></td>
+              <td style="color:var(--text2)">—</td>
+              <td><div class="row-actions">
+                <button class="ra-btn" title="Dividir este ítem">✂ Dividir ítem</button>
+                <button class="ra-btn" title="Agrupar con otro">🔗 Agrupar ítem</button>
+                <button class="ra-btn hijos" title="Generar hijos">👶 Hijos</button>
+              </div></td>
+            </tr>
+
+            <!-- FILA 2 -->
+            <tr class="selected-row">
+              <td class="sticky-col sticky-cb"><div class="cb checked row-cb" onclick="toggleRow(this)"></div></td>
+              <td class="sticky-col sticky-ref"><b>PT02024</b></td>
+              <td class="sticky-col sticky-ext">E10094</td>
+              <td class="sticky-col sticky-desc" title="PROTECTOR 140X200X40 ANTIFLUIDO 100% POL">PROTECTOR 140X200X40 ANTIF…</td>
+              <td>20</td><td>10</td><td>240</td>
+              <td><div class="met-pills">
+                <div class="met-pill" onclick="selMet(this)">1</div>
+                <div class="met-pill active" onclick="selMet(this)">2</div>
+                <div class="met-pill" onclick="selMet(this)">3</div>
+                <div class="met-pill" onclick="selMet(this)">7</div>
+                <div class="met-pill" onclick="selMet(this)">8</div>
+              </div></td>
+              <td><span class="tag tag-ext">EXT</span></td>
+              <td><input type="date" class="tdate desp-field" value="2026-03-20"/></td>
+              <td><input type="date" class="tdate ent-field"  value="2026-03-22"/></td>
+              <td style="color:var(--text2)">—</td>
+              <td><div class="row-actions">
+                <button class="ra-btn">✂ Dividir ítem</button>
+                <button class="ra-btn">🔗 Agrupar ítem</button>
+                <button class="ra-btn hijos">👶 Hijos</button>
+              </div></td>
+            </tr>
+
+            <!-- FILA 3 -->
+            <tr class="selected-row">
+              <td class="sticky-col sticky-cb"><div class="cb checked row-cb" onclick="toggleRow(this)"></div></td>
+              <td class="sticky-col sticky-ref"><b>PT08032</b></td>
+              <td class="sticky-col sticky-ext">E10094</td>
+              <td class="sticky-col sticky-desc" title="ALMOHADA SUAVE 50X70 230H 100%AL">ALMOHADA SUAVE 50X70 230H…</td>
+              <td>150</td><td>10</td><td>1800</td>
+              <td><div class="met-pills">
+                <div class="met-pill active" onclick="selMet(this)">1</div>
+                <div class="met-pill" onclick="selMet(this)">2</div>
+                <div class="met-pill" onclick="selMet(this)">3</div>
+                <div class="met-pill" onclick="selMet(this)">7</div>
+                <div class="met-pill" onclick="selMet(this)">8</div>
+              </div></td>
+              <td><span class="tag tag-int">INT</span></td>
+              <td><input type="date" class="tdate desp-field" value="2026-03-20"/></td>
+              <td><input type="date" class="tdate ent-field"  value="2026-03-22"/></td>
+              <td style="color:var(--text2)">Prioridad alta</td>
+              <td><div class="row-actions">
+                <button class="ra-btn">✂ Dividir ítem</button>
+                <button class="ra-btn">🔗 Agrupar ítem</button>
+                <button class="ra-btn hijos">👶 Hijos</button>
+              </div></td>
+            </tr>
+
+            <!-- FILA 4 -->
+            <tr class="selected-row">
+              <td class="sticky-col sticky-cb"><div class="cb checked row-cb" onclick="toggleRow(this)"></div></td>
+              <td class="sticky-col sticky-ref"><b>PT09513</b></td>
+              <td class="sticky-col sticky-ext">E12853</td>
+              <td class="sticky-col sticky-desc" title="COBIJA PLUMON 100%ALG 285X240">COBIJA PLUMON 285X240…</td>
+              <td>60</td><td>5</td><td>80</td>
+              <td><div class="met-pills">
+                <div class="met-pill active" onclick="selMet(this)">1</div>
+                <div class="met-pill" onclick="selMet(this)">2</div>
+                <div class="met-pill" onclick="selMet(this)">3</div>
+                <div class="met-pill" onclick="selMet(this)">7</div>
+                <div class="met-pill" onclick="selMet(this)">8</div>
+              </div></td>
+              <td><span class="tag tag-int">INT</span></td>
+              <td><input type="date" class="tdate desp-field" value="2026-03-20"/></td>
+              <td><input type="date" class="tdate ent-field"  value="2026-03-22"/></td>
+              <td style="color:var(--orange);font-size:10px">Tela pendiente</td>
+              <td><div class="row-actions">
+                <button class="ra-btn">✂ Dividir ítem</button>
+                <button class="ra-btn">🔗 Agrupar ítem</button>
+                <button class="ra-btn hijos">👶 Hijos</button>
+              </div></td>
+            </tr>
+
+            <!-- FILA 5 -->
+            <tr>
+              <td class="sticky-col sticky-cb"><div class="cb row-cb" onclick="toggleRow(this)"></div></td>
+              <td class="sticky-col sticky-ref"><b>PT23388</b></td>
+              <td class="sticky-col sticky-ext">E13371</td>
+              <td class="sticky-col sticky-desc" title="JUEGO CAMA EXTRA 200H CROCHETA">JUEGO CAMA EXTRA CROCHETA</td>
+              <td>15</td><td>10</td><td>570</td>
+              <td><div class="met-pills">
+                <div class="met-pill active" onclick="selMet(this)">1</div>
+                <div class="met-pill" onclick="selMet(this)">2</div>
+                <div class="met-pill" onclick="selMet(this)">3</div>
+                <div class="met-pill" onclick="selMet(this)">7</div>
+                <div class="met-pill" onclick="selMet(this)">8</div>
+              </div></td>
+              <td><span class="tag tag-ext">EXT</span></td>
+              <td><input type="date" class="tdate desp-field" value=""/></td>
+              <td><input type="date" class="tdate ent-field"  value=""/></td>
+              <td style="color:var(--text2);font-size:10px">Crocheta ext.</td>
+              <td><div class="row-actions">
+                <button class="ra-btn">✂ Dividir ítem</button>
+                <button class="ra-btn">🔗 Agrupar ítem</button>
+                <button class="ra-btn hijos">👶 Hijos</button>
+              </div></td>
+            </tr>
+
+            <!-- FILA 6 -->
+            <tr>
+              <td class="sticky-col sticky-cb"><div class="cb row-cb" onclick="toggleRow(this)"></div></td>
+              <td class="sticky-col sticky-ref"><b>PT23929</b></td>
+              <td class="sticky-col sticky-ext">E10337</td>
+              <td class="sticky-col sticky-desc" title="COVER DUVET DB 300H MEZCLA BENEVO">COVER DUVET DB 300H MEZCLA</td>
+              <td>15</td><td>10</td><td>450</td>
+              <td><div class="met-pills">
+                <div class="met-pill active" onclick="selMet(this)">1</div>
+                <div class="met-pill" onclick="selMet(this)">2</div>
+                <div class="met-pill" onclick="selMet(this)">3</div>
+                <div class="met-pill" onclick="selMet(this)">7</div>
+                <div class="met-pill" onclick="selMet(this)">8</div>
+              </div></td>
+              <td><span class="tag tag-int">INT</span></td>
+              <td><input type="date" class="tdate desp-field" value=""/></td>
+              <td><input type="date" class="tdate ent-field"  value=""/></td>
+              <td style="color:var(--text2)">—</td>
+              <td><div class="row-actions">
+                <button class="ra-btn">✂ Dividir ítem</button>
+                <button class="ra-btn">🔗 Agrupar ítem</button>
+                <button class="ra-btn hijos">👶 Hijos</button>
+              </div></td>
+            </tr>
+
+          </tbody>
+        </table>
+        </div><!-- /table-wrap -->
+
+        <div style="margin-top:8px;display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+          <div style="font-size:10px;color:var(--text2)"><span id="sel-count">4</span> de 6 ítems seleccionados</div>
+          <div class="siesa-legend">📥 Campos S = automáticos desde SIESA</div>
+          <div style="font-size:10px;color:var(--text2);margin-left:auto">
+            <span class="tag tag-int" style="font-size:9px">INT</span> interno &nbsp;
+            <span class="tag tag-ext" style="font-size:9px">EXT</span> externo
+          </div>
+        </div>
+      </div><!-- /card items -->
+
+      <!-- RQT -->
+      <div class="card">
+        <div class="card-title"><span class="badge badge-g">RQT</span> Estados de requisiciones</div>
+        <div class="grid4">
+          <div class="kpi-box"><div class="kpi-val" style="color:var(--green)">8</div><div class="kpi-lbl">Comprometidas</div></div>
+          <div class="kpi-box"><div class="kpi-val" style="color:var(--amber)">3</div><div class="kpi-lbl">Parciales</div></div>
+          <div class="kpi-box"><div class="kpi-val" style="color:var(--orange)">1</div><div class="kpi-lbl">En elaboración</div></div>
+          <div class="kpi-box"><div class="kpi-val" style="color:#991B1B">0</div><div class="kpi-lbl">Anuladas</div></div>
+        </div>
+      </div>
+
+    </div><!-- /pedido-main -->
+  </div><!-- /pedido-layout -->
+</div><!-- /screen-pedido -->
+
+<!-- ══════════════════════════════════════════════════
+     MÓDULO 2 — PROGRAMADOR
+══════════════════════════════════════════════════ -->
+<div class="screen" id="screen-programador">
+  <div class="screen-scroll">
+  <div class="page-header"><h2>② Módulo Programador</h2><p>Vista de ruta por OP · asignación de fechas · orden lógico entre plantas</p></div>
+  <div class="alert alert-info" style="margin-bottom:10px"><span class="alert-icon">🎨</span><div>Procesos <b>internos</b> <span class="tag tag-int">AZUL</span> · <b>externos</b> <span class="tag tag-ext">ÁMBAR</span>. El sistema valida el orden lógico de fechas.</div></div>
+  <div class="card">
+    <div class="card-title"><span class="badge badge-p">Vista</span> Ruta por OP con fechas</div>
+    <table style="width:100%;border-collapse:collapse;font-size:11px">
+      <thead><tr style="background:var(--bg)">
+        <th style="padding:5px 8px;border-bottom:1px solid var(--border);font-weight:600;color:var(--text2)">N° OP</th>
+        <th style="padding:5px 8px;border-bottom:1px solid var(--border);font-weight:600;color:var(--text2)">Referencia</th>
+        <th style="padding:5px 8px;border-bottom:1px solid var(--border);font-weight:600;color:var(--text2)">Cant.</th>
+        <th style="padding:5px 8px;border-bottom:1px solid var(--border);font-weight:600;color:var(--text2)">Método</th>
+        <th style="padding:5px 8px;border-bottom:1px solid var(--border);font-weight:600;color:var(--text2)">Ruta de producción</th>
+        <th style="padding:5px 8px;border-bottom:1px solid var(--border);font-weight:600;color:var(--text2)">Prioridad</th>
+      </tr></thead>
+      <tbody>
+        <tr><td style="padding:5px 8px;border-bottom:1px solid var(--border)">OPN-145533</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)">PT01833</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)">20</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)">1</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)"><div class="ruta"><span class="ruta-step" style="background:var(--green-light);color:var(--green)">Insumos 04-mar</span><span class="ruta-arrow">→</span><span class="ruta-step" style="background:var(--primary-light);color:var(--primary)">Corte 08-mar</span><span class="ruta-arrow">→</span><span class="ruta-step" style="background:var(--amber-light);color:var(--amber)">Estampado 09-mar</span><span class="ruta-arrow">→</span><span class="ruta-step" style="background:var(--primary-light);color:var(--primary)">Confección 14-mar</span></div></td><td style="padding:5px 8px;border-bottom:1px solid var(--border)"><span class="tag tag-ok">Alta</span></td></tr>
+        <tr><td style="padding:5px 8px;border-bottom:1px solid var(--border)">OPN-145534</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)">PT02024</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)">20</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)">2</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)"><div class="ruta"><span class="ruta-step" style="background:var(--green-light);color:var(--green)">Insumos 04-mar</span><span class="ruta-arrow">→</span><span class="ruta-step" style="background:var(--primary-light);color:var(--primary)">Corte 08-mar</span><span class="ruta-arrow">→</span><span class="ruta-step" style="background:var(--amber-light);color:var(--amber)">Bordado 09-mar</span><span class="ruta-arrow">→</span><span class="ruta-step" style="background:var(--amber-light);color:var(--amber)">Conf.Ext 24-mar</span></div></td><td style="padding:5px 8px;border-bottom:1px solid var(--border)"><span class="tag tag-ok">Alta</span></td></tr>
+        <tr><td style="padding:5px 8px;border-bottom:1px solid var(--border)">OPS-22794</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)">PT08032</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)">150</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)">1</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)"><div class="ruta"><span class="ruta-step" style="background:var(--green-light);color:var(--green)">MP Telas 05-mar</span><span class="ruta-arrow">→</span><span class="ruta-step" style="background:var(--primary-light);color:var(--primary)">Corte 08-mar</span><span class="ruta-arrow">→</span><span class="ruta-step" style="background:var(--primary-light);color:var(--primary)">Relleno 10-mar</span><span class="ruta-arrow">→</span><span class="ruta-step" style="background:var(--primary-light);color:var(--primary)">Confección 14-mar</span></div></td><td style="padding:5px 8px;border-bottom:1px solid var(--border)"><span class="tag tag-pend">Media</span></td></tr>
+      </tbody>
+    </table>
+    <div style="margin-top:10px;display:flex;gap:8px">
+      <button style="background:var(--olive-light);color:var(--olive);border:1px solid var(--olive);border-radius:7px;padding:5px 12px;font-size:11px;font-weight:600;cursor:pointer">📅 Editar fechas</button>
+      <button style="background:var(--bg);color:var(--text2);border:1px solid var(--border);border-radius:7px;padding:5px 12px;font-size:11px;cursor:pointer">↕ Prioridad</button>
+      <button style="background:var(--bg);color:var(--text2);border:1px solid var(--border);border-radius:7px;padding:5px 12px;font-size:11px;cursor:pointer">📤 Entregable a planta</button>
+    </div>
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <div class="card-title"><span class="badge badge-t">Terceros</span> OPs para despacho externo</div>
+      <table style="width:100%;border-collapse:collapse;font-size:11px">
+        <thead><tr style="background:var(--bg)"><th style="padding:5px 8px;border-bottom:1px solid var(--border);font-weight:600;color:var(--text2)">OP</th><th style="padding:5px 8px;border-bottom:1px solid var(--border);font-weight:600;color:var(--text2)">Proceso</th><th style="padding:5px 8px;border-bottom:1px solid var(--border);font-weight:600;color:var(--text2)">Proveedor</th><th style="padding:5px 8px;border-bottom:1px solid var(--border);font-weight:600;color:var(--text2)">F.Despacho</th><th style="padding:5px 8px;border-bottom:1px solid var(--border);font-weight:600;color:var(--text2)">F.Retorno</th></tr></thead>
+        <tbody>
+          <tr><td style="padding:5px 8px;border-bottom:1px solid var(--border)">OPN-145533</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)"><span class="tag tag-ext">Estampado</span></td><td style="padding:5px 8px;border-bottom:1px solid var(--border)">Kondor</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)">09-mar</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)">14-mar</td></tr>
+          <tr><td style="padding:5px 8px;border-bottom:1px solid var(--border)">OPN-145534</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)"><span class="tag tag-ext">Bordado</span></td><td style="padding:5px 8px;border-bottom:1px solid var(--border)">Sara</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)">09-mar</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)">24-mar</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="badge badge-o">⚠ Validaciones</span></div>
+      <div class="alert alert-ok"><span class="alert-icon">✓</span><div>OPN-145533: orden correcto.</div></div>
+      <div class="alert alert-warn"><span class="alert-icon">⚠</span><div>OPN-145534: conf. externa antes del retorno bordado.</div></div>
+      <div class="alert alert-ok"><span class="alert-icon">✓</span><div>OPS-22794: ruta válida.</div></div>
+    </div>
+  </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     MÓDULO 3 — TABLERO OP
+══════════════════════════════════════════════════ -->
+<div class="screen" id="screen-tablero">
+  <div class="screen-scroll">
+  <div class="page-header"><h2>③ Tablero OP</h2><p>Estado consolidado por proceso · taller satélite · alertas</p></div>
+  <div class="grid4" style="margin-bottom:12px">
+    <div class="kpi-box"><div class="kpi-val" style="color:var(--green)">4</div><div class="kpi-lbl">Cumplidas</div></div>
+    <div class="kpi-box"><div class="kpi-val" style="color:#1D4ED8">5</div><div class="kpi-lbl">En Proceso</div></div>
+    <div class="kpi-box"><div class="kpi-val" style="color:var(--amber)">2</div><div class="kpi-lbl">Pendientes</div></div>
+    <div class="kpi-box"><div class="kpi-val" style="color:#991B1B">1</div><div class="kpi-lbl">En Alerta</div></div>
+  </div>
+  <div class="card" style="overflow-x:auto">
+    <div class="card-title"><span class="badge badge-p">Tablero</span> DI-1223 · Hilton Cartagena</div>
+    <table style="width:100%;border-collapse:collapse;font-size:11px;min-width:820px">
+      <thead><tr style="background:var(--bg)"><th style="padding:5px 8px;border-bottom:1px solid var(--border);font-weight:600;color:var(--text2)">N° OP</th><th style="padding:5px 8px;border-bottom:1px solid var(--border);font-weight:600;color:var(--text2)">Referencia</th><th style="padding:5px 8px;border-bottom:1px solid var(--border);font-weight:600;color:var(--text2)">Cant.</th><th style="padding:5px 8px;border-bottom:1px solid var(--border);font-weight:600;color:var(--text2)">Insumos</th><th style="padding:5px 8px;border-bottom:1px solid var(--border);font-weight:600;color:var(--text2)">MP</th><th style="padding:5px 8px;border-bottom:1px solid var(--border);font-weight:600;color:var(--text2)">Corte</th><th style="padding:5px 8px;border-bottom:1px solid var(--border);font-weight:600;color:var(--text2)">Estampado</th><th style="padding:5px 8px;border-bottom:1px solid var(--border);font-weight:600;color:var(--text2)">Bordado</th><th style="padding:5px 8px;border-bottom:1px solid var(--border);font-weight:600;color:var(--text2)">Confección</th><th style="padding:5px 8px;border-bottom:1px solid var(--border);font-weight:600;color:var(--text2)">Conf.Ext.</th><th style="padding:5px 8px;border-bottom:1px solid var(--border);font-weight:600;color:var(--text2)">Taller</th><th style="padding:5px 8px;border-bottom:1px solid var(--border);font-weight:600;color:var(--text2)">Estado</th></tr></thead>
+      <tbody>
+        <tr><td style="padding:5px 8px;border-bottom:1px solid var(--border)">OPN-145533</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)">PT01833</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)">20</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)"><span class="tag tag-ok">OK</span></td><td style="padding:5px 8px;border-bottom:1px solid var(--border)"><span class="tag tag-ok">OK</span></td><td style="padding:5px 8px;border-bottom:1px solid var(--border)"><span class="tag tag-ok">OK</span></td><td style="padding:5px 8px;border-bottom:1px solid var(--border)"><span class="tag tag-ext">Kondor</span></td><td style="padding:5px 8px;border-bottom:1px solid var(--border)">—</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)"><span class="tag tag-ok">Aprobada</span></td><td style="padding:5px 8px;border-bottom:1px solid var(--border)">—</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)">—</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)"><span class="tag tag-pend">Proceso</span></td></tr>
+        <tr style="background:#FFF7ED"><td style="padding:5px 8px;border-bottom:1px solid var(--border)">OPS-21682</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)">PT09513</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)">60</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)"><span class="tag tag-pend">Pend</span></td><td style="padding:5px 8px;border-bottom:1px solid var(--border)"><span class="tag tag-alert">Sin tela</span></td><td style="padding:5px 8px;border-bottom:1px solid var(--border)">🔒</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)">—</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)">—</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)">🔒</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)">—</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)">—</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)"><span class="tag tag-alert">Bloqueada</span></td></tr>
+        <tr><td style="padding:5px 8px;border-bottom:1px solid var(--border)">OPS-22794</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)">PT08032</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)">150</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)"><span class="tag tag-ok">OK</span></td><td style="padding:5px 8px;border-bottom:1px solid var(--border)"><span class="tag tag-ok">OK</span></td><td style="padding:5px 8px;border-bottom:1px solid var(--border)">—</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)">—</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)">—</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)"><span class="tag tag-ok">OK</span></td><td style="padding:5px 8px;border-bottom:1px solid var(--border)">—</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)">—</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)"><span class="tag tag-ok">Cumplida</span></td></tr>
+      </tbody>
+    </table>
+    <div style="margin-top:8px;font-size:10px;color:var(--text2)">🔒 Bloqueada — sin tela o insumo · interno=azul · externo=ámbar</div>
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <div class="card-title"><span class="badge badge-o">🔔 Alertas</span></div>
+      <div class="alert alert-err"><span class="alert-icon">🚫</span><div>OPS-21682: sin tela. Esperar ingreso COBIJA PLUMON 285X240.</div></div>
+      <div class="alert alert-ok"><span class="alert-icon">✅</span><div>TE01126 en bodega — OPN-150076 lista para Acolchado.</div></div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="badge badge-t">Talleres satélite</span></div>
+      <table style="width:100%;border-collapse:collapse;font-size:11px">
+        <thead><tr style="background:var(--bg)"><th style="padding:5px 8px;border-bottom:1px solid var(--border);font-weight:600;color:var(--text2)">Taller</th><th style="padding:5px 8px;border-bottom:1px solid var(--border);font-weight:600;color:var(--text2)">Proceso</th><th style="padding:5px 8px;border-bottom:1px solid var(--border);font-weight:600;color:var(--text2)">OPs</th></tr></thead>
+        <tbody>
+          <tr><td style="padding:5px 8px;border-bottom:1px solid var(--border)">Kondor</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)">Estampado</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)">OPN-145533</td></tr>
+          <tr><td style="padding:5px 8px;border-bottom:1px solid var(--border)">Sara</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)">Bordado</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)">OPN-145534</td></tr>
+          <tr><td style="padding:5px 8px">Rosalba</td><td style="padding:5px 8px">Corte ext.</td><td style="padding:5px 8px">OPN-145534</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     MÓDULO 4 — PLANTAS
+══════════════════════════════════════════════════ -->
+<div class="screen" id="screen-plantas">
+  <div class="screen-scroll">
+  <div class="page-header"><h2>④ Módulo Plantas</h2><p>Gantt · días hábiles · capacidad libre vs ocupada · atrasadas</p></div>
+  <div class="toggle-row">
+    <span style="font-size:11px;color:var(--text2);font-weight:600">Planta:</span>
+    <button class="t-btn sel" id="ptbtn-corte" onclick="selectPlanta('corte')">Corte</button>
+    <button class="t-btn" id="ptbtn-confeccion" onclick="selectPlanta('confeccion')">Confección</button>
+    <button class="t-btn" id="ptbtn-bordado" onclick="selectPlanta('bordado')">Bordado</button>
+    <button class="t-btn" id="ptbtn-terceros" onclick="selectPlanta('terceros')">Terceros</button>
+    <button class="t-btn" id="ptbtn-relleno" onclick="selectPlanta('relleno')">Relleno</button>
+    <button class="t-btn" id="ptbtn-acolchado" onclick="selectPlanta('acolchado')">Acolchado</button>
+    <button class="t-btn" id="ptbtn-comforter" onclick="selectPlanta('comforter')">Comforter</button>
+    <button class="t-btn" id="ptbtn-insumos" onclick="selectPlanta('insumos')">Insumos</button>
+  </div>
+  <div id="planta-corte">
+    <div class="grid2" style="margin-bottom:10px">
+      <div class="card">
+        <div class="card-title"><span class="badge badge-o">Corte</span> Capacidad del mes</div>
+        <div class="cap-row"><div class="cap-label">Sem 1</div><div class="cap-bar-bg"><div class="cap-bar-fill" style="width:85%;background:#3B82F6">85%</div></div><div class="cap-pct" style="color:#1D4ED8">85%</div></div>
+        <div class="cap-row"><div class="cap-label">Sem 2</div><div class="cap-bar-bg"><div class="cap-bar-fill" style="width:62%;background:#10B981">62%</div></div><div class="cap-pct" style="color:#065F46">62%</div></div>
+        <div class="cap-row"><div class="cap-label">Sem 3</div><div class="cap-bar-bg"><div class="cap-bar-fill" style="width:40%;background:#10B981">40%</div></div><div class="cap-pct" style="color:#065F46">40%</div></div>
+        <div class="cap-row"><div class="cap-label">Sem 4</div><div class="cap-bar-bg"><div class="cap-bar-fill" style="width:95%;background:#EF4444">95%</div></div><div class="cap-pct" style="color:#991B1B">95%</div></div>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="badge badge-o">Config</span> 16 operarios</div>
+        <div class="alert alert-info"><span class="alert-icon">📌</span><div>Atrasadas acumulan al siguiente día hábil.</div></div>
+        <div class="alert alert-warn"><span class="alert-icon">⚠</span><div>OPS-21682 bloqueada: sin tela.</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="badge badge-o">Gantt</span> Corte — marzo 2026</div>
+      <div class="gantt-wrap">
+        <table class="gantt">
+          <thead><tr><th class="op-col">OP</th><th>L3</th><th>M4</th><th>X5</th><th>J6</th><th>V7</th><th>L10</th><th>M11</th><th>X12</th><th>J13</th><th>V14</th></tr></thead>
+          <tbody>
+            <tr><td class="op-col" style="font-size:10px">OPN-145533</td><td></td><td></td><td></td><td></td><td></td><td class="gc-ocup"><span class="gc-prog">✓</span></td><td class="gc-ocup"><span class="gc-prog">✓</span></td><td></td><td></td><td></td></tr>
+            <tr><td class="op-col" style="font-size:10px">OPN-145534</td><td></td><td></td><td></td><td></td><td></td><td class="gc-ocup"><span class="gc-prog">✓</span></td><td class="gc-ocup"><span class="gc-prog">✓</span></td><td></td><td></td><td></td></tr>
+            <tr><td class="op-col" style="font-size:10px">OPS-21682 🔒</td><td class="gc-block"></td><td class="gc-block"></td><td class="gc-block"></td><td class="gc-block"></td><td class="gc-block"></td><td class="gc-block"></td><td class="gc-block"></td><td></td><td></td><td></td></tr>
+            <tr><td class="op-col" style="font-size:10px;color:var(--text2)">— Libre —</td><td class="gc-libre"></td><td class="gc-libre"></td><td class="gc-libre"></td><td class="gc-libre"></td><td class="gc-libre"></td><td></td><td class="gc-libre"></td><td class="gc-libre"></td><td class="gc-libre"></td><td class="gc-libre"></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div id="planta-confeccion" style="display:none"><div class="card"><div class="card-title"><span class="badge badge-o">Confección</span></div><div class="alert alert-info"><span class="alert-icon">ℹ</span><div>Mínimo 15 días después del retorno de terceros.</div></div><div class="cap-row"><div class="cap-label">Sem 2</div><div class="cap-bar-bg"><div class="cap-bar-fill" style="width:72%;background:#3B82F6">72%</div></div><div class="cap-pct" style="color:#1D4ED8">72%</div></div><div class="cap-row"><div class="cap-label">Sem 4</div><div class="cap-bar-bg"><div class="cap-bar-fill" style="width:88%;background:#EF4444">88%</div></div><div class="cap-pct" style="color:#991B1B">88%</div></div></div></div>
+  <div id="planta-relleno" style="display:none"><div class="card"><div class="card-title"><span class="badge badge-o">Relleno</span></div><div class="alert alert-warn"><span class="alert-icon">🧮</span><div>3 días adicionales de forros requeridos esta semana.</div></div><div class="cap-row" style="margin-top:8px"><div class="cap-label">Sem actual</div><div class="cap-bar-bg"><div class="cap-bar-fill" style="width:90%;background:#EF4444">90%</div></div><div class="cap-pct" style="color:#991B1B">90%</div></div></div></div>
+  <div id="planta-bordado" style="display:none"><div class="card"><div class="card-title"><span class="badge badge-t">Bordado</span></div><div class="alert alert-info"><span class="alert-icon">ℹ</span><div>Solo OPs con bordado. Fecha mínima = día hábil siguiente al corte.</div></div></div></div>
+  <div id="planta-terceros" style="display:none"><div class="card"><div class="card-title"><span class="badge badge-t">Terceros</span></div><div class="alert alert-info"><span class="alert-icon">📦</span><div>Estampado · Bordado · Ojal · Ojalete · Conf.ext. · Acolchados externos.</div></div></div></div>
+  <div id="planta-acolchado" style="display:none"><div class="card"><div class="card-title"><span class="badge badge-o">Acolchado</span></div><div class="alert alert-info"><span class="alert-icon">ℹ</span><div>80 metros/turno.</div></div></div></div>
+  <div id="planta-comforter" style="display:none"><div class="card"><div class="card-title"><span class="badge badge-o">Comforter</span></div><div class="alert alert-info"><span class="alert-icon">ℹ</span><div>50 unidades/turno.</div></div></div></div>
+  <div id="planta-insumos" style="display:none"><div class="card"><div class="card-title"><span class="badge badge-g">Insumos</span></div><div class="cap-row"><div class="cap-label">Hoy</div><div class="cap-bar-bg"><div class="cap-bar-fill" style="width:60%;background:#3B82F6">60%</div></div><div class="cap-pct" style="color:#1D4ED8">60%</div></div><div class="alert alert-ok"><span class="alert-icon">✅</span><div>13 de 23 OPs asignadas hoy.</div></div></div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     MÓDULO 5 — CAPACIDAD
+══════════════════════════════════════════════════ -->
+<div class="screen" id="screen-capacidad">
+  <div class="screen-scroll">
+  <div class="page-header"><h2>⑤ Módulo Capacidad</h2><p>Configuración por planta · simulación · parámetros</p></div>
+  <div class="card" style="margin-bottom:10px">
+    <div class="card-title"><span class="badge badge-a">Config</span> Capacidad instalada por planta</div>
+    <table style="width:100%;border-collapse:collapse;font-size:11px">
+      <thead><tr style="background:var(--bg)"><th style="padding:5px 8px;border-bottom:1px solid var(--border);font-weight:600;color:var(--text2)">Planta</th><th style="padding:5px 8px;border-bottom:1px solid var(--border);font-weight:600;color:var(--text2)">Unidad</th><th style="padding:5px 8px;border-bottom:1px solid var(--border);font-weight:600;color:var(--text2)">Cap. base</th><th style="padding:5px 8px;border-bottom:1px solid var(--border);font-weight:600;color:var(--text2)">N° personas</th><th style="padding:5px 8px;border-bottom:1px solid var(--border);font-weight:600;color:var(--text2)">Min/día</th><th style="padding:5px 8px;border-bottom:1px solid var(--border)"></th></tr></thead>
+      <tbody>
+        <tr><td style="padding:5px 8px;border-bottom:1px solid var(--border)">Corte</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)">metros/día</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)">~800 m</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)">16</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)">—</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)"><button style="font-size:10px;padding:2px 7px;border-radius:4px;border:1px solid var(--border);cursor:pointer;background:#fff">✏ Editar</button></td></tr>
+        <tr><td style="padding:5px 8px;border-bottom:1px solid var(--border)">Confección</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)">min/día</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)">variable</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)">modificable</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)">480</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)"><button style="font-size:10px;padding:2px 7px;border-radius:4px;border:1px solid var(--border);cursor:pointer;background:#fff">✏ Editar</button></td></tr>
+        <tr><td style="padding:5px 8px;border-bottom:1px solid var(--border)">Insumos</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)">OPs/día</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)">23 OPs</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)">—</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)">—</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)"><button style="font-size:10px;padding:2px 7px;border-radius:4px;border:1px solid var(--border);cursor:pointer;background:#fff">✏ Editar</button></td></tr>
+        <tr><td style="padding:5px 8px;border-bottom:1px solid var(--border)">Comforter</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)">unid/turno</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)">50 un</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)">—</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)">—</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)"><button style="font-size:10px;padding:2px 7px;border-radius:4px;border:1px solid var(--border);cursor:pointer;background:#fff">✏ Editar</button></td></tr>
+        <tr><td style="padding:5px 8px">Acolchado</td><td style="padding:5px 8px">metros/turno</td><td style="padding:5px 8px">80 m</td><td style="padding:5px 8px">—</td><td style="padding:5px 8px">—</td><td style="padding:5px 8px"><button style="font-size:10px;padding:2px 7px;border-radius:4px;border:1px solid var(--border);cursor:pointer;background:#fff">✏ Editar</button></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <div class="card-title"><span class="badge badge-a">🔮 Simulación</span></div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div><div class="lbl">Referencia</div><div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:4px 8px;font-size:11.5px;color:var(--text2)">PT01833</div></div>
+        <div><div class="lbl">Cantidad</div><div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:4px 8px;font-size:11.5px;color:var(--text2)">50</div></div>
+        <button style="background:var(--olive);color:#fff;border:none;border-radius:7px;padding:6px 14px;font-size:12px;font-weight:600;cursor:pointer">Simular disponibilidad</button>
+      </div>
+      <hr class="subtle"/>
+      <div class="alert alert-ok"><span class="alert-icon">✅</span><div>Sem 2 abril: 320 min disponibles · Corte libre Lun 6-abr.</div></div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="badge badge-a">📅 Festivos</span></div>
+      <table style="width:100%;border-collapse:collapse;font-size:11px">
+        <thead><tr style="background:var(--bg)"><th style="padding:5px 8px;border-bottom:1px solid var(--border);font-weight:600;color:var(--text2)">Fecha</th><th style="padding:5px 8px;border-bottom:1px solid var(--border);font-weight:600;color:var(--text2)">Motivo</th></tr></thead>
+        <tbody>
+          <tr><td style="padding:5px 8px;border-bottom:1px solid var(--border)">20-mar</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)">San José</td></tr>
+          <tr><td style="padding:5px 8px;border-bottom:1px solid var(--border)">3-abr</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)">Jueves Santo</td></tr>
+          <tr><td style="padding:5px 8px;border-bottom:1px solid var(--border)">4-abr</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)">Viernes Santo</td></tr>
+          <tr><td style="padding:5px 8px">1-may</td><td style="padding:5px 8px">Día del Trabajo</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     MÓDULO 6 — DASHBOARD
+══════════════════════════════════════════════════ -->
+<div class="screen" id="screen-dashboard">
+  <div class="screen-scroll">
+  <div class="page-header"><h2>⑥ Dashboard General</h2><p>KPIs · alertas · avance por planta · capacidad</p></div>
+  <div class="grid4" style="margin-bottom:12px">
+    <div class="kpi-box"><div class="kpi-val" style="color:var(--green)">78%</div><div class="kpi-lbl">Cumplimiento</div></div>
+    <div class="kpi-box"><div class="kpi-val" style="color:#1D4ED8">11</div><div class="kpi-lbl">En producción</div></div>
+    <div class="kpi-box"><div class="kpi-val" style="color:var(--orange)">2</div><div class="kpi-lbl">Atrasadas</div></div>
+    <div class="kpi-box"><div class="kpi-val" style="color:var(--amber)">3</div><div class="kpi-lbl">Alertas</div></div>
+  </div>
+  <div class="card" style="margin-bottom:10px">
+    <div class="card-title"><span class="badge badge-p">Tablero</span> Capacidad vs. Ocupación — Abril 2026</div>
+    <div style="overflow-x:auto">
+      <table style="width:100%;border-collapse:collapse;font-size:11px;min-width:460px">
+        <thead><tr style="background:var(--bg)"><th style="padding:5px 8px;border-bottom:1px solid var(--border);font-weight:600;color:var(--text2)">Planta</th><th style="padding:5px 8px;border-bottom:1px solid var(--border);font-weight:600;color:var(--text2)">Sem 1</th><th style="padding:5px 8px;border-bottom:1px solid var(--border);font-weight:600;color:var(--text2)">Sem 2</th><th style="padding:5px 8px;border-bottom:1px solid var(--border);font-weight:600;color:var(--text2)">Sem 3</th><th style="padding:5px 8px;border-bottom:1px solid var(--border);font-weight:600;color:var(--text2)">Sem 4</th><th style="padding:5px 8px;border-bottom:1px solid var(--border);font-weight:600;color:var(--text2)">Unidad</th></tr></thead>
+        <tbody>
+          <tr><td style="padding:5px 8px;border-bottom:1px solid var(--border)"><b>Corte</b></td><td style="padding:5px 8px;border-bottom:1px solid var(--border);color:#1D4ED8;font-weight:700">85%</td><td style="padding:5px 8px;border-bottom:1px solid var(--border);color:#065F46;font-weight:700">62%</td><td style="padding:5px 8px;border-bottom:1px solid var(--border);color:#065F46;font-weight:700">40%</td><td style="padding:5px 8px;border-bottom:1px solid var(--border);color:#991B1B;font-weight:700">95%</td><td style="padding:5px 8px;border-bottom:1px solid var(--border);color:var(--text2)">metros</td></tr>
+          <tr><td style="padding:5px 8px;border-bottom:1px solid var(--border)"><b>Confección</b></td><td style="padding:5px 8px;border-bottom:1px solid var(--border);color:#065F46;font-weight:700">55%</td><td style="padding:5px 8px;border-bottom:1px solid var(--border);color:#1D4ED8;font-weight:700">72%</td><td style="padding:5px 8px;border-bottom:1px solid var(--border);color:#065F46;font-weight:700">45%</td><td style="padding:5px 8px;border-bottom:1px solid var(--border);color:#991B1B;font-weight:700">88%</td><td style="padding:5px 8px;border-bottom:1px solid var(--border);color:var(--text2)">minutos</td></tr>
+          <tr><td style="padding:5px 8px;border-bottom:1px solid var(--border)"><b>Relleno</b></td><td style="padding:5px 8px;border-bottom:1px solid var(--border);color:#991B1B;font-weight:700">90%</td><td style="padding:5px 8px;border-bottom:1px solid var(--border);color:#065F46;font-weight:700">40%</td><td style="padding:5px 8px;border-bottom:1px solid var(--border);color:#065F46;font-weight:700">35%</td><td style="padding:5px 8px;border-bottom:1px solid var(--border);color:#065F46;font-weight:700">50%</td><td style="padding:5px 8px;border-bottom:1px solid var(--border);color:var(--text2)">minutos</td></tr>
+          <tr><td style="padding:5px 8px"><b>Insumos</b></td><td style="padding:5px 8px;color:#065F46;font-weight:700">60%</td><td style="padding:5px 8px;color:#065F46;font-weight:700">52%</td><td style="padding:5px 8px;color:#065F46;font-weight:700">48%</td><td style="padding:5px 8px;color:#065F46;font-weight:700">70%</td><td style="padding:5px 8px;color:var(--text2)">OPs/día</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="margin-top:8px;font-size:10px;color:var(--text2);display:flex;gap:10px">
+      <span><b style="color:#991B1B">■</b> +80% crítico</span>
+      <span><b style="color:#1D4ED8">■</b> 60-80% ocupado</span>
+      <span><b style="color:#065F46">■</b> &lt;60% disponible</span>
+    </div>
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <div class="card-title"><span class="badge badge-o">⚠ Alertas</span></div>
+      <div class="alert alert-err"><span class="alert-icon">🚫</span><div><b>Corte Sem 4:</b> 95%. Reubicar 2 OPs.</div></div>
+      <div class="alert alert-warn"><span class="alert-icon">⏰</span><div>OPS-21682 atrasada: sin tela.</div></div>
+      <div class="alert alert-info"><span class="alert-icon">📦</span><div>TE01126 ingresó → OPN-150076 lista.</div></div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="badge badge-g">📈 Avance diario</span></div>
+      <table style="width:100%;border-collapse:collapse;font-size:11px">
+        <thead><tr style="background:var(--bg)"><th style="padding:5px 8px;border-bottom:1px solid var(--border);font-weight:600;color:var(--text2)">Planta</th><th style="padding:5px 8px;border-bottom:1px solid var(--border);font-weight:600;color:var(--text2)">Meta</th><th style="padding:5px 8px;border-bottom:1px solid var(--border);font-weight:600;color:var(--text2)">Ejecutado</th><th style="padding:5px 8px;border-bottom:1px solid var(--border);font-weight:600;color:var(--text2)">Estado</th></tr></thead>
+        <tbody>
+          <tr><td style="padding:5px 8px;border-bottom:1px solid var(--border)">Corte</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)">800 m</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)">720 m</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)"><span class="tag tag-pend">90%⚠</span></td></tr>
+          <tr><td style="padding:5px 8px;border-bottom:1px solid var(--border)">Confección</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)">480 min</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)">480 min</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)"><span class="tag tag-ok">100%✓</span></td></tr>
+          <tr><td style="padding:5px 8px;border-bottom:1px solid var(--border)">Relleno</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)">240 min</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)">180 min</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)"><span class="tag tag-alert">75%✗</span></td></tr>
+          <tr><td style="padding:5px 8px">Insumos</td><td style="padding:5px 8px">23 OPs</td><td style="padding:5px 8px">14 OPs</td><td style="padding:5px 8px"><span class="tag tag-ok">61%✓</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  </div>
+</div>
+
+</div><!-- /content -->
+
+<script>
+// ── NAV ──
+function show(id,e){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('screen-'+id).classList.add('active');
+  if(e&&e.target)e.target.classList.add('active');
+}
+
+// ── PLANTAS ──
+function selectPlanta(p){
+  ['corte','confeccion','bordado','terceros','relleno','acolchado','comforter','insumos'].forEach(k=>{
+    const el=document.getElementById('planta-'+k);
+    if(el)el.style.display=(k===p)?'block':'none';
+    const btn=document.getElementById('ptbtn-'+k);
+    if(btn)btn.classList.toggle('sel',k===p);
+  });
+}
+
+// ── SELECCIÓN PEDIDO ──
+function selectOrder(el,num,client,date){
+  document.querySelectorAll('.order-item').forEach(o=>o.classList.remove('active-order'));
+  el.classList.add('active-order');
+  document.getElementById('order-title').textContent='Pedido '+num+' · '+client;
+  document.getElementById('order-num').textContent=num;
+  document.getElementById('order-client').textContent=client;
+  document.getElementById('order-date').textContent=date;
+  document.getElementById('proc-order').textContent=num;
+}
+
+// ── MÉTODO ──
+function selMet(pill){
+  pill.parentElement.querySelectorAll('.met-pill').forEach(p=>p.classList.remove('active'));
+  pill.classList.add('active');
+}
+
+// ── CHECKBOXES ──
+function toggleAll(cb){
+  const checked=!cb.classList.contains('checked');
+  cb.classList.toggle('checked',checked);
+  document.querySelectorAll('.row-cb').forEach(r=>{
+    r.classList.toggle('checked',checked);
+    r.closest('tr').classList.toggle('selected-row',checked);
+  });
+  updateSelCount();
+}
+function toggleRow(cb){
+  cb.classList.toggle('checked');
+  cb.closest('tr').classList.toggle('selected-row',cb.classList.contains('checked'));
+  updateSelCount();
+  const all=document.querySelectorAll('.row-cb');
+  document.getElementById('cb-all').classList.toggle('checked',[...all].every(r=>r.classList.contains('checked')));
+}
+function updateSelCount(){
+  const n=document.querySelectorAll('.row-cb.checked').length;
+  document.getElementById('sel-count').textContent=n;
+  document.getElementById('apply-count').textContent=n+' seleccionado'+(n!==1?'s':'');
+}
+
+// ── FECHAS RÁPIDAS ──
+function applyBulkDates(allRows){
+  const desp=document.getElementById('bulk-desp').value;
+  const ent=document.getElementById('bulk-ent').value;
+  if(!desp&&!ent){showToast('⚠ Ingresa al menos una fecha antes de aplicar.',false);return;}
+
+  let targets;
+  if(allRows){
+    targets=document.querySelectorAll('#items-tbody tr');
+  } else {
+    targets=[...document.querySelectorAll('#items-tbody tr')].filter(tr=>tr.classList.contains('selected-row'));
+  }
+  if(targets.length===0){showToast('⚠ Selecciona al menos un ítem.',false);return;}
+
+  targets.forEach(tr=>{
+    if(desp){
+      const df=tr.querySelector('.desp-field');
+      if(df){df.value=desp;df.classList.add('bulk-applied');setTimeout(()=>df.classList.remove('bulk-applied'),1500);}
+    }
+    if(ent){
+      const ef=tr.querySelector('.ent-field');
+      if(ef){ef.value=ent;ef.classList.add('bulk-applied');setTimeout(()=>ef.classList.remove('bulk-applied'),1500);}
+    }
+  });
+
+  const msg = allRows
+    ? `✅ Fechas CEDI aplicadas a todos los ${targets.length} ítems.`
+    : `✅ Fechas CEDI aplicadas a ${targets.length} ítem${targets.length!==1?'s':''} seleccionado${targets.length!==1?'s':''}.`;
+  showToast(msg,false);
+}
+
+// ── CREAR OPs EN SEGUNDO PLANO ──
+let toastTimer=null;
+function crearOPs(){
+  const num=document.getElementById('order-num').textContent;
+  const sel=document.querySelectorAll('.row-cb.checked').length;
+  if(sel===0){showToast('⚠ Selecciona al menos un ítem.',false);return;}
+  const ind=document.getElementById('proc-indicator');
+  ind.style.display='flex';
+  const btn=document.getElementById('btn-crear');
+  btn.textContent='⏳ Procesando…';btn.style.background='#6B6A66';btn.disabled=true;
+  showToast('⏳ Creando OPs y RQTs para '+num+' en segundo plano — puedes continuar.',true);
+  setTimeout(()=>{
+    ind.style.display='none';
+    btn.textContent='✅ OPs creadas';btn.style.background='#065F46';
+    showToast('✅ OPs y RQTs del pedido '+num+' creadas exitosamente.',false);
+    setTimeout(()=>{btn.textContent='⚡ Crear OPs y RQTs';btn.style.background='var(--primary)';btn.disabled=false;hideToast();},3000);
+  },4000);
+}
+
+function showToast(msg,persistent){
+  const t=document.getElementById('toast');
+  document.getElementById('toast-msg').textContent=msg;
+  t.classList.add('show');
+  if(toastTimer)clearTimeout(toastTimer);
+  if(!persistent)toastTimer=setTimeout(hideToast,3500);
+}
+function hideToast(){document.getElementById('toast').classList.remove('show');}
+</script>
+</body>
+</html>
