@@ -63,6 +63,7 @@ El sistema se integra con **SIESA** para:
 
 - [`docs/US-001_Modulo_Pedido.md`](docs/US-001_Modulo_Pedido.md) — Historia de usuario completa con criterios de aceptación, reglas de negocio, sugerencias de stack técnico y flujos.
 - [`docs/flujo_procesos_distrihogar_v2.svg`](docs/flujo_procesos_distrihogar_v2.svg) — Diagrama de flujo interactivo con las 20 actividades del proceso.
+- Pagina web: https://camilobidh.github.io/Programaci-n-de-la-Producci-n/mockup/index.html 
 
 ## 🛠️ Stack sugerido para desarrollo
 
