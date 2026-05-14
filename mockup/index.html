@@ -135,10 +135,13 @@ hr.subtle{border:none;border-top:1px solid var(--border);margin:10px 0}
 .toast-close{cursor:pointer;font-size:16px;opacity:.7;background:none;border:none;color:#fff;padding:0}
 
 /* ── PROG TABLE ── */
-.prog-table-wrap{overflow-x:auto;border-radius:8px;border:1px solid var(--border)}
+.prog-table-wrap{overflow-x:auto;overflow-y:auto;max-height:calc(100vh - 268px);border-radius:8px;border:1px solid var(--border)}
 .prog-table{border-collapse:collapse;font-size:11px;min-width:600px}
 .prog-table th,.prog-table td{border:1px solid var(--border);padding:0;vertical-align:middle;text-align:center}
-.prog-table th{background:#F0EFF8;color:var(--text2);font-weight:600;height:78px}
+/* Encabezados sticky (vertical) */
+.prog-table th{background:#F0EFF8;color:var(--text2);font-weight:600;height:78px;position:sticky;top:0;z-index:4}
+/* Intersección sticky-col + sticky-row: z-index más alto para no quedar tapada */
+.prog-table th.op-sticky,.prog-table th.p-col-cb,.prog-table th.p-col-nop,.prog-table th.p-col-ref,.prog-table th.p-col-desc,.prog-table th.p-col-notas,.prog-table th.p-col-cant,.prog-table th.p-col-met,.prog-table th.p-col-prog{z-index:6;background:#F0EFF8}
 /* bulk date bar in header */
 .op-th-wrap{display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:5px 4px;height:100%;gap:3px}
 .op-bulk-bar{display:flex;flex-direction:column;align-items:center;gap:2px;width:100%;border-top:1px dashed var(--border);padding-top:4px}
