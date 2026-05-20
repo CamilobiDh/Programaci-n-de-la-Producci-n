@@ -141,7 +141,7 @@ hr.subtle{border:none;border-top:1px solid var(--border);margin:10px 0}
 /* Encabezados sticky (vertical) */
 .prog-table th{background:#F0EFF8;color:var(--text2);font-weight:600;height:78px;position:sticky;top:0;z-index:4}
 /* Intersección sticky-col + sticky-row: z-index más alto para no quedar tapada */
-.prog-table th.op-sticky,.prog-table th.p-col-cb,.prog-table th.p-col-nop,.prog-table th.p-col-ref,.prog-table th.p-col-desc,.prog-table th.p-col-notas,.prog-table th.p-col-cant,.prog-table th.p-col-met,.prog-table th.p-col-prog{z-index:6;background:#F0EFF8}
+.prog-table th.op-sticky,.prog-table th.p-col-cb,.prog-table th.p-col-nop,.prog-table th.p-col-ref,.prog-table th.p-col-desc,.prog-table th.p-col-notas,.prog-table th.p-col-cant,.prog-table th.p-col-ftela,.prog-table th.p-col-finsumos,.prog-table th.p-col-met,.prog-table th.p-col-prog{z-index:6;background:#F0EFF8}
 /* bulk date bar in header */
 .op-th-wrap{display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:5px 4px;height:100%;gap:3px}
 .op-bulk-bar{display:flex;flex-direction:column;align-items:center;gap:2px;width:100%;border-top:1px dashed var(--border);padding-top:4px}
@@ -160,15 +160,23 @@ hr.subtle{border:none;border-top:1px solid var(--border);margin:10px 0}
 .p-col-nop  {position:sticky;left:30px;  min-width:110px;width:110px;z-index:3;text-align:left;padding:0 8px}
 .p-col-ref  {position:sticky;left:140px; min-width:72px; width:72px; z-index:3;text-align:left;padding:0 6px}
 .p-col-desc {position:sticky;left:212px; min-width:160px;width:160px;z-index:3;text-align:left;padding:0 6px;overflow:hidden;text-overflow:ellipsis}
-.p-col-notas{position:sticky;left:372px; min-width:110px;width:110px;z-index:3;text-align:left;padding:0 6px;overflow:hidden;text-overflow:ellipsis}
-.p-col-cant {position:sticky;left:482px; min-width:48px; width:48px; z-index:3}
-.p-col-met  {position:sticky;left:530px; min-width:44px; width:44px; z-index:3;border-right:2px solid #C4BFFF !important}
-td.p-col-cb,td.p-col-nop,td.p-col-ref,td.p-col-desc,td.p-col-notas,td.p-col-cant,td.p-col-met{background:#fff}
-tr:hover td.p-col-cb,tr:hover td.p-col-nop,tr:hover td.p-col-ref,tr:hover td.p-col-desc,tr:hover td.p-col-notas,tr:hover td.p-col-cant,tr:hover td.p-col-met{background:#F5F4FF}
+.p-col-cant {position:sticky;left:372px; min-width:48px; width:48px; z-index:3}
+.p-col-notas{position:sticky;left:420px; min-width:110px;width:110px;z-index:3;text-align:left;padding:0 6px;overflow:hidden;text-overflow:ellipsis}
+.p-col-ftela{position:sticky;left:530px; min-width:90px; width:90px; z-index:3;text-align:center;padding:0 4px}
+.p-col-finsumos{position:sticky;left:620px;min-width:90px; width:90px; z-index:3;text-align:center;padding:0 4px}
+.p-col-met  {position:sticky;left:710px; min-width:44px; width:44px; z-index:3;border-right:2px solid #C4BFFF !important}
+td.p-col-cb,td.p-col-nop,td.p-col-ref,td.p-col-desc,td.p-col-cant,td.p-col-notas,td.p-col-met{background:#fff}
+td.p-col-ftela,td.p-col-finsumos{background:#F7F6F2}
+tr:hover td.p-col-cb,tr:hover td.p-col-nop,tr:hover td.p-col-ref,tr:hover td.p-col-desc,tr:hover td.p-col-cant,tr:hover td.p-col-notas,tr:hover td.p-col-met{background:#F5F4FF}
+tr:hover td.p-col-ftela,tr:hover td.p-col-finsumos{background:#EFEEFD}
 tr.prog-selected td{background:#F5F4FF}
-tr.prog-selected td.p-col-cb,tr.prog-selected td.p-col-nop,tr.prog-selected td.p-col-ref,tr.prog-selected td.p-col-desc,tr.prog-selected td.p-col-notas,tr.prog-selected td.p-col-cant,tr.prog-selected td.p-col-met{background:#EDEBFE}
+tr.prog-selected td.p-col-cb,tr.prog-selected td.p-col-nop,tr.prog-selected td.p-col-ref,tr.prog-selected td.p-col-desc,tr.prog-selected td.p-col-cant,tr.prog-selected td.p-col-notas,tr.prog-selected td.p-col-met{background:#EDEBFE}
+tr.prog-selected td.p-col-ftela,tr.prog-selected td.p-col-finsumos{background:#E8E7F8}
 /* shadow on last sticky */
 .prog-table th.p-col-met,.prog-table td.p-col-met{box-shadow:3px 0 6px -2px rgba(75,63,197,.12)}
+/* read-only DB columns */
+.db-ro-val{font-size:10px;color:var(--text2);background:#EEF0F5;border:1px solid #DDE0E8;border-radius:4px;padding:2px 5px;display:inline-block;cursor:default;white-space:nowrap}
+.db-ro-empty{font-size:10px;color:#BDB8B0;font-style:italic}
 /* prog checkboxes */
 .pcb{width:14px;height:14px;border:1.5px solid var(--border);border-radius:3px;display:inline-block;background:#fff;cursor:pointer;vertical-align:middle;flex-shrink:0}
 .pcb.checked{background:var(--primary);border-color:var(--primary)}
@@ -761,43 +769,43 @@ const programasData={
   'DI-1223':{
     cliente:'Hilton Cartagena',fecha:'22-mar-2026',
     ops:[
-      {nop:'OPN-145533',ref:'PT01833',desc:'PROTECTOR 200X200X40 ANTIFLUIDO 100% POL',notas:'',cant:20,met:'1',bloq:false,
+      {nop:'OPN-145533',ref:'PT01833',desc:'PROTECTOR 200X200X40 ANTIFLUIDO 100% POL',notas:'',cant:20,met:'1',bloq:false,fechaTela:'2026-03-05',fechaInsumos:'2026-03-06',
        ops:[{nro:10,nom:'CORTE',fecha:'2026-03-08'},{nro:20,nom:'ESTAMPADO',fecha:'2026-03-09'},{nro:30,nom:'CONFECCION',fecha:'2026-03-15'}]},
-      {nop:'OPN-145534',ref:'PT02024',desc:'PROTECTOR 140X200X40 ANTIFLUIDO 100% POL',notas:'',cant:20,met:'2',bloq:false,
+      {nop:'OPN-145534',ref:'PT02024',desc:'PROTECTOR 140X200X40 ANTIFLUIDO 100% POL',notas:'',cant:20,met:'2',bloq:false,fechaTela:'2026-03-10',fechaInsumos:'',
        ops:[{nro:10,nom:'CORTE',fecha:''},{nro:20,nom:'BORDADO',fecha:''},{nro:30,nom:'CONFECCION EXTERNA',fecha:''}]},
-      {nop:'OPN-145535',ref:'PT06287',desc:'COVER DUVET 230X240 300H 40/60% POL',notas:'',cant:20,met:'1',bloq:false,
+      {nop:'OPN-145535',ref:'PT06287',desc:'COVER DUVET 230X240 300H 40/60% POL',notas:'',cant:20,met:'1',bloq:false,fechaTela:'2026-03-12',fechaInsumos:'2026-03-12',
        ops:[{nro:10,nom:'CORTE',fecha:''},{nro:20,nom:'CONFECCION',fecha:''}]},
-      {nop:'OPN-145536',ref:'PT07110',desc:'COVER DB 210X240 300H 40/60% POL',notas:'',cant:20,met:'1',bloq:false,
+      {nop:'OPN-145536',ref:'PT07110',desc:'COVER DB 210X240 300H 40/60% POL',notas:'',cant:20,met:'1',bloq:false,fechaTela:'',fechaInsumos:'2026-03-14',
        ops:[{nro:10,nom:'CORTE',fecha:''},{nro:20,nom:'CONFECCION',fecha:''}]},
-      {nop:'OPS-22794',ref:'PT08032',desc:'ALMOHADA SUAVE 50X70 230H 100% AL',notas:'Prioridad alta',cant:150,met:'1',bloq:false,
+      {nop:'OPS-22794',ref:'PT08032',desc:'ALMOHADA SUAVE 50X70 230H 100% AL',notas:'Prioridad alta',cant:150,met:'1',bloq:false,fechaTela:'2026-03-07',fechaInsumos:'2026-03-07',
        ops:[{nro:10,nom:'CORTE',fecha:''},{nro:20,nom:'CONFECCION',fecha:''}]},
-      {nop:'OPS-22795',ref:'PT08033',desc:'ALMOHADA SUAVE 50X90 230H 100% AL',notas:'',cant:40,met:'1',bloq:false,
+      {nop:'OPS-22795',ref:'PT08033',desc:'ALMOHADA SUAVE 50X90 230H 100% AL',notas:'',cant:40,met:'1',bloq:false,fechaTela:'2026-03-07',fechaInsumos:'',
        ops:[{nro:10,nom:'CORTE',fecha:''},{nro:20,nom:'CONFECCION',fecha:''}]},
-      {nop:'OPS-21682',ref:'PT09513',desc:'COBIJA PLUMON 100%ALG 285X240',notas:'Tela pendiente — sin MP',cant:60,met:'1',bloq:true,
+      {nop:'OPS-21682',ref:'PT09513',desc:'COBIJA PLUMON 100%ALG 285X240',notas:'Tela pendiente — sin MP',cant:60,met:'1',bloq:true,fechaTela:'',fechaInsumos:'',
        ops:[{nro:10,nom:'CORTE',fecha:''},{nro:20,nom:'CONFECCION',fecha:''}]},
-      {nop:'OPN-150076',ref:'TE01126',desc:'TELA ACOL UFAZ 230H DOWN PROOF',notas:'',cant:154,met:'1',bloq:false,
+      {nop:'OPN-150076',ref:'TE01126',desc:'TELA ACOL UFAZ 230H DOWN PROOF',notas:'',cant:154,met:'1',bloq:false,fechaTela:'2026-03-15',fechaInsumos:'',
        ops:[{nro:10,nom:'ACOLCHADO',fecha:''}]},
-      {nop:'OPN-150550',ref:'PT05865',desc:'CORTINA DE BAÑO 180X190 100% POL',notas:'',cant:30,met:'1',bloq:false,
+      {nop:'OPN-150550',ref:'PT05865',desc:'CORTINA DE BAÑO 180X190 100% POL',notas:'',cant:30,met:'1',bloq:false,fechaTela:'2026-03-18',fechaInsumos:'2026-03-17',
        ops:[{nro:10,nom:'CORTE',fecha:''},{nro:20,nom:'CONFECCION',fecha:''},{nro:30,nom:'SERVICIO OJALETE',fecha:''}]},
-      {nop:'OPS-151073',ref:'PT23929',desc:'COVER DUVET DB 300H MEZCLA BENEVO',notas:'',cant:15,met:'1',bloq:false,
+      {nop:'OPS-151073',ref:'PT23929',desc:'COVER DUVET DB 300H MEZCLA BENEVO',notas:'',cant:15,met:'1',bloq:false,fechaTela:'',fechaInsumos:'2026-03-20',
        ops:[{nro:10,nom:'CORTE',fecha:''},{nro:20,nom:'CONFECCION',fecha:''},{nro:30,nom:'SERVICIO OJAL',fecha:''}]},
-      {nop:'OPS-150291',ref:'PT23388',desc:'JUEGO CAMA EXTRA 200H 100% AL CROCHETA',notas:'Crocheta externa',cant:15,met:'1',bloq:false,
+      {nop:'OPS-150291',ref:'PT23388',desc:'JUEGO CAMA EXTRA 200H 100% AL CROCHETA',notas:'Crocheta externa',cant:15,met:'1',bloq:false,fechaTela:'2026-03-20',fechaInsumos:'2026-03-20',
        ops:[{nro:10,nom:'CORTE',fecha:''},{nro:20,nom:'CONFECCION',fecha:''},{nro:30,nom:'SERVICIO CROCHETA',fecha:''}]}
     ]
   },
   'DI-1224':{
     cliente:'Éxito Cali',fecha:'05-abr-2026',
     ops:[
-      {nop:'OPN-156001',ref:'PT10012',desc:'SABANA DOBLE 200H 100% ALG',notas:'',cant:50,met:'1',bloq:false,
+      {nop:'OPN-156001',ref:'PT10012',desc:'SABANA DOBLE 200H 100% ALG',notas:'',cant:50,met:'1',bloq:false,fechaTela:'2026-04-01',fechaInsumos:'2026-04-02',
        ops:[{nro:10,nom:'CORTE',fecha:''},{nro:20,nom:'CONFECCION',fecha:''}]},
-      {nop:'OPN-156002',ref:'PT10013',desc:'SABANA QUEEN 200H 100% ALG',notas:'Confirmar diseño',cant:30,met:'1',bloq:false,
+      {nop:'OPN-156002',ref:'PT10013',desc:'SABANA QUEEN 200H 100% ALG',notas:'Confirmar diseño',cant:30,met:'1',bloq:false,fechaTela:'',fechaInsumos:'2026-04-03',
        ops:[{nro:10,nom:'CORTE',fecha:''},{nro:20,nom:'ESTAMPADO',fecha:''},{nro:30,nom:'CONFECCION',fecha:''}]}
     ]
   },
   'DI-1225':{
     cliente:'Falabella Bogotá',fecha:'10-abr-2026',
     ops:[
-      {nop:'OPN-157001',ref:'PT11020',desc:'DUVET BORDADO KING 300H',notas:'',cant:25,met:'2',bloq:false,
+      {nop:'OPN-157001',ref:'PT11020',desc:'DUVET BORDADO KING 300H',notas:'',cant:25,met:'2',bloq:false,fechaTela:'2026-04-08',fechaInsumos:'2026-04-08',
        ops:[{nro:10,nom:'CORTE',fecha:''},{nro:20,nom:'BORDADO',fecha:''},{nro:30,nom:'CONFECCION EXTERNA',fecha:''}]}
     ]
   }
@@ -977,21 +985,25 @@ function renderByRef(ref){
   progTh.style.cssText='left:30px';
   progTh.innerHTML='<div style="font-size:10px;padding:4px 2px;white-space:nowrap">Programa</div>';
   tr.appendChild(progTh);
-  // NOP shifts right because of Programa col
+  // NOP shifts right because of Programa col (80px)
   const stickyHdrs=[
-    {lbl:'N° OP',left:110},
-    {lbl:'Cant.',left:220},
-    {lbl:'Mét.',left:268,last:true}
+    {lbl:'N° OP',w:110},
+    {lbl:'Cant.',w:48},
+    {lbl:'Notas',w:110},
+    {lbl:'📥 Llega Tela',w:90,ro:true},
+    {lbl:'📥 Llega Ins.',w:90,ro:true},
+    {lbl:'Mét.',w:44,last:true}
   ];
-  const stickyWidths=[110,48,44];
-  let leftOff=110;
-  stickyHdrs.forEach((h,i)=>{
+  let leftOff=110; // starts after Programa (80px) + CB (30px) = 110 already from CB offset
+  stickyHdrs.forEach((h)=>{
     const th=document.createElement('th');
-    th.style.cssText='position:sticky;left:'+(30+leftOff)+'px;min-width:'+stickyWidths[i]+'px;width:'+stickyWidths[i]+'px;z-index:3;background:#F0EFF8;'+
-      (h.last?'border-right:2px solid #C4BFFF;box-shadow:3px 0 6px -2px rgba(75,63,197,.12)':'');
-    th.innerHTML='<div style="font-size:10px;padding:4px 4px;white-space:nowrap">'+h.lbl+'</div>';
+    const roTag=h.ro?'<br><span style="font-size:8px;color:#8A8580;font-weight:400;font-style:italic">BD · solo lectura</span>':'';
+    th.style.cssText='position:sticky;left:'+(30+leftOff)+'px;min-width:'+h.w+'px;width:'+h.w+'px;z-index:6;background:#F0EFF8;'+
+      (h.last?'border-right:2px solid #C4BFFF;box-shadow:3px 0 6px -2px rgba(75,63,197,.12)':'')+
+      (h.ro?'background:#ECEDF3;':'');
+    th.innerHTML='<div style="font-size:10px;padding:4px 4px;white-space:nowrap">'+h.lbl+roTag+'</div>';
     tr.appendChild(th);
-    leftOff+=stickyWidths[i];
+    leftOff+=h.w;
   });
   // Op cols
   allOps.forEach(opNom=>{
@@ -1030,15 +1042,30 @@ function renderByRef(ref){
     tr2.appendChild(progTd);
     // NOP
     let leftPos=110;
-    const nopTd=document.createElement('td');nopTd.style.cssText='position:sticky;left:'+(30+leftPos)+'px;background:#fff;z-index:2;padding:0 6px';
+    const nopTd=document.createElement('td');nopTd.style.cssText='position:sticky;left:'+(30+leftPos)+'px;background:#fff;z-index:3;padding:0 6px';
     nopTd.innerHTML='<b style="color:var(--primary);font-size:10px">'+(row.bloq?'🔒 ':'')+row.nop+'</b>';
     tr2.appendChild(nopTd);leftPos+=110;
     // Cant
-    const cantTd=document.createElement('td');cantTd.style.cssText='position:sticky;left:'+(30+leftPos)+'px;background:#fff;z-index:2;text-align:center';
+    const cantTd=document.createElement('td');cantTd.style.cssText='position:sticky;left:'+(30+leftPos)+'px;background:#fff;z-index:3;text-align:center';
     cantTd.innerHTML='<span style="font-size:10px">'+row.cant+'</span>';
     tr2.appendChild(cantTd);leftPos+=48;
+    // Notas
+    const notaVal2=row.notas||'';
+    const notasTd2=document.createElement('td');notasTd2.style.cssText='position:sticky;left:'+(30+leftPos)+'px;background:#fff;z-index:3;padding:0 6px';
+    notasTd2.innerHTML=notaVal2?'<span style="font-size:10px;color:var(--text2)">'+notaVal2+'</span>':'<span class="db-ro-empty">—</span>';
+    tr2.appendChild(notasTd2);leftPos+=110;
+    // Fecha Llegada Tela (BD, solo lectura)
+    const ftelaTd2=document.createElement('td');ftelaTd2.style.cssText='position:sticky;left:'+(30+leftPos)+'px;background:#F7F6F2;z-index:3;text-align:center;padding:0 4px';
+    ftelaTd2.title='Fecha llegada de tela (viene de base de datos)';
+    ftelaTd2.innerHTML=row.fechaTela?'<span class="db-ro-val">'+row.fechaTela+'</span>':'<span class="db-ro-empty">—</span>';
+    tr2.appendChild(ftelaTd2);leftPos+=90;
+    // Fecha Llegada Insumos (BD, solo lectura)
+    const finsumosTd2=document.createElement('td');finsumosTd2.style.cssText='position:sticky;left:'+(30+leftPos)+'px;background:#F7F6F2;z-index:3;text-align:center;padding:0 4px';
+    finsumosTd2.title='Fecha llegada de insumos (viene de base de datos)';
+    finsumosTd2.innerHTML=row.fechaInsumos?'<span class="db-ro-val">'+row.fechaInsumos+'</span>':'<span class="db-ro-empty">—</span>';
+    tr2.appendChild(finsumosTd2);leftPos+=90;
     // Met
-    const metTd=document.createElement('td');metTd.style.cssText='position:sticky;left:'+(30+leftPos)+'px;background:#fff;z-index:2;border-right:2px solid #C4BFFF;box-shadow:3px 0 6px -2px rgba(75,63,197,.12);text-align:center';
+    const metTd=document.createElement('td');metTd.style.cssText='position:sticky;left:'+(30+leftPos)+'px;background:#fff;z-index:3;border-right:2px solid #C4BFFF;box-shadow:3px 0 6px -2px rgba(75,63,197,.12);text-align:center';
     metTd.innerHTML='<span style="font-size:10px;background:var(--primary);color:#fff;padding:1px 5px;border-radius:3px;font-weight:700">'+row.met+'</span>';
     tr2.appendChild(metTd);
     // Op cells
@@ -1138,14 +1165,17 @@ function renderPrograma(id){
     {lbl:'N° OP',cls:'p-col-nop op-sticky',style:'text-align:left;padding:0 8px'},
     {lbl:'Referencia',cls:'p-col-ref op-sticky',style:'text-align:left;padding:0 6px'},
     {lbl:'Descripción',cls:'p-col-desc op-sticky',style:'text-align:left;padding:0 6px'},
-    {lbl:'Notas',cls:'p-col-notas op-sticky',style:'text-align:left;padding:0 6px'},
     {lbl:'Cant.',cls:'p-col-cant op-sticky',style:''},
+    {lbl:'Notas',cls:'p-col-notas op-sticky',style:'text-align:left;padding:0 6px'},
+    {lbl:'📥 Llega Tela',cls:'p-col-ftela op-sticky',style:'',ro:true},
+    {lbl:'📥 Llega Ins.',cls:'p-col-finsumos op-sticky',style:'',ro:true},
     {lbl:'Mét.',cls:'p-col-met op-sticky',style:''}
   ];
   hdrs.forEach(h=>{
     const th=document.createElement('th');
     th.className=h.cls;th.style.cssText=h.style;
-    th.innerHTML='<div style="font-size:10px;white-space:nowrap;padding:4px 2px">'+h.lbl+'</div>';
+    const roTag=h.ro?'<br><span style="font-size:8px;color:#8A8580;font-weight:400;font-style:italic">BD · solo lectura</span>':'';
+    th.innerHTML='<div style="font-size:10px;white-space:nowrap;padding:4px 2px">'+h.lbl+roTag+'</div>';
     tr.appendChild(th);
   });
   // Op cols
@@ -1199,6 +1229,9 @@ function renderPrograma(id){
     descTd.title=row.desc;
     descTd.innerHTML='<span style="font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block;max-width:156px" title="'+row.desc+'">'+row.desc+'</span>';
     tr2.appendChild(descTd);
+    const cantTd=document.createElement('td');cantTd.className='p-col-cant op-sticky';
+    cantTd.innerHTML='<span style="font-size:10px">'+row.cant+'</span>';
+    tr2.appendChild(cantTd);
     // Notas (editable inline)
     const notasTd=document.createElement('td');notasTd.className='p-col-notas op-sticky';
     const notaVal=row.notas||'';
@@ -1208,9 +1241,20 @@ function renderPrograma(id){
       'onfocus="this.style.zIndex=\'10\'" onblur="this.style.zIndex=\'\'" '+
       'style="width:106px"/>';
     tr2.appendChild(notasTd);
-    const cantTd=document.createElement('td');cantTd.className='p-col-cant op-sticky';
-    cantTd.innerHTML='<span style="font-size:10px">'+row.cant+'</span>';
-    tr2.appendChild(cantTd);
+    // Fecha Llegada Tela (BD, solo lectura)
+    const ftelaTd=document.createElement('td');ftelaTd.className='p-col-ftela op-sticky';
+    ftelaTd.title='Fecha llegada de tela (viene de base de datos)';
+    ftelaTd.innerHTML=row.fechaTela
+      ?'<span class="db-ro-val">'+row.fechaTela+'</span>'
+      :'<span class="db-ro-empty">—</span>';
+    tr2.appendChild(ftelaTd);
+    // Fecha Llegada Insumos (BD, solo lectura)
+    const finsumosTd=document.createElement('td');finsumosTd.className='p-col-finsumos op-sticky';
+    finsumosTd.title='Fecha llegada de insumos (viene de base de datos)';
+    finsumosTd.innerHTML=row.fechaInsumos
+      ?'<span class="db-ro-val">'+row.fechaInsumos+'</span>'
+      :'<span class="db-ro-empty">—</span>';
+    tr2.appendChild(finsumosTd);
     const metTd=document.createElement('td');metTd.className='p-col-met op-sticky';
     metTd.innerHTML='<span style="font-size:10px;background:var(--primary);color:#fff;padding:1px 5px;border-radius:3px;font-weight:700">'+row.met+'</span>';
     tr2.appendChild(metTd);
