@@ -255,8 +255,8 @@ tr.prog-selected td.p-col-prog{background:#EDEBFE}
   <div class="nav-title">🏭 Prog. Producción</div>
   <button class="nav-btn active" onclick="show('pedido',event)">① Pedido</button>
   <button class="nav-btn" onclick="show('programador',event)">② Programador</button>
-  <button class="nav-btn" onclick="show('tablero',event)">③ Tablero OP</button>
-  <button class="nav-btn" onclick="show('plantas',event)">④ Plantas</button>
+  <button class="nav-btn" onclick="show('plantas',event)">③ Plantas</button>
+  <button class="nav-btn" onclick="show('tablero',event)">④ Tablero de Control</button>
   <button class="nav-btn" onclick="show('capacidad',event)">⑤ Capacidad</button>
   <button class="nav-btn" onclick="show('dashboard',event)">⑥ Dashboard</button>
 </nav>
@@ -497,49 +497,119 @@ tr.prog-selected td.p-col-prog{background:#EDEBFE}
 </div><!-- /pedido-layout -->
 </div><!-- /screen-programador -->
 
-<!-- ══ MÓDULO 3 — TABLERO OP ══ -->
+<!-- ══ MÓDULO 4 — TABLERO DE CONTROL ══ -->
 <div class="screen" id="screen-tablero">
-  <div class="screen-scroll">
-  <div class="page-header"><h2>③ Tablero OP</h2><p>Estado consolidado por proceso · taller satélite · alertas</p></div>
-  <div class="grid4" style="margin-bottom:12px">
-    <div class="kpi-box"><div class="kpi-val" style="color:var(--green)">4</div><div class="kpi-lbl">Cumplidas</div></div>
-    <div class="kpi-box"><div class="kpi-val" style="color:#1D4ED8">5</div><div class="kpi-lbl">En Proceso</div></div>
-    <div class="kpi-box"><div class="kpi-val" style="color:var(--amber)">2</div><div class="kpi-lbl">Pendientes</div></div>
-    <div class="kpi-box"><div class="kpi-val" style="color:#991B1B">1</div><div class="kpi-lbl">En Alerta</div></div>
-  </div>
-  <div class="card" style="overflow-x:auto">
-    <div class="card-title"><span class="badge badge-p">Tablero</span> DI-1223 · Hilton Cartagena</div>
-    <table style="width:100%;border-collapse:collapse;font-size:11px;min-width:820px">
-      <thead><tr style="background:var(--bg)"><th style="padding:5px 8px;border-bottom:1px solid var(--border);font-weight:600;color:var(--text2)">N° OP</th><th style="padding:5px 8px;border-bottom:1px solid var(--border);font-weight:600;color:var(--text2)">Referencia</th><th style="padding:5px 8px;border-bottom:1px solid var(--border);font-weight:600;color:var(--text2)">Cant.</th><th style="padding:5px 8px;border-bottom:1px solid var(--border);font-weight:600;color:var(--text2)">Insumos</th><th style="padding:5px 8px;border-bottom:1px solid var(--border);font-weight:600;color:var(--text2)">Corte</th><th style="padding:5px 8px;border-bottom:1px solid var(--border);font-weight:600;color:var(--text2)">Estampado</th><th style="padding:5px 8px;border-bottom:1px solid var(--border);font-weight:600;color:var(--text2)">Bordado</th><th style="padding:5px 8px;border-bottom:1px solid var(--border);font-weight:600;color:var(--text2)">Confección</th><th style="padding:5px 8px;border-bottom:1px solid var(--border);font-weight:600;color:var(--text2)">Estado</th></tr></thead>
-      <tbody>
-        <tr><td style="padding:5px 8px;border-bottom:1px solid var(--border)">OPN-145533</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)">PT01833</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)">20</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)"><span class="tag tag-ok">OK</span></td><td style="padding:5px 8px;border-bottom:1px solid var(--border)"><span class="tag tag-ok">OK</span></td><td style="padding:5px 8px;border-bottom:1px solid var(--border)"><span class="tag tag-ext">Kondor</span></td><td style="padding:5px 8px;border-bottom:1px solid var(--border)">—</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)"><span class="tag tag-ok">Aprobada</span></td><td style="padding:5px 8px;border-bottom:1px solid var(--border)"><span class="tag tag-pend">Proceso</span></td></tr>
-        <tr style="background:#FFF7ED"><td style="padding:5px 8px;border-bottom:1px solid var(--border)">OPS-21682</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)">PT09513</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)">60</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)"><span class="tag tag-pend">Pend</span></td><td style="padding:5px 8px;border-bottom:1px solid var(--border)">🔒</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)">—</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)">—</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)">🔒</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)"><span class="tag tag-alert">Bloqueada</span></td></tr>
-      </tbody>
-    </table>
-  </div>
-  <div class="grid2">
-    <div class="card"><div class="card-title"><span class="badge badge-o">🔔 Alertas</span></div>
-      <div class="alert alert-err"><span class="alert-icon">🚫</span><div>OPS-21682: sin tela. Esperar ingreso COBIJA PLUMON 285X240.</div></div>
-      <div class="alert alert-ok"><span class="alert-icon">✅</span><div>TE01126 en bodega — OPN-150076 lista para Acolchado.</div></div>
+  <div class="pedido-layout">
+
+    <!-- Sidebar pedidos -->
+    <div class="pedido-sidebar">
+      <div class="section-hd" style="margin-bottom:10px">Pedidos</div>
+      <div class="order-item active-order" onclick="selTablero(this,'DI-1223')">
+        <div class="oi-num">DI-1223</div><div class="oi-client">Hilton Cartagena</div>
+        <div class="oi-date">📅 22-mar-2026</div><span class="oi-badge oi-prog">En prog.</span>
+      </div>
+      <div class="order-item" onclick="selTablero(this,'DI-1224')">
+        <div class="oi-num">DI-1224</div><div class="oi-client">Éxito Cali</div>
+        <div class="oi-date">📅 05-abr-2026</div><span class="oi-badge oi-pend">Pendiente</span>
+      </div>
+      <div class="order-item" onclick="selTablero(this,'DI-1225')">
+        <div class="oi-num">DI-1225</div><div class="oi-client">Falabella Bogotá</div>
+        <div class="oi-date">📅 10-abr-2026</div><span class="oi-badge oi-pend">Pendiente</span>
+      </div>
+      <div class="order-item" onclick="selTablero(this,'DI-1226')">
+        <div class="oi-num">DI-1226</div><div class="oi-client">Hotel Intercontinental</div>
+        <div class="oi-date">📅 15-abr-2026</div><span class="oi-badge oi-pend">Pendiente</span>
+      </div>
     </div>
-    <div class="card"><div class="card-title"><span class="badge badge-t">Talleres satélite</span></div>
-      <table style="width:100%;border-collapse:collapse;font-size:11px">
-        <thead><tr style="background:var(--bg)"><th style="padding:5px 8px;border-bottom:1px solid var(--border);font-weight:600;color:var(--text2)">Taller</th><th style="padding:5px 8px;border-bottom:1px solid var(--border);font-weight:600;color:var(--text2)">Proceso</th><th style="padding:5px 8px;border-bottom:1px solid var(--border);font-weight:600;color:var(--text2)">OPs</th></tr></thead>
-        <tbody>
-          <tr><td style="padding:5px 8px;border-bottom:1px solid var(--border)">Kondor</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)">Estampado</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)">OPN-145533</td></tr>
-          <tr><td style="padding:5px 8px;border-bottom:1px solid var(--border)">Sara</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)">Bordado</td><td style="padding:5px 8px;border-bottom:1px solid var(--border)">OPN-145534</td></tr>
-          <tr><td style="padding:5px 8px">Rosalba</td><td style="padding:5px 8px">Corte ext.</td><td style="padding:5px 8px">OPN-145534</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-  </div>
+
+    <!-- Main -->
+    <div class="pedido-main">
+
+      <!-- Header -->
+      <div class="card" style="padding:10px 14px;margin-bottom:8px">
+        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+          <span class="badge badge-p" style="font-size:11px" id="tb-badge">DI-1223</span>
+          <span style="font-weight:700;font-size:13px" id="tb-cliente">Hilton Cartagena</span>
+          <span style="font-size:11px;color:var(--text2)">📅 Entrega: <b id="tb-fecha" style="color:var(--orange)">22-mar-2026</b></span>
+          <div style="margin-left:auto;display:flex;gap:6px">
+            <button onclick="showToast('✅ Tablero guardado.',false)" style="background:var(--primary);color:#fff;border:none;border-radius:7px;padding:5px 12px;font-size:11px;font-weight:700;cursor:pointer">💾 Guardar</button>
+            <button style="background:var(--olive-light);color:var(--olive);border:1px solid var(--olive);border-radius:7px;padding:5px 12px;font-size:11px;font-weight:600;cursor:pointer">📤 Exportar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Leyenda de estados -->
+      <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:8px;align-items:center">
+        <span style="font-size:10px;font-weight:600;color:var(--text2);margin-right:3px">Procesos:</span>
+        <span style="background:#DBEAFE;color:#1E40AF;padding:2px 8px;border-radius:10px;font-weight:600;font-size:9px">▶ En Ejecución</span>
+        <span style="background:#D1FAE5;color:#065F46;padding:2px 8px;border-radius:10px;font-weight:600;font-size:9px">✅ Completado</span>
+        <span style="margin-left:8px;font-size:10px;font-weight:600;color:var(--text2)">Estado OP:</span>
+        <span style="background:#FEF3C7;color:#92400E;padding:2px 8px;border-radius:10px;font-weight:600;font-size:9px">⚙ En Elaboración</span>
+        <span style="background:#DBEAFE;color:#1E40AF;padding:2px 8px;border-radius:10px;font-weight:600;font-size:9px">🔵 Comprometido</span>
+        <span style="background:#EDE9FE;color:#5B21B6;padding:2px 8px;border-radius:10px;font-weight:600;font-size:9px">✓ Aprobado</span>
+        <span style="background:#D1FAE5;color:#065F46;padding:2px 8px;border-radius:10px;font-weight:600;font-size:9px">✅ Cumplido</span>
+        <span style="background:#FEE2E2;color:#991B1B;padding:2px 8px;border-radius:10px;font-weight:600;font-size:9px">✕ Anulado</span>
+        <span style="margin-left:6px;font-size:9px;font-weight:600;color:var(--amber);background:var(--amber-light);padding:2px 8px;border-radius:10px">🏭 Naranja = proceso externo</span>
+      </div>
+
+      <!-- Tabla Tablero de Control -->
+      <div class="card" style="padding:10px">
+        <div class="card-title" style="margin-bottom:8px">
+          <span class="badge badge-p">④ Tablero de Control</span>
+          <span id="tb-op-count" style="font-size:11px;color:var(--text2)"></span>
+          <span style="margin-left:auto;font-size:10px;color:var(--text2)">Columnas fijas ← | Procesos desplazables →</span>
+        </div>
+        <div style="overflow-x:auto;overflow-y:auto;max-height:calc(100vh - 340px);border-radius:8px;border:1px solid var(--border)">
+          <table style="border-collapse:collapse;font-size:11px;min-width:1400px">
+            <thead id="tb-thead">
+              <tr style="background:#F0EFF8;position:sticky;top:0;z-index:5">
+                <!-- Cols fijas -->
+                <th style="padding:6px 8px;border:1px solid var(--border);font-weight:600;color:var(--text2);white-space:nowrap;min-width:116px;text-align:left;position:sticky;left:0;z-index:6;background:#F0EFF8">N° OP</th>
+                <th style="padding:6px 8px;border:1px solid var(--border);font-weight:600;color:var(--text2);white-space:nowrap;min-width:78px;text-align:left">Referencia</th>
+                <th style="padding:6px 8px;border:1px solid var(--border);font-weight:600;color:var(--text2);white-space:nowrap;min-width:68px;text-align:left">Extensión</th>
+                <th style="padding:6px 8px;border:1px solid var(--border);font-weight:600;color:var(--text2);white-space:nowrap;min-width:160px;text-align:left;border-right:2px solid #C4BFFF">Desc. Referencia</th>
+                <th style="padding:6px 8px;border:1px solid var(--border);font-weight:600;color:var(--text2);white-space:nowrap;min-width:52px;text-align:center">Cant.</th>
+                <th style="padding:6px 8px;border:1px solid var(--border);font-weight:600;color:var(--text2);white-space:nowrap;min-width:44px;text-align:center">Mét.</th>
+                <th style="padding:6px 8px;border:1px solid var(--border);font-weight:600;color:var(--text2);white-space:nowrap;min-width:100px;text-align:left;border-right:2px solid #C4BFFF">Notas</th>
+                <!-- Procesos internos y externos -->
+                <th style="padding:6px 8px;border:1px solid var(--border);font-weight:600;color:var(--text2);white-space:nowrap;min-width:92px;text-align:center">Insumos</th>
+                <th style="padding:6px 8px;border:1px solid var(--border);font-weight:600;color:var(--text2);white-space:nowrap;min-width:92px;text-align:center">Corte</th>
+                <th style="padding:6px 8px;border:1px solid var(--border);font-weight:600;color:var(--amber);white-space:nowrap;min-width:100px;text-align:center;background:rgba(133,73,11,.06)">Estampado<br><span style="font-size:8px;font-weight:400;color:var(--amber)">🏭 Tercero</span></th>
+                <th style="padding:6px 8px;border:1px solid var(--border);font-weight:600;color:var(--amber);white-space:nowrap;min-width:100px;text-align:center;background:rgba(133,73,11,.06)">Bordado<br><span style="font-size:8px;font-weight:400;color:var(--amber)">🏭 Tercero</span></th>
+                <th style="padding:6px 8px;border:1px solid var(--border);font-weight:600;color:var(--text2);white-space:nowrap;min-width:96px;text-align:center">Confección</th>
+                <th style="padding:6px 8px;border:1px solid var(--border);font-weight:600;color:var(--amber);white-space:nowrap;min-width:100px;text-align:center;background:rgba(133,73,11,.06)">Conf. Externa<br><span style="font-size:8px;font-weight:400;color:var(--amber)">🏭 Tercero</span></th>
+                <th style="padding:6px 8px;border:1px solid var(--border);font-weight:600;color:var(--text2);white-space:nowrap;min-width:88px;text-align:center">Relleno</th>
+                <th style="padding:6px 8px;border:1px solid var(--border);font-weight:600;color:var(--text2);white-space:nowrap;min-width:92px;text-align:center">Comforter</th>
+                <th style="padding:6px 8px;border:1px solid var(--border);font-weight:600;color:var(--text2);white-space:nowrap;min-width:92px;text-align:center;border-right:2px solid #C4BFFF">Acolchado</th>
+                <!-- Estado OP -->
+                <th style="padding:6px 8px;border:1px solid var(--border);font-weight:700;color:var(--primary);white-space:nowrap;min-width:108px;text-align:center;background:var(--primary-light)">Estado OP</th>
+              </tr>
+            </thead>
+            <tbody id="tb-tbody">
+              <tr><td colspan="17" style="padding:20px;text-align:center;color:var(--text2);font-size:11px">Cargando…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Alertas -->
+      <div class="card" style="margin-top:8px">
+        <div class="card-title"><span class="badge badge-o">🔔 Alertas activas</span></div>
+        <div id="tb-alerts">
+          <div class="alert alert-err"><span class="alert-icon">🚫</span><div>OPS-21682 Anulada: sin tela. MP pendiente para COBIJA PLUMON 285X240.</div></div>
+          <div class="alert alert-warn"><span class="alert-icon">⚠</span><div>OPN-145534: Bordado con Sara comprometido al 24-mar. Riesgo de retraso en confección.</div></div>
+          <div class="alert alert-ok"><span class="alert-icon">✅</span><div>TE01126 en bodega — OPN-150076 lista para Acolchado.</div></div>
+        </div>
+      </div>
+
+    </div><!-- /pedido-main -->
+  </div><!-- /pedido-layout -->
 </div>
 
 <!-- ══ MÓDULO 4 — PLANTAS ══ -->
 <div class="screen" id="screen-plantas">
   <div class="screen-scroll">
-  <div class="page-header"><h2>④ Módulo Plantas</h2><p>Gantt · días hábiles · capacidad libre vs ocupada</p></div>
+  <div class="page-header"><h2>③ Módulo Plantas</h2><p>Gantt · días hábiles · capacidad libre vs ocupada</p></div>
   <div class="toggle-row">
     <span style="font-size:11px;color:var(--text2);font-weight:600">Planta:</span>
     <button class="t-btn sel" id="ptbtn-corte" onclick="selectPlanta('corte')">Corte</button>
@@ -701,8 +771,8 @@ function selectPlanta(p){
 
 // ══ NAVEGACIÓN desde operación → planta ══
 function irAPlanta(planta){
-  // Navegar a módulo 4 y seleccionar la planta
-  show('plantas',{target:document.querySelectorAll('.nav-btn')[3]});
+  // Navegar a módulo 3 (Plantas) — índice 2 tras el reordenamiento
+  show('plantas',{target:document.querySelectorAll('.nav-btn')[2]});
   selectPlanta(planta);
   showToast('🏭 Navegando a planta: '+planta.charAt(0).toUpperCase()+planta.slice(1),false);
 }
@@ -1396,6 +1466,231 @@ function guardarPrograma(){
   showToast('✅ Programa '+curPrograma+' guardado exitosamente.',false);
 }
 
+// ══════════════════════════════════════════════════
+// TABLERO DE CONTROL — datos, estados y renderizado
+// ══════════════════════════════════════════════════
+
+const TABLERO_PROCESOS=[
+  {key:'insumos',      label:'Insumos',      ext:false},
+  {key:'corte',        label:'Corte',        ext:false},
+  {key:'estampado',    label:'Estampado',    ext:true},
+  {key:'bordado',      label:'Bordado',      ext:true},
+  {key:'confeccion',   label:'Confección',   ext:false},
+  {key:'confeccionExt',label:'Conf. Externa',ext:true},
+  {key:'relleno',      label:'Relleno',      ext:false},
+  {key:'comforter',    label:'Comforter',    ext:false},
+  {key:'acolchado',    label:'Acolchado',    ext:false},
+];
+
+// Estados de las columnas de PROCESOS (solo 2 opciones + vacío)
+const TB_PROC_ESTADOS=['—','En Ejecución','Completado'];
+const TB_PROC_STYLE={
+  '—':           {bg:'#F3F4F6',color:'#9CA3AF'},
+  'En Ejecución':{bg:'#DBEAFE',color:'#1E40AF'},
+  'Completado':  {bg:'#D1FAE5',color:'#065F46'},
+};
+
+// Estados del ESTADO OP (columna final, gama completa)
+const TB_OP_ESTADOS=['—','En Elaboración','Comprometido','Aprobado','Cumplido','Anulado'];
+const TB_OP_STYLE={
+  '—':             {bg:'#F3F4F6',color:'#9CA3AF'},
+  'En Elaboración':{bg:'#FEF3C7',color:'#92400E'},
+  'Comprometido':  {bg:'#DBEAFE',color:'#1E40AF'},
+  'Aprobado':      {bg:'#EDE9FE',color:'#5B21B6'},
+  'Cumplido':      {bg:'#D1FAE5',color:'#065F46'},
+  'Anulado':       {bg:'#FEE2E2',color:'#991B1B'},
+};
+
+// Mapa de extensiones por referencia (simulando BD)
+const EXT_MAP={
+  'PT01833':'E10094','PT02024':'E10094','PT06287':'E10094','PT07110':'E10094',
+  'PT08032':'E10094','PT08033':'E10094','PT09513':'E12853','PT23388':'E13371',
+  'PT23929':'E13371','PT05865':'E12100','TE01126':'E00001',
+  'PT10012':'E11050','PT10013':'E11050','PT11020':'E13600',
+};
+
+// Estados iniciales del tablero de control
+// Procesos usan: '—' | 'En Ejecución' | 'Completado'
+// EstadoOp usa:  '—' | 'En Elaboración' | 'Comprometido' | 'Aprobado' | 'Cumplido' | 'Anulado'
+const tableroEstados={
+  'DI-1223':{
+    'OPN-145533':{insumos:{e:'Completado',p:null},corte:{e:'Completado',p:null},estampado:{e:'En Ejecución',p:'Kondor'},bordado:null,confeccion:{e:'En Ejecución',p:null},confeccionExt:null,relleno:null,comforter:null,acolchado:null,estadoOp:'En Elaboración'},
+    'OPN-145534':{insumos:{e:'En Ejecución',p:null},corte:{e:'En Ejecución',p:null},estampado:null,bordado:{e:'En Ejecución',p:'Sara'},confeccion:null,confeccionExt:{e:'En Ejecución',p:'Rosalba'},relleno:null,comforter:null,acolchado:null,estadoOp:'Comprometido'},
+    'OPN-145535':{insumos:{e:'Completado',p:null},corte:{e:'Completado',p:null},estampado:null,bordado:null,confeccion:{e:'En Ejecución',p:null},confeccionExt:null,relleno:null,comforter:null,acolchado:null,estadoOp:'Comprometido'},
+    'OPN-145536':{insumos:{e:'En Ejecución',p:null},corte:{e:'—',p:null},estampado:null,bordado:null,confeccion:{e:'—',p:null},confeccionExt:null,relleno:null,comforter:null,acolchado:null,estadoOp:'En Elaboración'},
+    'OPS-22794':{insumos:{e:'Completado',p:null},corte:{e:'En Ejecución',p:null},estampado:null,bordado:null,confeccion:{e:'—',p:null},confeccionExt:null,relleno:null,comforter:null,acolchado:null,estadoOp:'Comprometido'},
+    'OPS-22795':{insumos:{e:'En Ejecución',p:null},corte:{e:'—',p:null},estampado:null,bordado:null,confeccion:{e:'—',p:null},confeccionExt:null,relleno:null,comforter:null,acolchado:null,estadoOp:'En Elaboración'},
+    'OPS-21682':{insumos:{e:'—',p:null},corte:{e:'—',p:null},estampado:null,bordado:null,confeccion:{e:'—',p:null},confeccionExt:null,relleno:null,comforter:null,acolchado:null,estadoOp:'Anulado'},
+    'OPN-150076':{insumos:{e:'Completado',p:null},corte:null,estampado:null,bordado:null,confeccion:null,confeccionExt:null,relleno:null,comforter:null,acolchado:{e:'En Ejecución',p:null},estadoOp:'Aprobado'},
+    'OPN-150550':{insumos:{e:'Completado',p:null},corte:{e:'En Ejecución',p:null},estampado:null,bordado:null,confeccion:{e:'—',p:null},confeccionExt:{e:'—',p:'Sin asignar'},relleno:null,comforter:null,acolchado:null,estadoOp:'En Elaboración'},
+    'OPS-151073':{insumos:{e:'En Ejecución',p:null},corte:{e:'—',p:null},estampado:null,bordado:null,confeccion:{e:'—',p:null},confeccionExt:{e:'—',p:'Sin asignar'},relleno:null,comforter:null,acolchado:null,estadoOp:'En Elaboración'},
+    'OPS-150291':{insumos:{e:'En Ejecución',p:null},corte:{e:'—',p:null},estampado:null,bordado:null,confeccion:{e:'—',p:null},confeccionExt:{e:'—',p:'Sin asignar'},relleno:null,comforter:null,acolchado:null,estadoOp:'En Elaboración'},
+  },
+  'DI-1224':{
+    'OPN-156001':{insumos:{e:'En Ejecución',p:null},corte:{e:'En Ejecución',p:null},estampado:null,bordado:null,confeccion:{e:'—',p:null},confeccionExt:null,relleno:null,comforter:null,acolchado:null,estadoOp:'Comprometido'},
+    'OPN-156002':{insumos:{e:'En Ejecución',p:null},corte:{e:'—',p:null},estampado:{e:'—',p:'Sin asignar'},bordado:null,confeccion:{e:'—',p:null},confeccionExt:null,relleno:null,comforter:null,acolchado:null,estadoOp:'En Elaboración'},
+  },
+  'DI-1225':{
+    'OPN-157001':{insumos:{e:'En Ejecución',p:null},corte:{e:'—',p:null},estampado:null,bordado:{e:'—',p:'Sin asignar'},confeccion:null,confeccionExt:{e:'—',p:'Sin asignar'},relleno:null,comforter:null,acolchado:null,estadoOp:'Comprometido'},
+  },
+  'DI-1226':{},
+};
+
+// Información de pedidos sin programas aún
+const pedidosMeta={
+  'DI-1226':{cliente:'Hotel Intercontinental',fecha:'15-abr-2026'},
+};
+
+let curTabliero='DI-1223';
+
+function selTablero(el,id){
+  document.querySelectorAll('#screen-tablero .order-item').forEach(o=>o.classList.remove('active-order'));
+  el.classList.add('active-order');
+  curTabliero=id;
+  renderTablero(id);
+}
+
+function renderTablero(progId){
+  const prog=programasData[progId];
+  const meta=pedidosMeta[progId];
+
+  // Encabezado
+  if(prog){
+    document.getElementById('tb-badge').textContent=progId;
+    document.getElementById('tb-cliente').textContent=prog.cliente;
+    document.getElementById('tb-fecha').textContent=prog.fecha;
+    document.getElementById('tb-op-count').textContent=prog.ops.length+' OPs';
+  } else if(meta){
+    document.getElementById('tb-badge').textContent=progId;
+    document.getElementById('tb-cliente').textContent=meta.cliente;
+    document.getElementById('tb-fecha').textContent=meta.fecha;
+    document.getElementById('tb-op-count').textContent='Sin OPs';
+  }
+
+  // Sin OPs
+  if(!prog){
+    document.getElementById('tb-tbody').innerHTML=
+      '<tr><td colspan="17" style="padding:28px;text-align:center;color:var(--text2);font-size:11px">Sin órdenes de producción programadas para este pedido.</td></tr>';
+    return;
+  }
+
+  const estados=tableroEstados[progId]||{};
+  const tbody=document.getElementById('tb-tbody');
+  tbody.innerHTML='';
+
+  prog.ops.forEach((op,idx)=>{
+    const est=estados[op.nop]||{};
+    const isAnulada=est.estadoOp==='Anulado';
+    const tr=document.createElement('tr');
+    tr.style.cssText=(isAnulada?'background:#FFF7F7;':'')+(idx%2!==0&&!isAnulada?'background:#FAFAFA;':'');
+
+    // ── Columnas informativas fijas ──────────────────────────
+    const bgCellAnul=isAnulada?'#FFF7F7':'';
+    const bgCellNorm=idx%2!==0?'#FAFAFA':'#fff';
+    const bgSticky=isAnulada?'#FFF7F7':(idx%2!==0?'#FAFAFA':'#fff');
+
+    const nopTd=document.createElement('td');
+    nopTd.style.cssText='padding:5px 7px;border:1px solid var(--border);vertical-align:middle;min-width:116px;position:sticky;left:0;z-index:2;background:'+bgSticky+';white-space:nowrap';
+    nopTd.innerHTML='<b style="color:var(--primary);font-size:10px">'+(op.bloq?'🔒 ':'')+op.nop+'</b>';
+    tr.appendChild(nopTd);
+
+    const refTd=document.createElement('td');
+    refTd.style.cssText='padding:5px 7px;border:1px solid var(--border);vertical-align:middle;min-width:78px;font-size:10px;font-weight:600;white-space:nowrap';
+    refTd.textContent=op.ref;tr.appendChild(refTd);
+
+    const extTd=document.createElement('td');
+    extTd.style.cssText='padding:5px 7px;border:1px solid var(--border);vertical-align:middle;min-width:68px;font-size:10px;color:var(--text2);white-space:nowrap';
+    extTd.textContent=EXT_MAP[op.ref]||'—';tr.appendChild(extTd);
+
+    const descTd=document.createElement('td');
+    descTd.style.cssText='padding:5px 7px;border:1px solid var(--border);border-right:2px solid #C4BFFF;vertical-align:middle;min-width:160px;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:10px';
+    descTd.title=op.desc;descTd.textContent=op.desc;tr.appendChild(descTd);
+
+    const cantTd=document.createElement('td');
+    cantTd.style.cssText='padding:5px 7px;border:1px solid var(--border);vertical-align:middle;min-width:52px;text-align:center;font-size:10px';
+    cantTd.textContent=op.cant;tr.appendChild(cantTd);
+
+    const metTd=document.createElement('td');
+    metTd.style.cssText='padding:5px 7px;border:1px solid var(--border);vertical-align:middle;min-width:44px;text-align:center';
+    metTd.innerHTML='<span style="background:var(--primary);color:#fff;padding:1px 5px;border-radius:3px;font-weight:700;font-size:9px">'+op.met+'</span>';
+    tr.appendChild(metTd);
+
+    const notasTd=document.createElement('td');
+    notasTd.style.cssText='padding:5px 7px;border:1px solid var(--border);border-right:2px solid #C4BFFF;vertical-align:middle;min-width:100px;max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:10px;color:var(--text2)';
+    notasTd.textContent=op.notas||'—';tr.appendChild(notasTd);
+
+    // ── Columnas de procesos ──────────────────────────────────
+    TABLERO_PROCESOS.forEach(proc=>{
+      const td=document.createElement('td');
+      const extBg=proc.ext?'rgba(133,73,11,.04)':'';
+      const lastBorder=proc.key==='acolchado'?'border-right:2px solid #C4BFFF;':'';
+      td.style.cssText='padding:4px 5px;border:1px solid var(--border);'+lastBorder+'vertical-align:middle;text-align:center;min-width:'+(proc.ext?100:92)+'px;background:'+extBg;
+
+      const pData=est[proc.key];
+
+      if(pData===null||pData===undefined){
+        td.innerHTML='<span style="color:#D1D5DB;font-size:13px;font-weight:300">—</span>';
+      } else {
+        const st=pData.e||'—';
+        const sty=TB_PROC_STYLE[st]||TB_PROC_STYLE['—'];
+        // Proveedor externo
+        const provHtml=proc.ext&&pData.p?
+          '<div style="font-size:8px;font-weight:700;color:var(--amber);background:var(--amber-light);padding:1px 5px;border-radius:3px;margin-bottom:3px;white-space:nowrap">🏭 '+pData.p+'</div>':'';
+        const selEl='<select '+
+          'data-prog="'+progId+'" data-nop="'+op.nop+'" data-proc="'+proc.key+'" '+
+          'onchange="onEstadoTbChange(this)" '+
+          'style="font-size:9px;border:1px solid '+sty.color+'33;border-radius:5px;padding:2px 3px;font-weight:600;cursor:pointer;background:'+sty.bg+';color:'+sty.color+';width:100%;text-align:center;outline:none">'+
+          TB_PROC_ESTADOS.map(s=>'<option value="'+s+'" '+(s===st?'selected':'')+'>'+s+'</option>').join('')+
+          '</select>';
+        td.innerHTML=provHtml+selEl;
+      }
+      tr.appendChild(td);
+    });
+
+    // ── Estado OP (gama completa de estados) ──────────────────
+    const opEst=est.estadoOp||'—';
+    const opSty=TB_OP_STYLE[opEst]||TB_OP_STYLE['—'];
+    const estadoOpTd=document.createElement('td');
+    estadoOpTd.style.cssText='padding:5px 6px;border:1px solid var(--border);vertical-align:middle;text-align:center;min-width:108px;background:var(--primary-light)';
+    estadoOpTd.innerHTML='<select '+
+      'data-prog="'+progId+'" data-nop="'+op.nop+'" '+
+      'onchange="onEstadoOpTbChange(this)" '+
+      'style="font-size:9px;border:1px solid '+opSty.color+'44;border-radius:5px;padding:2px 4px;font-weight:700;cursor:pointer;background:'+opSty.bg+';color:'+opSty.color+';width:100%;text-align:center;outline:none">'+
+      TB_OP_ESTADOS.map(s=>'<option value="'+s+'" '+(s===opEst?'selected':'')+'>'+s+'</option>').join('')+
+      '</select>';
+    tr.appendChild(estadoOpTd);
+
+    tbody.appendChild(tr);
+  });
+}
+
+function onEstadoTbChange(sel){
+  const val=sel.value;
+  const sty=TB_PROC_STYLE[val]||TB_PROC_STYLE['—'];
+  sel.style.background=sty.bg;sel.style.color=sty.color;
+  sel.style.borderColor=sty.color+'33';
+  const progId=sel.dataset.prog,nop=sel.dataset.nop,proc=sel.dataset.proc;
+  if(!tableroEstados[progId])tableroEstados[progId]={};
+  if(!tableroEstados[progId][nop])tableroEstados[progId][nop]={};
+  if(!tableroEstados[progId][nop][proc])tableroEstados[progId][nop][proc]={e:'—',p:null};
+  tableroEstados[progId][nop][proc].e=val;
+  showToast('✅ '+proc+' → '+val,false);
+}
+
+function onEstadoOpTbChange(sel){
+  const val=sel.value;
+  const sty=TB_OP_STYLE[val]||TB_OP_STYLE['—'];
+  sel.style.background=sty.bg;sel.style.color=sty.color;
+  sel.style.borderColor=sty.color+'44';
+  const progId=sel.dataset.prog,nop=sel.dataset.nop;
+  if(!tableroEstados[progId])tableroEstados[progId]={};
+  if(!tableroEstados[progId][nop])tableroEstados[progId][nop]={};
+  tableroEstados[progId][nop].estadoOp=val;
+  // Refrescar para aplicar color de fila (ej. Anulado)
+  renderTablero(progId);
+  showToast('✅ Estado OP: '+nop+' → '+val,false);
+}
+
 function showToast(msg,persistent){
   const t=document.getElementById('toast');
   document.getElementById('toast-msg').textContent=msg;
@@ -1408,6 +1703,7 @@ function hideToast(){document.getElementById('toast').classList.remove('show');}
 // Inicializar al cargar
 document.addEventListener('DOMContentLoaded',()=>{
   renderPrograma('DI-1223');
+  renderTablero('DI-1223');
   // Cerrar dropdown al hacer clic fuera
   document.addEventListener('click',e=>{
     const wrap=document.getElementById('ref-ac-wrap');
