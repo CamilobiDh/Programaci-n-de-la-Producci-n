@@ -43,8 +43,7 @@ const USERS = [
     passwordHash: '6195079db2109e35010d1feb203184c6b90a53c36e8c32925840e6a15ac675e0',
     name: 'Equipo Producción',
     role: 'user'
-  }
-
+  },
   {
     username: 'programador',
     passwordHash: 'f676d4e0730ff640afce8172044a13d5c5afbf37dab390c832099329ad549360',
