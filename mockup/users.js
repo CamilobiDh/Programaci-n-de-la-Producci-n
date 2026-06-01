@@ -44,6 +44,13 @@ const USERS = [
     name: 'Equipo Producción',
     role: 'user'
   }
+
+  {
+    username: 'programador',
+    passwordHash: 'f676d4e0730ff640afce8172044a13d5c5afbf37dab390c832099329ad549360',
+    name: 'Equipo Producción',
+    role: 'user'
+  }
   // Agregue más usuarios aquí siguiendo el mismo formato:
   // {
   //   username: 'nombre_usuario',

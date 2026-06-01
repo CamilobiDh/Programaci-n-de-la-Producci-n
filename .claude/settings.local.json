@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\ANALISTABI\\\\OneDrive - C.I. DISTRIHOGAR S.A.S\\\\1. Analista BI CANM\\\\Proyectos\\\\Programaci-n-de-la-Producci-n\" -Recurse -Force)",
+      "Bash(Select-Object FullName, Extension)",
+      "Bash(Sort-Object FullName)",
+      "Bash(Format-Table -AutoSize)",
+      "PowerShell(tree /F \"C:\\\\Users\\\\ANALISTABI\\\\OneDrive - C.I. DISTRIHOGAR S.A.S\\\\1. Analista BI CANM\\\\Proyectos\\\\Programaci-n-de-la-Producci-n\" -L 3 2>$null)",
+      "PowerShell(head -100)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git config *)",
+      "Bash(git push *)"
+    ]
+  }
+}
