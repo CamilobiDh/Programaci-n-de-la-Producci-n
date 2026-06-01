@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Acceso — Programación de Producción Distrihogar</title>
+<style>
+:root{color-scheme:light;--primary:#4B3FC5;--primary-light:#EEEDFE;--border:#E2E1DC;--bg:#F7F6F2;--card:#FFFFFF;--text:#1A1916;--text2:#5C5B57;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px}
+.login-wrap{width:100%;max-width:380px}
+.login-header{text-align:center;margin-bottom:28px}
+.login-icon{font-size:38px;margin-bottom:10px;line-height:1}
+.login-title{font-size:20px;font-weight:800;color:var(--text);letter-spacing:-.01em}
+.login-company{font-size:11px;color:var(--text2);margin-top:5px;font-weight:500}
+.login-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:28px 28px 24px}
+.field-group{margin-bottom:14px}
+.field-label{font-size:10px;font-weight:700;color:var(--text2);margin-bottom:5px;display:block;text-transform:uppercase;letter-spacing:.06em}
+.field-input{width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;color:var(--text);background:#fff;outline:none;transition:border-color .15s,box-shadow .15s;font-family:inherit}
+.field-input:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(75,63,197,.12)}
+.field-input::placeholder{color:#B8B7B3}
+.btn-login{width:100%;padding:11px;background:var(--primary);color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;margin-top:6px;transition:opacity .15s,transform .1s;font-family:inherit;letter-spacing:.01em}
+.btn-login:hover:not(:disabled){opacity:.9}
+.btn-login:active:not(:disabled){transform:scale(.99)}
+.btn-login:disabled{opacity:.55;cursor:not-allowed}
+.error-msg{background:#FEE2E2;border:1px solid #FCA5A5;color:#991B1B;border-radius:8px;padding:9px 12px;font-size:11.5px;margin-top:12px;display:none;line-height:1.4}
+.spinner-inline{display:inline-block;width:13px;height:13px;border:2px solid rgba(255,255,255,.35);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:6px;position:relative;top:-1px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.footer-note{text-align:center;font-size:10px;color:#B8B7B3;margin-top:18px;line-height:1.5}
+.divider{height:1px;background:var(--border);margin:18px 0}
+.session-info{font-size:10px;color:var(--text2);text-align:center;margin-top:14px}
+</style>
+</head>
+<body>
+
+<div class="login-wrap">
+
+  <div class="login-header">
+    <div class="login-icon">🏭</div>
+    <div class="login-title">Programación de Producción</div>
+    <div class="login-company">C.I. Distrihogar S.A.S.</div>
+  </div>
+
+  <div class="login-card">
+    <form id="loginForm" onsubmit="handleLogin(event)" autocomplete="on" novalidate>
+
+      <div class="field-group">
+        <label class="field-label" for="username">Usuario</label>
+        <input class="field-input" type="text" id="username"
+               placeholder="nombre de usuario"
+               autocomplete="username"
+               autocapitalize="none"
+               spellcheck="false"
+               autofocus
+               required/>
+      </div>
+
+      <div class="field-group" style="margin-bottom:4px">
+        <label class="field-label" for="password">Contraseña</label>
+        <input class="field-input" type="password" id="password"
+               placeholder="••••••••"
+               autocomplete="current-password"
+               required/>
+      </div>
+
+      <div class="error-msg" id="errorMsg" role="alert"></div>
+
+      <button class="btn-login" type="submit" id="submitBtn">
+        Ingresar
+      </button>
+
+    </form>
+
+    <div class="session-info">La sesión dura 8 horas y se cierra automáticamente.</div>
+  </div>
+
+  <div class="footer-note">
+    Acceso restringido — solo personal autorizado.<br>
+    Si olvidó su contraseña, contacte al administrador.
+  </div>
+
+</div>
+
+<script src="users.js"></script>
+<script>
+// Si ya hay sesión activa, redirigir directamente a la app
+(function () {
+  if (getSession()) {
+    window.location.replace('index.html');
+  }
+})();
+
+async function handleLogin(e) {
+  e.preventDefault();
+
+  const btn      = document.getElementById('submitBtn');
+  const errorEl  = document.getElementById('errorMsg');
+  const username = document.getElementById('username').value;
+  const password = document.getElementById('password').value;
+
+  // Estado de carga
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner-inline"></span>Verificando…';
+  errorEl.style.display = 'none';
+
+  try {
+    const user = await authenticate(username, password);
+
+    if (user) {
+      saveSession(user);
+      window.location.replace('index.html');
+    } else {
+      errorEl.textContent = 'Usuario o contraseña incorrectos. Verifique e intente nuevamente.';
+      errorEl.style.display = 'block';
+      document.getElementById('password').value = '';
+      document.getElementById('password').focus();
+    }
+  } catch (err) {
+    errorEl.textContent = 'Error al verificar credenciales. Intente de nuevo.';
+    errorEl.style.display = 'block';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Ingresar';
+  }
+}
+</script>
+
+</body>
+</html>

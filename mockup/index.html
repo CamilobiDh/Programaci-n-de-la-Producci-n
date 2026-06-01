@@ -270,7 +270,21 @@ tr.prog-selected td.p-col-prog{background:#EDEBFE}
 /* legend */
 .prog-legend{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:10px;color:var(--text2);margin-top:8px}
 .prog-legend span{display:flex;align-items:center;gap:4px}
+/* ── Auth nav ── */
+.nav-spacer{flex:1}
+.nav-user{display:flex;align-items:center;gap:8px;margin-left:4px;padding-left:10px;border-left:1px solid var(--border);flex-shrink:0}
+.nav-user-name{font-size:11px;color:var(--text2);font-weight:600;white-space:nowrap}
+.nav-logout{padding:4px 10px;border-radius:6px;border:1px solid var(--border);background:#fff;cursor:pointer;font-size:11px;color:var(--text2);transition:background .15s,color .15s,border-color .15s;white-space:nowrap;font-family:inherit}
+.nav-logout:hover{background:#FEE2E2;color:#991B1B;border-color:#FCA5A5}
 </style>
+<script src="users.js"></script>
+<script>
+(function(){
+  var s=getSession();
+  if(!s){window.location.replace('login.html');}
+  window._authSession=s;
+})();
+</script>
 </head>
 <body>
 <div class="toast" id="toast">
@@ -287,6 +301,11 @@ tr.prog-selected td.p-col-prog{background:#EDEBFE}
   <button class="nav-btn" onclick="show('tablero',event)">④ Tablero de Control</button>
   <button class="nav-btn" onclick="show('capacidad',event)">⑤ Capacidad</button>
   <button class="nav-btn" onclick="show('dashboard',event)">⑥ Dashboard</button>
+  <div class="nav-spacer"></div>
+  <div class="nav-user">
+    <span class="nav-user-name" id="nav-user-name"></span>
+    <button class="nav-logout" onclick="handleLogout()">Cerrar sesión</button>
+  </div>
 </nav>
 
 <div class="content">
@@ -2312,8 +2331,17 @@ function showToast(msg,persistent){
 }
 function hideToast(){document.getElementById('toast').classList.remove('show');}
 
+// ══ AUTH ══
+function handleLogout(){
+  clearSession();
+  window.location.replace('login.html');
+}
+
 // Inicializar al cargar
 document.addEventListener('DOMContentLoaded',()=>{
+  // Mostrar nombre del usuario en el nav
+  var s=window._authSession;
+  if(s){document.getElementById('nav-user-name').textContent=s.name;}
   initTbSidePanel();
   renderPrograma('DI-1223');
   renderTablero('DI-1223');
