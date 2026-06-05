@@ -169,7 +169,7 @@ hr.subtle{border:none;border-top:1px solid var(--border);margin:10px 0}
 /* Encabezados sticky (vertical) */
 .prog-table th{background:#F0EFF8;color:var(--text2);font-weight:600;height:78px;position:sticky;top:0;z-index:4}
 /* Intersección sticky-col + sticky-row: z-index más alto para no quedar tapada */
-.prog-table th.op-sticky,.prog-table th.p-col-cb,.prog-table th.p-col-nop,.prog-table th.p-col-ref,.prog-table th.p-col-desc,.prog-table th.p-col-notas,.prog-table th.p-col-cant,.prog-table th.p-col-ftela,.prog-table th.p-col-finsumos,.prog-table th.p-col-met,.prog-table th.p-col-prog{z-index:6;background:#F0EFF8}
+.prog-table th.op-sticky,.prog-table th.p-col-cb,.prog-table th.p-col-nop,.prog-table th.p-col-ref,.prog-table th.p-col-ext,.prog-table th.p-col-desc,.prog-table th.p-col-notas,.prog-table th.p-col-cant,.prog-table th.p-col-ftela,.prog-table th.p-col-finsumos,.prog-table th.p-col-met,.prog-table th.p-col-prog{z-index:6;background:#F0EFF8}
 /* bulk date bar in header */
 .op-th-wrap{display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:5px 4px;height:100%;gap:3px}
 .op-bulk-bar{display:flex;flex-direction:column;align-items:center;gap:2px;width:100%;border-top:1px dashed var(--border);padding-top:4px}
@@ -187,18 +187,19 @@ hr.subtle{border:none;border-top:1px solid var(--border);margin:10px 0}
 .p-col-cb   {position:sticky;left:0;    min-width:30px; width:30px; z-index:3;text-align:center;padding:0 4px}
 .p-col-nop  {position:sticky;left:30px;  min-width:110px;width:110px;z-index:3;text-align:left;padding:0 8px}
 .p-col-ref  {position:sticky;left:140px; min-width:72px; width:72px; z-index:3;text-align:left;padding:0 6px}
-.p-col-desc {position:sticky;left:212px; min-width:160px;width:160px;z-index:3;text-align:left;padding:0 6px;overflow:hidden;text-overflow:ellipsis}
-.p-col-cant {position:sticky;left:372px; min-width:48px; width:48px; z-index:3}
-.p-col-notas{position:sticky;left:420px; min-width:110px;width:110px;z-index:3;text-align:left;padding:0 6px;overflow:hidden;text-overflow:ellipsis}
-.p-col-ftela{position:sticky;left:530px; min-width:90px; width:90px; z-index:3;text-align:center;padding:0 4px}
-.p-col-finsumos{position:sticky;left:620px;min-width:90px; width:90px; z-index:3;text-align:center;padding:0 4px}
-.p-col-met  {position:sticky;left:710px; min-width:44px; width:44px; z-index:3;border-right:2px solid #C4BFFF !important}
-td.p-col-cb,td.p-col-nop,td.p-col-ref,td.p-col-desc,td.p-col-cant,td.p-col-notas,td.p-col-met{background:#fff}
+.p-col-ext  {position:sticky;left:212px; min-width:68px;  width:68px;  z-index:3;text-align:left;padding:0 6px}
+.p-col-desc {position:sticky;left:280px; min-width:160px;width:160px;z-index:3;text-align:left;padding:0 6px;overflow:hidden;text-overflow:ellipsis}
+.p-col-cant {position:sticky;left:440px; min-width:48px; width:48px; z-index:3}
+.p-col-notas{position:sticky;left:488px; min-width:110px;width:110px;z-index:3;text-align:left;padding:0 6px;overflow:hidden;text-overflow:ellipsis}
+.p-col-ftela{position:sticky;left:598px; min-width:90px; width:90px; z-index:3;text-align:center;padding:0 4px}
+.p-col-finsumos{position:sticky;left:688px;min-width:90px; width:90px; z-index:3;text-align:center;padding:0 4px}
+.p-col-met  {position:sticky;left:778px; min-width:44px; width:44px; z-index:3;border-right:2px solid #C4BFFF !important}
+td.p-col-cb,td.p-col-nop,td.p-col-ref,td.p-col-ext,td.p-col-desc,td.p-col-cant,td.p-col-notas,td.p-col-met{background:#fff}
 td.p-col-ftela,td.p-col-finsumos{background:#F7F6F2}
-tr:hover td.p-col-cb,tr:hover td.p-col-nop,tr:hover td.p-col-ref,tr:hover td.p-col-desc,tr:hover td.p-col-cant,tr:hover td.p-col-notas,tr:hover td.p-col-met{background:#F5F4FF}
+tr:hover td.p-col-cb,tr:hover td.p-col-nop,tr:hover td.p-col-ref,tr:hover td.p-col-ext,tr:hover td.p-col-desc,tr:hover td.p-col-cant,tr:hover td.p-col-notas,tr:hover td.p-col-met{background:#F5F4FF}
 tr:hover td.p-col-ftela,tr:hover td.p-col-finsumos{background:#EFEEFD}
 tr.prog-selected td{background:#F5F4FF}
-tr.prog-selected td.p-col-cb,tr.prog-selected td.p-col-nop,tr.prog-selected td.p-col-ref,tr.prog-selected td.p-col-desc,tr.prog-selected td.p-col-cant,tr.prog-selected td.p-col-notas,tr.prog-selected td.p-col-met{background:#EDEBFE}
+tr.prog-selected td.p-col-cb,tr.prog-selected td.p-col-nop,tr.prog-selected td.p-col-ref,tr.prog-selected td.p-col-ext,tr.prog-selected td.p-col-desc,tr.prog-selected td.p-col-cant,tr.prog-selected td.p-col-notas,tr.prog-selected td.p-col-met{background:#EDEBFE}
 tr.prog-selected td.p-col-ftela,tr.prog-selected td.p-col-finsumos{background:#E8E7F8}
 /* shadow on last sticky */
 .prog-table th.p-col-met,.prog-table td.p-col-met{box-shadow:3px 0 6px -2px rgba(75,63,197,.12)}
@@ -266,25 +267,11 @@ tr.prog-selected td.p-col-prog{background:#EDEBFE}
 .op-bloq{color:#FCA5A5;font-size:14px}
 /* blocked row */
 .prog-table tr.row-bloq td{background:#FFF7ED}
-.prog-table tr.row-bloq td.p-col-nop,.prog-table tr.row-bloq td.p-col-ref,.prog-table tr.row-bloq td.p-col-cant,.prog-table tr.row-bloq td.p-col-met{background:#FFF7ED}
+.prog-table tr.row-bloq td.p-col-nop,.prog-table tr.row-bloq td.p-col-ref,.prog-table tr.row-bloq td.p-col-ext,.prog-table tr.row-bloq td.p-col-cant,.prog-table tr.row-bloq td.p-col-met{background:#FFF7ED}
 /* legend */
 .prog-legend{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:10px;color:var(--text2);margin-top:8px}
 .prog-legend span{display:flex;align-items:center;gap:4px}
-/* ── Auth nav ── */
-.nav-spacer{flex:1}
-.nav-user{display:flex;align-items:center;gap:8px;margin-left:4px;padding-left:10px;border-left:1px solid var(--border);flex-shrink:0}
-.nav-user-name{font-size:11px;color:var(--text2);font-weight:600;white-space:nowrap}
-.nav-logout{padding:4px 10px;border-radius:6px;border:1px solid var(--border);background:#fff;cursor:pointer;font-size:11px;color:var(--text2);transition:background .15s,color .15s,border-color .15s;white-space:nowrap;font-family:inherit}
-.nav-logout:hover{background:#FEE2E2;color:#991B1B;border-color:#FCA5A5}
 </style>
-<script src="users.js"></script>
-<script>
-(function(){
-  var s=getSession();
-  if(!s){window.location.replace('login.html');}
-  window._authSession=s;
-})();
-</script>
 </head>
 <body>
 <div class="toast" id="toast">
@@ -301,11 +288,6 @@ tr.prog-selected td.p-col-prog{background:#EDEBFE}
   <button class="nav-btn" onclick="show('tablero',event)">④ Tablero de Control</button>
   <button class="nav-btn" onclick="show('capacidad',event)">⑤ Capacidad</button>
   <button class="nav-btn" onclick="show('dashboard',event)">⑥ Dashboard</button>
-  <div class="nav-spacer"></div>
-  <div class="nav-user">
-    <span class="nav-user-name" id="nav-user-name"></span>
-    <button class="nav-logout" onclick="handleLogout()">Cerrar sesión</button>
-  </div>
 </nav>
 
 <div class="content">
@@ -728,7 +710,7 @@ tr.prog-selected td.p-col-prog{background:#EDEBFE}
     <button class="t-btn" id="ptbtn-relleno" onclick="selectPlanta('relleno')">Relleno</button>
     <button class="t-btn" id="ptbtn-acolchado" onclick="selectPlanta('acolchado')">Acolchado</button>
     <button class="t-btn" id="ptbtn-comforter" onclick="selectPlanta('comforter')">Comforter</button>
-    <button class="t-btn" id="ptbtn-insumos" onclick="selectPlanta('insumos')">Insumos</button>
+    <button class="t-btn" id="ptbtn-insumos" onclick="selectPlanta('insumos')">Materia Prima</button>
   </div>
   <div id="planta-current-name" class="alert alert-info" style="margin-bottom:10px"><span class="alert-icon">🏭</span><div id="planta-msg">Planta: <b>Corte</b></div></div>
   <div id="planta-corte">
@@ -819,9 +801,289 @@ tr.prog-selected td.p-col-prog{background:#EDEBFE}
       </tbody>
     </table>
   </div></div>
-  <div id="planta-acolchado" style="display:none"><div class="card"><div class="card-title"><span class="badge badge-o">Acolchado</span></div><div class="alert alert-info"><span class="alert-icon">ℹ</span><div>80 metros/turno.</div></div></div></div>
+  <div id="planta-acolchado" style="display:none">
+
+    <div class="page-header" style="margin-bottom:10px">
+      <h2>🧵 Módulo Acolchado</h2>
+      <p>OPs programadas con operación Acolchado · Capacidad 80 metros/turno</p>
+    </div>
+
+    <!-- KPIs -->
+    <div class="grid4" style="margin-bottom:10px">
+      <div class="kpi-box"><div class="kpi-val" id="acol-kpi-ops" style="color:var(--primary)">—</div><div class="kpi-lbl">OPs activas</div></div>
+      <div class="kpi-box"><div class="kpi-val" id="acol-kpi-mts" style="color:var(--green)">—</div><div class="kpi-lbl">Metros programados</div></div>
+      <div class="kpi-box"><div class="kpi-val" id="acol-kpi-sin" style="color:var(--orange)">—</div><div class="kpi-lbl">OPs sin fecha</div></div>
+    </div>
+
+    <!-- Alertas dinámicas -->
+    <div id="acol-alerts" style="margin-bottom:10px"></div>
+
+    <!-- Gantt -->
+    <div class="card" style="margin-bottom:10px">
+      <!-- Barra navegación Gantt -->
+      <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:10px">
+        <span class="badge badge-o">Gantt · Acolchado</span>
+        <!-- Selector mes -->
+        <div style="display:flex;flex-direction:column;gap:1px">
+          <span style="font-size:9px;color:var(--text2);font-weight:600">Mes</span>
+          <select id="acol-mes-sel" onchange="acolSetMes(this.value)"
+            style="font-size:10px;padding:3px 5px;border:1px solid var(--border);border-radius:5px;background:#fff;color:var(--text);cursor:pointer">
+            <option value="2026-01">Enero 2026</option>
+            <option value="2026-02">Febrero 2026</option>
+            <option value="2026-03" selected>Marzo 2026</option>
+            <option value="2026-04">Abril 2026</option>
+            <option value="2026-05">Mayo 2026</option>
+            <option value="2026-06">Junio 2026</option>
+            <option value="2026-07">Julio 2026</option>
+            <option value="2026-08">Agosto 2026</option>
+            <option value="2026-09">Septiembre 2026</option>
+            <option value="2026-10">Octubre 2026</option>
+            <option value="2026-11">Noviembre 2026</option>
+            <option value="2026-12">Diciembre 2026</option>
+          </select>
+        </div>
+        <!-- Selector semana -->
+        <div style="display:flex;flex-direction:column;gap:1px">
+          <span style="font-size:9px;color:var(--text2);font-weight:600">Semana del año</span>
+          <select id="acol-sem-sel" onchange="acolSetSem(this.value)"
+            style="font-size:10px;padding:3px 5px;border:1px solid var(--border);border-radius:5px;background:#fff;color:var(--text);cursor:pointer;min-width:170px">
+            <!-- poblado por JS -->
+          </select>
+        </div>
+        <!-- Flechas + label -->
+        <button onclick="acolNavWeek(-1)" style="padding:4px 10px;border:1px solid var(--border);border-radius:6px;background:#fff;cursor:pointer;font-size:12px;color:var(--text2)">◀</button>
+        <span id="acol-gantt-label" style="font-size:11px;font-weight:600;color:var(--text);min-width:190px;text-align:center">—</span>
+        <button onclick="acolNavWeek(1)" style="padding:4px 10px;border:1px solid var(--border);border-radius:6px;background:#fff;cursor:pointer;font-size:12px;color:var(--text2)">▶</button>
+        <button onclick="acolGanttToday()" style="padding:4px 10px;border:1px solid var(--primary);border-radius:6px;background:var(--primary-light);color:var(--primary);font-size:10px;font-weight:600;cursor:pointer">Hoy</button>
+        <!-- Leyenda -->
+        <div style="margin-left:auto;display:flex;gap:5px;align-items:center;flex-wrap:wrap">
+          <span style="background:#DBEAFE;color:#1E40AF;padding:2px 7px;border-radius:4px;font-size:9px;font-weight:600">Programado</span>
+          <span style="background:#D1FAE5;color:#065F46;padding:2px 7px;border-radius:4px;font-size:9px;font-weight:600">Completado</span>
+          <span style="background:#FEE2E2;color:#991B1B;padding:2px 7px;border-radius:4px;font-size:9px;font-weight:600">Sin fecha</span>
+          <span style="background:var(--bg);color:var(--text2);padding:2px 7px;border-radius:4px;font-size:9px">Libre</span>
+        </div>
+      </div>
+      <div class="gantt-wrap">
+        <table class="gantt" id="acol-gantt-table">
+          <thead id="acol-gantt-thead">
+            <tr><th class="op-col">OP</th></tr>
+          </thead>
+          <tbody id="acol-gantt-body"><!-- generado por JS --></tbody>
+        </table>
+      </div>
+      <!-- Barras de capacidad por semana -->
+      <div style="margin-top:12px">
+        <div class="section-hd" style="margin-bottom:8px">Ocupación semanal (80 m/turno × 6 días)</div>
+        <div class="cap-row"><div class="cap-label">Sem 10-14 Mar</div><div class="cap-bar-bg"><div class="cap-bar-fill" style="width:75%;background:#3B82F6">75%</div></div><div class="cap-pct" style="color:#1D4ED8">75%</div></div>
+        <div class="cap-row"><div class="cap-label">Sem 17-21 Mar</div><div class="cap-bar-bg"><div class="cap-bar-fill" style="width:45%;background:#10B981">45%</div></div><div class="cap-pct" style="color:#065F46">45%</div></div>
+        <div class="cap-row"><div class="cap-label">Sem 24-28 Mar</div><div class="cap-bar-bg"><div class="cap-bar-fill" style="width:20%;background:#10B981">20%</div></div><div class="cap-pct" style="color:#065F46">20%</div></div>
+        <div class="cap-row"><div class="cap-label">Sem 31 Mar-4 Abr</div><div class="cap-bar-bg"><div class="cap-bar-fill" style="width:88%;background:#F59E0B">88%</div></div><div class="cap-pct" style="color:#92400E">88%</div></div>
+      </div>
+    </div>
+
+    <!-- Diseño del Acolchado -->
+    <div class="grid2" style="align-items:start;margin-bottom:10px">
+
+      <!-- Imagen del diseño -->
+      <div class="card">
+        <div class="card-title"><span class="badge badge-o">🖼 Diseño del Acolchado</span></div>
+        <div id="acol-design-img-wrap"
+          onclick="document.getElementById('acol-design-file').click()"
+          style="width:100%;min-height:150px;border:2px dashed var(--border);border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;background:var(--bg);overflow:hidden;margin-bottom:8px;transition:border-color .2s"
+          onmouseover="this.style.borderColor='var(--primary)'"
+          onmouseout="this.style.borderColor='var(--border)'">
+          <img id="acol-design-img" src="" alt="" style="display:none;max-width:100%;max-height:220px;object-fit:contain;border-radius:6px"/>
+          <div id="acol-design-placeholder" style="text-align:center;color:var(--text2);padding:20px">
+            <div style="font-size:28px;margin-bottom:8px">🖼</div>
+            <div style="font-size:11px;font-weight:600;color:var(--text2)">Clic para cargar imagen del diseño</div>
+            <div style="font-size:10px;color:var(--text2);margin-top:4px">JPG · PNG · SVG</div>
+          </div>
+        </div>
+        <input type="file" id="acol-design-file" accept="image/*" style="display:none" onchange="loadAcolDesignImg(this)"/>
+        <div style="display:flex;gap:6px">
+          <button onclick="document.getElementById('acol-design-file').click()"
+            style="flex:1;padding:5px;border:1px solid var(--border);border-radius:6px;background:var(--bg);color:var(--text2);font-size:10px;cursor:pointer;font-weight:600">
+            📂 Cargar imagen
+          </button>
+          <button onclick="clearAcolDesignImg()"
+            style="padding:5px 10px;border:1px solid var(--border);border-radius:6px;background:var(--bg);color:var(--text2);font-size:10px;cursor:pointer">
+            ✕
+          </button>
+        </div>
+      </div>
+
+      <!-- Especificaciones -->
+      <div class="card">
+        <div class="card-title"><span class="badge badge-p">📝 Especificaciones del Diseño</span></div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div>
+            <div class="lbl">Referencia tela / diseño</div>
+            <input type="text" placeholder="Ej: TE01126 · UFAZ 230H DOWN PROOF"
+              style="width:100%;border:1px solid var(--border);border-radius:6px;padding:5px 8px;font-size:11px;color:var(--text);background:#fff"/>
+          </div>
+          <div class="grid2" style="gap:8px">
+            <div>
+              <div class="lbl">Dimensiones</div>
+              <input type="text" placeholder="Ej: 200×230 cm"
+                style="width:100%;border:1px solid var(--border);border-radius:6px;padding:5px 8px;font-size:11px;color:var(--text);background:#fff"/>
+            </div>
+            <div>
+              <div class="lbl">Gramaje guata</div>
+              <input type="text" placeholder="Ej: 280 g/m²"
+                style="width:100%;border:1px solid var(--border);border-radius:6px;padding:5px 8px;font-size:11px;color:var(--text);background:#fff"/>
+            </div>
+          </div>
+          <div>
+            <div class="lbl">Patrón de acolchado</div>
+            <select style="width:100%;border:1px solid var(--border);border-radius:6px;padding:5px 8px;font-size:11px;color:var(--text);background:#fff">
+              <option>Cuadros 10×10 cm</option>
+              <option>Cuadros 5×5 cm</option>
+              <option>Rombos</option>
+              <option>Líneas paralelas</option>
+              <option>Diagonal</option>
+              <option>Panal de abeja</option>
+              <option>Libre / especial</option>
+            </select>
+          </div>
+          <div>
+            <div class="lbl">Notas técnicas / instrucciones</div>
+            <textarea placeholder="Observaciones del diseño, tolerancias, instrucciones especiales para el operario…" rows="3"
+              style="width:100%;border:1px solid var(--border);border-radius:6px;padding:5px 8px;font-size:11px;color:var(--text);resize:vertical;background:#fff"></textarea>
+          </div>
+          <button onclick="showToast('✅ Especificaciones del diseño guardadas.',false)"
+            style="background:var(--primary);color:#fff;border:none;border-radius:7px;padding:6px 14px;font-size:11px;font-weight:700;cursor:pointer">
+            💾 Guardar especificaciones
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Tabla OPs Acolchado -->
+    <div class="card">
+      <!-- Barra superior: título + filtro fecha + notificación -->
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px">
+        <span class="badge badge-o" style="font-size:11px">OPs con operación Acolchado</span>
+        <span id="acol-op-count" style="font-size:11px;color:var(--text2)"></span>
+        <!-- Filtro rango de fechas -->
+        <div style="display:flex;align-items:center;gap:5px;background:#FFFBEB;border:1.5px solid #FCD34D;border-radius:8px;padding:5px 10px;margin-left:6px;flex-wrap:wrap">
+          <span style="font-size:10px;font-weight:700;color:#92400E;white-space:nowrap">📅 Rango:</span>
+          <div style="display:flex;flex-direction:column;gap:1px">
+            <span style="font-size:9px;color:#92400E;font-weight:600">Desde</span>
+            <input type="date" id="acol-from" style="width:112px;font-size:11px;padding:3px 6px;border:1px solid #FCD34D;border-radius:5px;background:#fff;color:var(--text)"
+              onchange="filterAcolRange()"/>
+          </div>
+          <span style="color:#92400E;font-size:13px;font-weight:600">→</span>
+          <div style="display:flex;flex-direction:column;gap:1px">
+            <span style="font-size:9px;color:#92400E;font-weight:600">Hasta</span>
+            <input type="date" id="acol-to" style="width:112px;font-size:11px;padding:3px 6px;border:1px solid #FCD34D;border-radius:5px;background:#fff;color:var(--text)"
+              onchange="filterAcolRange()"/>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <button onclick="acolRangoHoy()" style="font-size:9px;padding:2px 7px;border:1px solid #FCD34D;border-radius:5px;background:#fff;color:#92400E;cursor:pointer;white-space:nowrap">Hoy</button>
+            <button onclick="clearAcolFilter()" style="font-size:9px;padding:2px 7px;border:1px solid #FCD34D;border-radius:5px;background:#fff;color:#92400E;cursor:pointer;white-space:nowrap">✕ Todos</button>
+          </div>
+          <div id="acol-range-badge" style="display:none;font-size:9px;font-weight:700;color:var(--green);background:#D1FAE5;padding:2px 8px;border-radius:10px;white-space:nowrap"></div>
+        </div>
+        <!-- Barra de selección y notificación -->
+        <div style="display:flex;align-items:center;gap:8px;margin-left:auto;flex-wrap:wrap">
+          <span id="acol-sel-count" style="font-size:11px;color:var(--text2);white-space:nowrap">0 OPs seleccionadas</span>
+          <button id="acol-notify-btn" onclick="notificarComprasAcol()" disabled
+            style="background:var(--green);color:#fff;border:none;border-radius:8px;padding:6px 14px;font-size:11px;font-weight:700;cursor:pointer;opacity:0.4;transition:opacity .2s;white-space:nowrap">
+            📤 Notificar Analista de Compras
+          </button>
+        </div>
+      </div>
+      <!-- Leyenda SIESA -->
+      <div style="font-size:9px;color:var(--text2);margin-bottom:8px">
+        <span class="tag-siesa tag" style="font-size:9px">S</span> = dato automático desde SIESA &nbsp;·&nbsp; Selecciona OPs y presiona <b>Notificar</b> para enviar la solicitud de compra de guata.
+      </div>
+      <div style="overflow-x:auto">
+        <table style="width:100%;border-collapse:collapse;font-size:11px;min-width:1020px">
+          <thead>
+            <tr style="background:#F0EFF8">
+              <th style="padding:5px 8px;border:1px solid var(--border);width:32px;text-align:center;position:sticky;top:0;background:#F0EFF8;z-index:2">
+                <input type="checkbox" id="acol-cb-all" title="Seleccionar / Deseleccionar todos" onchange="toggleAcolAll(this)" style="cursor:pointer;width:13px;height:13px"/>
+              </th>
+              <th style="padding:5px 8px;border:1px solid var(--border);text-align:left;min-width:120px;position:sticky;top:0;background:#F0EFF8;z-index:2">N° OP</th>
+              <th style="padding:5px 8px;border:1px solid var(--border);text-align:left;min-width:80px;position:sticky;top:0;background:#F0EFF8;z-index:2">Referencia</th>
+              <th style="padding:5px 8px;border:1px solid var(--border);text-align:left;min-width:68px;position:sticky;top:0;background:#F0EFF8;z-index:2">Extensión</th>
+              <th style="padding:5px 8px;border:1px solid var(--border);text-align:left;min-width:190px;position:sticky;top:0;background:#F0EFF8;z-index:2">Descripción</th>
+              <th style="padding:5px 8px;border:1px solid var(--border);text-align:center;min-width:50px;position:sticky;top:0;background:#F0EFF8;z-index:2">Cant.</th>
+              <th style="padding:5px 8px;border:1px solid var(--border);text-align:left;min-width:100px;position:sticky;top:0;background:#F0EFF8;z-index:2">Notas</th>
+              <th style="padding:5px 8px;border:1px solid var(--border);text-align:center;min-width:95px;position:sticky;top:0;background:#F0EFF8;z-index:2">Ref. Guata <span class="tag-siesa tag" style="font-size:8px">S</span></th>
+              <th style="padding:5px 8px;border:1px solid var(--border);text-align:center;min-width:85px;position:sticky;top:0;background:#F0EFF8;z-index:2">Cant. Guata <span class="tag-siesa tag" style="font-size:8px">S</span></th>
+              <th style="padding:5px 8px;border:1px solid var(--border);text-align:center;min-width:95px;position:sticky;top:0;background:#F0EFF8;z-index:2">N° RQT Telas</th>
+              <th style="padding:5px 8px;border:1px solid var(--border);text-align:center;min-width:100px;position:sticky;top:0;background:#F0EFF8;z-index:2">F. Acolchado</th>
+              <th style="padding:5px 8px;border:1px solid var(--border);text-align:center;min-width:78px;position:sticky;top:0;background:#F0EFF8;z-index:2">Estado</th>
+            </tr>
+          </thead>
+          <tbody id="acol-ops-tbody"><!-- generado por JS --></tbody>
+        </table>
+      </div>
+      <!-- Resumen selección -->
+      <div id="acol-sel-summary" style="display:none;margin-top:10px;padding:10px 14px;background:#F0FDF4;border:1.5px solid #86EFAC;border-radius:8px;font-size:11px">
+        <b style="color:#065F46">📦 Resumen para Compras:</b>
+        <span id="acol-sel-detail" style="color:var(--text);margin-left:8px"></span>
+      </div>
+    </div>
+
+  </div>
   <div id="planta-comforter" style="display:none"><div class="card"><div class="card-title"><span class="badge badge-o">Comforter</span></div><div class="alert alert-info"><span class="alert-icon">ℹ</span><div>50 unidades/turno.</div></div></div></div>
-  <div id="planta-insumos" style="display:none"><div class="card"><div class="card-title"><span class="badge badge-g">Insumos</span></div><div class="cap-row"><div class="cap-label">Hoy</div><div class="cap-bar-bg"><div class="cap-bar-fill" style="width:60%;background:#3B82F6">60%</div></div><div class="cap-pct" style="color:#1D4ED8">60%</div></div><div class="alert alert-ok"><span class="alert-icon">✅</span><div>13 de 23 OPs asignadas hoy.</div></div></div></div>
+  <div id="planta-insumos" style="display:none">
+    <div class="page-header" style="margin-bottom:10px"><h2>📦 Materia Prima</h2><p>Estado de disponibilidad de telas e insumos para las OPs activas</p></div>
+    <div class="grid2" style="align-items:start">
+
+      <!-- SUB-SECCIÓN: TELAS -->
+      <div class="card">
+        <div class="card-title"><span class="badge badge-p">Telas</span> Disponibilidad por OP</div>
+        <div class="cap-row"><div class="cap-label">Disponible</div><div class="cap-bar-bg"><div class="cap-bar-fill" style="width:72%;background:#10B981">72%</div></div><div class="cap-pct" style="color:#065F46">72%</div></div>
+        <div class="cap-row"><div class="cap-label">Pendiente</div><div class="cap-bar-bg"><div class="cap-bar-fill" style="width:18%;background:#F59E0B">18%</div></div><div class="cap-pct" style="color:#92400E">18%</div></div>
+        <div class="cap-row"><div class="cap-label">Agotado</div><div class="cap-bar-bg"><div class="cap-bar-fill" style="width:10%;background:#EF4444">10%</div></div><div class="cap-pct" style="color:#991B1B">10%</div></div>
+        <hr class="subtle"/>
+        <table style="width:100%;border-collapse:collapse;font-size:11px">
+          <thead><tr style="background:var(--bg)">
+            <th style="padding:4px 6px;border-bottom:1px solid var(--border);text-align:left;color:var(--text2)">OP</th>
+            <th style="padding:4px 6px;border-bottom:1px solid var(--border);text-align:left;color:var(--text2)">Referencia</th>
+            <th style="padding:4px 6px;border-bottom:1px solid var(--border);text-align:center;color:var(--text2)">F. Llegada</th>
+            <th style="padding:4px 6px;border-bottom:1px solid var(--border);text-align:center;color:var(--text2)">Estado</th>
+          </tr></thead>
+          <tbody>
+            <tr><td style="padding:4px 6px;border-bottom:1px solid var(--border);font-size:10px">OPN-145533</td><td style="padding:4px 6px;border-bottom:1px solid var(--border)">PT01833</td><td style="padding:4px 6px;border-bottom:1px solid var(--border);text-align:center">2026-03-05</td><td style="padding:4px 6px;border-bottom:1px solid var(--border);text-align:center"><span class="tag tag-ok">Disponible</span></td></tr>
+            <tr><td style="padding:4px 6px;border-bottom:1px solid var(--border);font-size:10px">OPN-145534</td><td style="padding:4px 6px;border-bottom:1px solid var(--border)">PT02024</td><td style="padding:4px 6px;border-bottom:1px solid var(--border);text-align:center">2026-03-10</td><td style="padding:4px 6px;border-bottom:1px solid var(--border);text-align:center"><span class="tag tag-pend">Pendiente</span></td></tr>
+            <tr><td style="padding:4px 6px;border-bottom:1px solid var(--border);font-size:10px">OPS-21682</td><td style="padding:4px 6px;border-bottom:1px solid var(--border)">PT09513</td><td style="padding:4px 6px;border-bottom:1px solid var(--border);text-align:center">—</td><td style="padding:4px 6px;border-bottom:1px solid var(--border);text-align:center"><span class="tag tag-alert">Sin tela</span></td></tr>
+            <tr><td style="padding:4px 6px;font-size:10px">OPN-150076</td><td style="padding:4px 6px">TE01126</td><td style="padding:4px 6px;text-align:center">2026-03-15</td><td style="padding:4px 6px;text-align:center"><span class="tag tag-ok">Disponible</span></td></tr>
+          </tbody>
+        </table>
+        <div class="alert alert-warn" style="margin-top:10px"><span class="alert-icon">⚠</span><div>OPS-21682 bloqueada: tela no disponible. Sin fecha de llegada confirmada.</div></div>
+      </div>
+
+      <!-- SUB-SECCIÓN: INSUMOS -->
+      <div class="card">
+        <div class="card-title"><span class="badge badge-g">Insumos</span> Disponibilidad por OP</div>
+        <div class="cap-row"><div class="cap-label">Disponible</div><div class="cap-bar-bg"><div class="cap-bar-fill" style="width:60%;background:#3B82F6">60%</div></div><div class="cap-pct" style="color:#1D4ED8">60%</div></div>
+        <div class="cap-row"><div class="cap-label">Parcial</div><div class="cap-bar-bg"><div class="cap-bar-fill" style="width:30%;background:#F59E0B">30%</div></div><div class="cap-pct" style="color:#92400E">30%</div></div>
+        <div class="cap-row"><div class="cap-label">Faltante</div><div class="cap-bar-bg"><div class="cap-bar-fill" style="width:10%;background:#EF4444">10%</div></div><div class="cap-pct" style="color:#991B1B">10%</div></div>
+        <hr class="subtle"/>
+        <table style="width:100%;border-collapse:collapse;font-size:11px">
+          <thead><tr style="background:var(--bg)">
+            <th style="padding:4px 6px;border-bottom:1px solid var(--border);text-align:left;color:var(--text2)">OP</th>
+            <th style="padding:4px 6px;border-bottom:1px solid var(--border);text-align:left;color:var(--text2)">Referencia</th>
+            <th style="padding:4px 6px;border-bottom:1px solid var(--border);text-align:center;color:var(--text2)">F. Llegada</th>
+            <th style="padding:4px 6px;border-bottom:1px solid var(--border);text-align:center;color:var(--text2)">Estado</th>
+          </tr></thead>
+          <tbody>
+            <tr><td style="padding:4px 6px;border-bottom:1px solid var(--border);font-size:10px">OPN-145533</td><td style="padding:4px 6px;border-bottom:1px solid var(--border)">PT01833</td><td style="padding:4px 6px;border-bottom:1px solid var(--border);text-align:center">2026-03-06</td><td style="padding:4px 6px;border-bottom:1px solid var(--border);text-align:center"><span class="tag tag-ok">Disponible</span></td></tr>
+            <tr><td style="padding:4px 6px;border-bottom:1px solid var(--border);font-size:10px">OPS-22794</td><td style="padding:4px 6px;border-bottom:1px solid var(--border)">PT08032</td><td style="padding:4px 6px;border-bottom:1px solid var(--border);text-align:center">2026-03-07</td><td style="padding:4px 6px;border-bottom:1px solid var(--border);text-align:center"><span class="tag tag-ok">Disponible</span></td></tr>
+            <tr><td style="padding:4px 6px;border-bottom:1px solid var(--border);font-size:10px">OPN-145534</td><td style="padding:4px 6px;border-bottom:1px solid var(--border)">PT02024</td><td style="padding:4px 6px;border-bottom:1px solid var(--border);text-align:center">—</td><td style="padding:4px 6px;border-bottom:1px solid var(--border);text-align:center"><span class="tag tag-pend">Pendiente</span></td></tr>
+            <tr><td style="padding:4px 6px;font-size:10px">OPS-150291</td><td style="padding:4px 6px">PT23388</td><td style="padding:4px 6px;text-align:center">2026-03-20</td><td style="padding:4px 6px;text-align:center"><span class="tag tag-proc">En tránsito</span></td></tr>
+          </tbody>
+        </table>
+        <div class="alert alert-ok" style="margin-top:10px"><span class="alert-icon">✅</span><div>13 de 23 OPs con insumos confirmados para hoy.</div></div>
+      </div>
+
+    </div>
+  </div>
   </div>
 </div>
 
@@ -1206,10 +1468,344 @@ function selectPlanta(p){
     const btn=document.getElementById('ptbtn-'+k);
     if(btn)btn.classList.toggle('sel',k===p);
   });
-  const nombres={corte:'Corte',confeccion:'Confección',bordado:'Bordado',terceros:'Terceros',relleno:'Relleno',acolchado:'Acolchado',comforter:'Comforter',insumos:'Insumos'};
+  const nombres={corte:'Corte',confeccion:'Confección',bordado:'Bordado',terceros:'Terceros',relleno:'Relleno',acolchado:'Acolchado',comforter:'Comforter',insumos:'Materia Prima'};
   document.getElementById('planta-msg').innerHTML='Planta: <b>'+nombres[p]+'</b>';
   // Renderizar vista dinámica según planta seleccionada
   if(p==='relleno') renderPlantaRelleno();
+  if(p==='acolchado') renderAcolchado();
+}
+
+// ══ PLANTA ACOLCHADO ══
+function renderAcolchado(){
+  // Recopilar todas las OPs con operación ACOLCHADO de todos los programas
+  const acolOps=[];
+  Object.entries(programasData).forEach(([progId,prog])=>{
+    prog.ops.forEach(row=>{
+      if(row.ops.some(o=>o.nom.toUpperCase().includes('ACOLCHADO'))){
+        const opEntry=row.ops.find(o=>o.nom.toUpperCase().includes('ACOLCHADO'));
+        acolOps.push({...row,progId,fechaAcol:opEntry?opEntry.fecha:''});
+      }
+    });
+  });
+
+  // KPIs
+  const totalUds=acolOps.reduce((s,r)=>s+r.cant,0);
+  const sinFecha=acolOps.filter(r=>!r.fechaAcol).length;
+  const totalGuata=acolOps.reduce((s,r)=>{
+    if(!r.cant_guata)return s;
+    const kg=parseFloat(r.cant_guata);
+    return s+(isNaN(kg)?0:kg);
+  },0).toFixed(1);
+  document.getElementById('acol-kpi-ops').textContent=acolOps.length;
+  document.getElementById('acol-kpi-mts').textContent=totalUds+' m';
+  document.getElementById('acol-kpi-sin').textContent=sinFecha;
+
+  // Alertas
+  const alertsEl=document.getElementById('acol-alerts');
+  const alertHtml=[];
+  if(sinFecha>0) alertHtml.push('<div class="alert alert-warn"><span class="alert-icon">⚠</span><div>'+sinFecha+' OP'+(sinFecha>1?'s':'')+' sin fecha de Acolchado asignada — revisar programación.</div></div>');
+  const overCap=acolOps.filter(r=>r.cant>400);
+  if(overCap.length) alertHtml.push('<div class="alert alert-err"><span class="alert-icon">🚫</span><div>'+overCap.map(r=>r.nop).join(', ')+': cantidad alta — verificar capacidad del módulo.</div></div>');
+  if(!alertHtml.length) alertHtml.push('<div class="alert alert-ok"><span class="alert-icon">✅</span><div>Sin alertas activas en el módulo Acolchado.</div></div>');
+  alertsEl.innerHTML=alertHtml.join('');
+
+  // Gantt — dinámico por semana
+  window.acolOpsData=acolOps;
+  const _initDate=acolOps.filter(r=>r.fechaAcol).map(r=>new Date(r.fechaAcol)).sort((a,b)=>a-b)[0]||new Date();
+  renderAcolGantt(acolGetMonday(_initDate));
+
+  // Tabla de OPs
+  document.getElementById('acol-op-count').textContent=acolOps.length+' OP'+(acolOps.length!==1?'s':'');
+  const tbody=document.getElementById('acol-ops-tbody');
+  const today=new Date().toISOString().split('T')[0];
+  tbody.innerHTML=acolOps.map(row=>{
+    const fechaAcol=row.fechaAcol||'';
+    let estadoHtml;
+    if(!fechaAcol){
+      estadoHtml='<span class="tag tag-pend">Sin fecha</span>';
+    } else if(fechaAcol<today){
+      estadoHtml='<span class="tag tag-ok">Completado</span>';
+    } else {
+      estadoHtml='<span class="tag tag-proc">Programado</span>';
+    }
+    const sinFechaRow=!fechaAcol;
+    const rowBg=sinFechaRow?'background:#FFF7ED':'';
+    const cantGuataVal=row.cant_guata?parseFloat(row.cant_guata):0;
+    return '<tr style="'+rowBg+'" data-fecha="'+fechaAcol+'">'
+      // Checkbox
+      +'<td style="padding:5px 8px;border:1px solid var(--border);text-align:center;width:32px">'
+        +'<input type="checkbox" class="acol-row-cb" style="cursor:pointer;width:13px;height:13px" '
+        +'data-nop="'+row.nop+'" data-guata="'+cantGuataVal+'" data-ref="'+row.ref+'" data-fecha="'+fechaAcol+'" '
+        +'onchange="updateAcolSelCount()"/>'
+      +'</td>'
+      +'<td style="padding:5px 8px;border:1px solid var(--border)"><b style="color:var(--primary);font-size:10px">'+row.nop+'</b>'+(row.bloq?' <span style="color:#EF4444">🔒</span>':'')+'<br><span style="font-size:9px;color:var(--text2)">'+row.progId+'</span></td>'
+      +'<td style="padding:5px 8px;border:1px solid var(--border);font-weight:600">'+row.ref+'</td>'
+      +'<td style="padding:5px 8px;border:1px solid var(--border);color:var(--text2)">'+(row.ext||'—')+'</td>'
+      +'<td style="padding:5px 8px;border:1px solid var(--border);max-width:190px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="'+row.desc+'">'+row.desc+'</td>'
+      +'<td style="padding:5px 8px;border:1px solid var(--border);text-align:center;font-weight:600">'+row.cant+'</td>'
+      +'<td style="padding:5px 8px;border:1px solid var(--border);color:var(--text2);font-size:10px">'+(row.notas||'—')+'</td>'
+      +'<td style="padding:5px 8px;border:1px solid var(--border);text-align:center">'+(row.ref_guata?'<span class="db-ro-val">'+row.ref_guata+'</span>':'<span class="db-ro-empty">—</span>')+'</td>'
+      +'<td style="padding:5px 8px;border:1px solid var(--border);text-align:center">'+(row.cant_guata?'<span class="db-ro-val">'+row.cant_guata+'</span>':'<span class="db-ro-empty">—</span>')+'</td>'
+      +'<td style="padding:5px 8px;border:1px solid var(--border);text-align:center">'+(row.rqt_telas?'<span style="font-size:10px;font-weight:600;color:var(--primary)">'+row.rqt_telas+'</span>':'<span class="db-ro-empty">—</span>')+'</td>'
+      +'<td style="padding:5px 8px;border:1px solid var(--border);text-align:center">'+(fechaAcol?'<span class="db-ro-val">'+fechaAcol+'</span>':'<span style="color:#EF4444;font-size:10px;font-weight:600">Sin asignar</span>')+'</td>'
+      +'<td style="padding:5px 8px;border:1px solid var(--border);text-align:center">'+estadoHtml+'</td>'
+      +'</tr>';
+  }).join('');
+  // Resetear filtro y selección al re-renderizar
+  const df=document.getElementById('acol-date-filter');if(df)df.value='';
+  updateAcolSelCount();
+}
+
+// ══ GANTT ACOLCHADO — funciones dinámicas ══
+const ACOL_DIAS_CORTOS=['L','M','X','J','V','S'];
+const ACOL_MESES=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+
+function acolGetMonday(date){
+  const d=new Date(date);d.setHours(0,0,0,0);
+  const day=d.getDay();d.setDate(d.getDate()+(day===0?-6:1-day));return d;
+}
+function acolFmtISO(d){return d.toISOString().split('T')[0];}
+function acolFmtShort(d){return d.getDate()+' '+ACOL_MESES[d.getMonth()];}
+function acolISOWeek(date){
+  const d=new Date(Date.UTC(date.getFullYear(),date.getMonth(),date.getDate()));
+  const day=d.getUTCDay()||7;d.setUTCDate(d.getUTCDate()+4-day);
+  const y=new Date(Date.UTC(d.getUTCFullYear(),0,1));
+  return Math.ceil((((d-y)/86400000)+1)/7);
+}
+function acolMondayOfISOWeek(year,week){
+  const jan4=new Date(year,0,4);
+  const mon1=acolGetMonday(jan4);
+  const r=new Date(mon1);r.setDate(r.getDate()+(week-1)*7);return r;
+}
+function acolUpdateSemSelect(year,month){
+  const sel=document.getElementById('acol-sem-sel');if(!sel)return;
+  const first=new Date(year,month,1),last=new Date(year,month+1,0);
+  const weeks=[];const seen=new Set();
+  let d=new Date(first);
+  while(d<=last){
+    const mon=acolGetMonday(d);const w=acolISOWeek(mon);
+    if(!seen.has(w)){
+      seen.add(w);
+      const sat=new Date(mon);sat.setDate(sat.getDate()+5);
+      weeks.push({w,mon,sat});
+    }
+    d.setDate(d.getDate()+1);
+  }
+  sel.innerHTML=weeks.map(({w,mon,sat})=>
+    '<option value="'+w+'">Sem. '+w+' ('+acolFmtShort(mon)+' – '+acolFmtShort(sat)+')</option>'
+  ).join('');
+}
+function renderAcolGantt(monday){
+  window.acolCurrentMonday=monday;
+  const cols=[];
+  for(let i=0;i<6;i++){
+    const d=new Date(monday);d.setDate(d.getDate()+i);
+    cols.push({label:ACOL_DIAS_CORTOS[i]+d.getDate(),date:acolFmtISO(d)});
+  }
+  const saturday=new Date(monday);saturday.setDate(saturday.getDate()+5);
+  const wn=acolISOWeek(monday);
+  const label='Sem. '+wn+' · '+acolFmtShort(monday)+' – '+acolFmtShort(saturday)+' '+monday.getFullYear();
+  const labelEl=document.getElementById('acol-gantt-label');if(labelEl)labelEl.textContent=label;
+  // Sync mes selector
+  const mesVal=monday.getFullYear()+'-'+String(monday.getMonth()+1).padStart(2,'0');
+  const mesSel=document.getElementById('acol-mes-sel');if(mesSel)mesSel.value=mesVal;
+  // Sync semana selector
+  acolUpdateSemSelect(monday.getFullYear(),monday.getMonth());
+  const semSel=document.getElementById('acol-sem-sel');if(semSel)semSel.value=String(wn);
+  // Actualizar thead
+  const thead=document.getElementById('acol-gantt-thead');
+  if(thead)thead.innerHTML='<tr><th class="op-col">OP</th>'+cols.map(c=>'<th>'+c.label+'</th>').join('')+'</tr>';
+  // Actualizar tbody
+  const acolOps=window.acolOpsData||[];
+  const gb=document.getElementById('acol-gantt-body');
+  if(!gb)return;gb.innerHTML='';
+
+  // ── Calcular uso diario (metros) ──
+  const CAP_DIA=80;
+  const dailyUsage={};cols.forEach(c=>dailyUsage[c.date]=0);
+  acolOps.forEach(row=>{
+    if(!row.fechaAcol)return;
+    const daysNeeded=Math.max(1,Math.ceil(row.cant/CAP_DIA));
+    const mPerDay=row.cant/daysNeeded;
+    for(let i=0;i<daysNeeded;i++){
+      const d=new Date(row.fechaAcol);d.setDate(d.getDate()+i);
+      const ds=acolFmtISO(d);
+      if(Object.prototype.hasOwnProperty.call(dailyUsage,ds))dailyUsage[ds]+=mPerDay;
+    }
+  });
+
+  // ── Fila de capacidad (primera fila, encabezado visual) ──
+  const trCap=document.createElement('tr');trCap.style.cssText='background:#F8F7FF;border-bottom:2px solid #C4BFFF';
+  const tdCapLbl=document.createElement('td');tdCapLbl.className='op-col';
+  tdCapLbl.style.cssText='font-size:9px;font-weight:700;color:var(--text2);line-height:1.4;padding:4px 6px';
+  tdCapLbl.innerHTML='Cap. diaria<br><span style="font-weight:400;color:var(--text2)">80 m/día</span>';
+  trCap.appendChild(tdCapLbl);
+  cols.forEach(col=>{
+    const used=Math.min(CAP_DIA,Math.round(dailyUsage[col.date]||0));
+    const pct=Math.round(used/CAP_DIA*100);
+    const clr=pct===0?'#9CA3AF':pct<70?'#10B981':pct<95?'#F59E0B':'#EF4444';
+    const lbl=pct===0?'Libre':used+'m';
+    const bgFill=pct===0?'#E5E7EB':clr+'33';
+    const td=document.createElement('td');td.style.cssText='padding:3px 2px;vertical-align:bottom;text-align:center';
+    td.innerHTML=
+      '<div style="display:inline-flex;flex-direction:column;align-items:center;gap:1px">'
+      +'<div style="font-size:8px;font-weight:700;color:'+clr+'">'+lbl+'</div>'
+      +'<div style="width:20px;height:34px;background:#E5E7EB;border-radius:3px 3px 0 0;position:relative;overflow:hidden">'
+        +'<div style="position:absolute;bottom:0;width:100%;height:'+pct+'%;background:'+clr+';transition:height .4s"></div>'
+      +'</div>'
+      +'<div style="font-size:7px;color:'+clr+';background:'+bgFill+';border-radius:0 0 3px 3px;width:20px;text-align:center;padding:1px 0">'+pct+'%</div>'
+      +'</div>';
+    trCap.appendChild(td);
+  });
+  gb.appendChild(trCap);
+
+  // ── Filas de OPs ──
+  acolOps.forEach(row=>{
+    const tr=document.createElement('tr');
+    const tdOp=document.createElement('td');tdOp.className='op-col';tdOp.style.fontSize='10px';
+    tdOp.textContent=row.nop+(row.bloq?' 🔒':'');tr.appendChild(tdOp);
+    cols.forEach(col=>{
+      const td=document.createElement('td');
+      if(!row.fechaAcol){td.className='gc-block';}
+      else if(col.date===row.fechaAcol){td.className='gc-ocup';td.innerHTML='<span class="gc-prog">✓</span>';}
+      else if(row.cant>200&&col.date>row.fechaAcol){
+        const diff=(new Date(col.date)-new Date(row.fechaAcol))/86400000;
+        if(diff<=2){td.className='gc-ocup';td.innerHTML='<span class="gc-prog">✓</span>';}
+      }
+      tr.appendChild(td);
+    });
+    gb.appendChild(tr);
+  });
+
+  // ── Fila libre ──
+  const trL=document.createElement('tr');
+  const tdLop=document.createElement('td');tdLop.className='op-col';tdLop.style.cssText='font-size:10px;color:var(--text2)';tdLop.textContent='— Libre —';trL.appendChild(tdLop);
+  cols.forEach(col=>{
+    const td=document.createElement('td');
+    const ocup=acolOps.some(r=>{
+      if(!r.fechaAcol)return false;
+      return col.date===r.fechaAcol||(r.cant>200&&col.date>r.fechaAcol&&(new Date(col.date)-new Date(r.fechaAcol))/86400000<=2);
+    });
+    if(!ocup)td.className='gc-libre';trL.appendChild(td);
+  });
+  gb.appendChild(trL);
+}
+function acolNavWeek(dir){
+  const cur=window.acolCurrentMonday||new Date();
+  const nxt=new Date(cur);nxt.setDate(nxt.getDate()+dir*7);
+  renderAcolGantt(nxt);
+}
+function acolSetMes(val){
+  const[yr,mo]=val.split('-').map(Number);
+  const mon=acolGetMonday(new Date(yr,mo-1,1));
+  acolUpdateSemSelect(yr,mo-1);
+  renderAcolGantt(mon);
+}
+function acolSetSem(weekStr){
+  const w=parseInt(weekStr);
+  const mesSel=document.getElementById('acol-mes-sel');
+  const yr=mesSel?parseInt(mesSel.value.split('-')[0]):new Date().getFullYear();
+  renderAcolGantt(acolMondayOfISOWeek(yr,w));
+}
+function acolGanttToday(){renderAcolGantt(acolGetMonday(new Date()));}
+
+// ── DISEÑO DEL ACOLCHADO — imagen ──
+function loadAcolDesignImg(input){
+  if(!input.files||!input.files[0])return;
+  const reader=new FileReader();
+  reader.onload=function(e){
+    const img=document.getElementById('acol-design-img');
+    const ph=document.getElementById('acol-design-placeholder');
+    if(img){img.src=e.target.result;img.style.display='block';}
+    if(ph)ph.style.display='none';
+  };
+  reader.readAsDataURL(input.files[0]);
+}
+function clearAcolDesignImg(){
+  const img=document.getElementById('acol-design-img');
+  const ph=document.getElementById('acol-design-placeholder');
+  const fi=document.getElementById('acol-design-file');
+  if(img){img.src='';img.style.display='none';}
+  if(ph)ph.style.display='block';
+  if(fi)fi.value='';
+}
+
+// ── FILTRO RANGO DE FECHAS — TABLA ACOLCHADO ──
+function filterAcolRange(){
+  const from=document.getElementById('acol-from').value;
+  const to=document.getElementById('acol-to').value;
+  let vis=0;
+  document.querySelectorAll('#acol-ops-tbody tr').forEach(tr=>{
+    const f=tr.dataset.fecha||'';
+    let show=true;
+    if(from&&(!f||f<from))show=false;
+    if(to&&f&&f>to)show=false;
+    tr.style.display=show?'':'none';
+    if(!show){const cb=tr.querySelector('.acol-row-cb');if(cb)cb.checked=false;}
+    else vis++;
+  });
+  // Badge de resultado
+  const badge=document.getElementById('acol-range-badge');
+  if(badge){
+    if(from||to){badge.textContent=vis+' OP'+(vis!==1?'s':'');badge.style.display='inline-block';}
+    else{badge.style.display='none';}
+  }
+  updateAcolSelCount();
+}
+function clearAcolFilter(){
+  const df=document.getElementById('acol-from');if(df)df.value='';
+  const dt=document.getElementById('acol-to');if(dt)dt.value='';
+  document.querySelectorAll('#acol-ops-tbody tr').forEach(tr=>tr.style.display='');
+  const badge=document.getElementById('acol-range-badge');if(badge)badge.style.display='none';
+  updateAcolSelCount();
+}
+function acolRangoHoy(){
+  const hoy=new Date().toISOString().split('T')[0];
+  const df=document.getElementById('acol-from');const dt=document.getElementById('acol-to');
+  if(df)df.value=hoy;if(dt)dt.value=hoy;filterAcolRange();
+}
+
+// ── SELECCIÓN Y NOTIFICACIÓN ──
+function toggleAcolAll(cb){
+  const checked=cb.checked;
+  document.querySelectorAll('.acol-row-cb').forEach(c=>{
+    const tr=c.closest('tr');
+    if(tr&&tr.style.display!=='none'){c.checked=checked;}
+  });
+  updateAcolSelCount();
+}
+function updateAcolSelCount(){
+  const sel=[...document.querySelectorAll('.acol-row-cb:checked')].filter(c=>c.closest('tr')&&c.closest('tr').style.display!=='none');
+  const n=sel.length;
+  const el=document.getElementById('acol-sel-count');
+  if(el)el.textContent=n+' OP'+(n!==1?'s':'')+' seleccionada'+(n!==1?'s':'');
+  const btn=document.getElementById('acol-notify-btn');
+  if(btn){btn.disabled=n===0;btn.style.opacity=n===0?'0.4':'1';btn.style.cursor=n===0?'default':'pointer';}
+  // Resumen dinámico
+  const sumEl=document.getElementById('acol-sel-summary');
+  const detEl=document.getElementById('acol-sel-detail');
+  if(!sumEl||!detEl)return;
+  if(n===0){sumEl.style.display='none';return;}
+  const totalGuata=sel.reduce((s,c)=>s+parseFloat(c.dataset.guata||0),0).toFixed(1);
+  const nops=sel.map(c=>c.dataset.nop).join(', ');
+  const fechas=[...new Set(sel.map(c=>c.dataset.fecha).filter(Boolean))].sort().join(', ')||'Sin fecha';
+  detEl.textContent=n+' OP(s): '+nops+' · Guata total: '+totalGuata+' kg · Fecha(s): '+fechas;
+  sumEl.style.display='block';
+}
+function notificarComprasAcol(){
+  const sel=[...document.querySelectorAll('.acol-row-cb:checked')].filter(c=>c.closest('tr')&&c.closest('tr').style.display!=='none');
+  if(!sel.length){showToast('⚠ Selecciona al menos una OP.',false);return;}
+  const totalGuata=sel.reduce((s,c)=>s+parseFloat(c.dataset.guata||0),0).toFixed(1);
+  const nops=sel.map(c=>c.dataset.nop).join(', ');
+  const fechas=[...new Set(sel.map(c=>c.dataset.fecha).filter(Boolean))].sort().join(', ')||'Sin fecha';
+  showToast('✅ Notificación enviada a Analista de Compras — '+sel.length+' OP(s) · '+totalGuata+' kg guata · Fecha(s): '+fechas,false);
+  // Marcar filas como notificadas visualmente
+  sel.forEach(c=>{
+    const tr=c.closest('tr');
+    if(tr){tr.style.background='#F0FDF4';c.checked=false;}
+  });
+  const cbAll=document.getElementById('acol-cb-all');if(cbAll)cbAll.checked=false;
+  updateAcolSelCount();
 }
 
 // ══ NAVEGACIÓN desde operación → planta ══
@@ -1282,44 +1878,48 @@ const programasData={
   'DI-1223':{
     cliente:'Hilton Cartagena',fecha:'22-mar-2026',
     ops:[
-      {nop:'OPN-145533',ref:'PT01833',desc:'PROTECTOR 200X200X40 ANTIFLUIDO 100% POL',notas:'',cant:20,met:'1',bloq:false,fechaTela:'2026-03-05',fechaInsumos:'2026-03-06',
+      {nop:'OPN-145533',ref:'PT01833',ext:'E10094',desc:'PROTECTOR 200X200X40 ANTIFLUIDO 100% POL',notas:'',cant:20,met:'1',bloq:false,fechaTela:'2026-03-05',fechaInsumos:'2026-03-06',
        ops:[{nro:10,nom:'CORTE',fecha:'2026-03-08'},{nro:20,nom:'ESTAMPADO',fecha:'2026-03-09'},{nro:30,nom:'CONFECCION',fecha:'2026-03-15'}]},
-      {nop:'OPN-145534',ref:'PT02024',desc:'PROTECTOR 140X200X40 ANTIFLUIDO 100% POL',notas:'',cant:20,met:'2',bloq:false,fechaTela:'2026-03-10',fechaInsumos:'',
+      {nop:'OPN-145534',ref:'PT02024',ext:'E10094',desc:'PROTECTOR 140X200X40 ANTIFLUIDO 100% POL',notas:'',cant:20,met:'2',bloq:false,fechaTela:'2026-03-10',fechaInsumos:'',
        ops:[{nro:10,nom:'CORTE',fecha:''},{nro:20,nom:'BORDADO',fecha:''},{nro:30,nom:'CONFECCION EXTERNA',fecha:''}]},
-      {nop:'OPN-145535',ref:'PT06287',desc:'COVER DUVET 230X240 300H 40/60% POL',notas:'',cant:20,met:'1',bloq:false,fechaTela:'2026-03-12',fechaInsumos:'2026-03-12',
+      {nop:'OPN-145535',ref:'PT06287',ext:'E10094',desc:'COVER DUVET 230X240 300H 40/60% POL',notas:'',cant:20,met:'1',bloq:false,fechaTela:'2026-03-12',fechaInsumos:'2026-03-12',
        ops:[{nro:10,nom:'CORTE',fecha:''},{nro:20,nom:'CONFECCION',fecha:''}]},
-      {nop:'OPN-145536',ref:'PT07110',desc:'COVER DB 210X240 300H 40/60% POL',notas:'',cant:20,met:'1',bloq:false,fechaTela:'',fechaInsumos:'2026-03-14',
+      {nop:'OPN-145536',ref:'PT07110',ext:'E10094',desc:'COVER DB 210X240 300H 40/60% POL',notas:'',cant:20,met:'1',bloq:false,fechaTela:'',fechaInsumos:'2026-03-14',
        ops:[{nro:10,nom:'CORTE',fecha:''},{nro:20,nom:'CONFECCION',fecha:''}]},
-      {nop:'OPS-22794',ref:'PT08032',desc:'ALMOHADA SUAVE 50X70 230H 100% AL',notas:'Prioridad alta',cant:150,met:'1',bloq:false,fechaTela:'2026-03-07',fechaInsumos:'2026-03-07',
+      {nop:'OPS-22794',ref:'PT08032',ext:'E10094',desc:'ALMOHADA SUAVE 50X70 230H 100% AL',notas:'Prioridad alta',cant:150,met:'1',bloq:false,fechaTela:'2026-03-07',fechaInsumos:'2026-03-07',
        ops:[{nro:10,nom:'CORTE',fecha:''},{nro:20,nom:'CONFECCION',fecha:''}]},
-      {nop:'OPS-22795',ref:'PT08033',desc:'ALMOHADA SUAVE 50X90 230H 100% AL',notas:'',cant:40,met:'1',bloq:false,fechaTela:'2026-03-07',fechaInsumos:'',
+      {nop:'OPS-22795',ref:'PT08033',ext:'E10094',desc:'ALMOHADA SUAVE 50X90 230H 100% AL',notas:'',cant:40,met:'1',bloq:false,fechaTela:'2026-03-07',fechaInsumos:'',
        ops:[{nro:10,nom:'CORTE',fecha:''},{nro:20,nom:'CONFECCION',fecha:''}]},
-      {nop:'OPS-21682',ref:'PT09513',desc:'COBIJA PLUMON 100%ALG 285X240',notas:'Tela pendiente — sin MP',cant:60,met:'1',bloq:true,fechaTela:'',fechaInsumos:'',
+      {nop:'OPS-21682',ref:'PT09513',ext:'E12853',desc:'COBIJA PLUMON 100%ALG 285X240',notas:'Tela pendiente — sin MP',cant:60,met:'1',bloq:true,fechaTela:'',fechaInsumos:'',
        ops:[{nro:10,nom:'CORTE',fecha:''},{nro:20,nom:'CONFECCION',fecha:''}]},
-      {nop:'OPN-150076',ref:'TE01126',desc:'TELA ACOL UFAZ 230H DOWN PROOF',notas:'',cant:154,met:'1',bloq:false,fechaTela:'2026-03-15',fechaInsumos:'',
-       ops:[{nro:10,nom:'ACOLCHADO',fecha:''}]},
-      {nop:'OPN-150550',ref:'PT05865',desc:'CORTINA DE BAÑO 180X190 100% POL',notas:'',cant:30,met:'1',bloq:false,fechaTela:'2026-03-18',fechaInsumos:'2026-03-17',
+      {nop:'OPN-150076',ref:'TE01126',ext:'E10094',desc:'TELA ACOL UFAZ 230H DOWN PROOF',notas:'',cant:154,met:'1',bloq:false,fechaTela:'2026-03-15',fechaInsumos:'',ref_guata:'IN-GU-280',cant_guata:'43.1 kg',rqt_telas:'RQT-10024',
+       ops:[{nro:10,nom:'ACOLCHADO',fecha:'2026-03-12'}]},
+      {nop:'OPN-150550',ref:'PT05865',ext:'E11200',desc:'CORTINA DE BAÑO 180X190 100% POL',notas:'',cant:30,met:'1',bloq:false,fechaTela:'2026-03-18',fechaInsumos:'2026-03-17',
        ops:[{nro:10,nom:'CORTE',fecha:''},{nro:20,nom:'CONFECCION',fecha:''},{nro:30,nom:'SERVICIO OJALETE',fecha:''}]},
-      {nop:'OPS-151073',ref:'PT23929',desc:'COVER DUVET DB 300H MEZCLA BENEVO',notas:'',cant:15,met:'1',bloq:false,fechaTela:'',fechaInsumos:'2026-03-20',
+      {nop:'OPS-151073',ref:'PT23929',ext:'E12853',desc:'COVER DUVET DB 300H MEZCLA BENEVO',notas:'',cant:15,met:'1',bloq:false,fechaTela:'',fechaInsumos:'2026-03-20',
        ops:[{nro:10,nom:'CORTE',fecha:''},{nro:20,nom:'CONFECCION',fecha:''},{nro:30,nom:'SERVICIO OJAL',fecha:''}]},
-      {nop:'OPS-150291',ref:'PT23388',desc:'JUEGO CAMA EXTRA 200H 100% AL CROCHETA',notas:'Crocheta externa',cant:15,met:'1',bloq:false,fechaTela:'2026-03-20',fechaInsumos:'2026-03-20',
+      {nop:'OPS-150291',ref:'PT23388',ext:'E13371',desc:'JUEGO CAMA EXTRA 200H 100% AL CROCHETA',notas:'Crocheta externa',cant:15,met:'1',bloq:false,fechaTela:'2026-03-20',fechaInsumos:'2026-03-20',
        ops:[{nro:10,nom:'CORTE',fecha:''},{nro:20,nom:'CONFECCION',fecha:''},{nro:30,nom:'SERVICIO CROCHETA',fecha:''}]}
     ]
   },
   'DI-1224':{
     cliente:'Éxito Cali',fecha:'05-abr-2026',
     ops:[
-      {nop:'OPN-156001',ref:'PT10012',desc:'SABANA DOBLE 200H 100% ALG',notas:'',cant:50,met:'1',bloq:false,fechaTela:'2026-04-01',fechaInsumos:'2026-04-02',
+      {nop:'OPN-156001',ref:'PT10012',ext:'E10094',desc:'SABANA DOBLE 200H 100% ALG',notas:'',cant:50,met:'1',bloq:false,fechaTela:'2026-04-01',fechaInsumos:'2026-04-02',
        ops:[{nro:10,nom:'CORTE',fecha:''},{nro:20,nom:'CONFECCION',fecha:''}]},
-      {nop:'OPN-156002',ref:'PT10013',desc:'SABANA QUEEN 200H 100% ALG',notas:'Confirmar diseño',cant:30,met:'1',bloq:false,fechaTela:'',fechaInsumos:'2026-04-03',
-       ops:[{nro:10,nom:'CORTE',fecha:''},{nro:20,nom:'ESTAMPADO',fecha:''},{nro:30,nom:'CONFECCION',fecha:''}]}
+      {nop:'OPN-156002',ref:'PT10013',ext:'E10094',desc:'SABANA QUEEN 200H 100% ALG',notas:'Confirmar diseño',cant:30,met:'1',bloq:false,fechaTela:'',fechaInsumos:'2026-04-03',
+       ops:[{nro:10,nom:'CORTE',fecha:''},{nro:20,nom:'ESTAMPADO',fecha:''},{nro:30,nom:'CONFECCION',fecha:''}]},
+      {nop:'OPN-156010',ref:'TE02014',ext:'E10094',desc:'TELA ACOL MICROFIBRA 200H PREMIUM',notas:'',cant:280,met:'1',bloq:false,fechaTela:'2026-03-28',fechaInsumos:'',ref_guata:'IN-GU-300',cant_guata:'84.0 kg',rqt_telas:'RQT-10048',
+       ops:[{nro:10,nom:'ACOLCHADO',fecha:'2026-04-01'}]}
     ]
   },
   'DI-1225':{
     cliente:'Falabella Bogotá',fecha:'10-abr-2026',
     ops:[
-      {nop:'OPN-157001',ref:'PT11020',desc:'DUVET BORDADO KING 300H',notas:'',cant:25,met:'2',bloq:false,fechaTela:'2026-04-08',fechaInsumos:'2026-04-08',
-       ops:[{nro:10,nom:'CORTE',fecha:''},{nro:20,nom:'BORDADO',fecha:''},{nro:30,nom:'CONFECCION EXTERNA',fecha:''}]}
+      {nop:'OPN-157001',ref:'PT11020',ext:'E12853',desc:'DUVET BORDADO KING 300H',notas:'',cant:25,met:'2',bloq:false,fechaTela:'2026-04-08',fechaInsumos:'2026-04-08',
+       ops:[{nro:10,nom:'CORTE',fecha:''},{nro:20,nom:'BORDADO',fecha:''},{nro:30,nom:'CONFECCION EXTERNA',fecha:''}]},
+      {nop:'OPN-157010',ref:'TE01430',ext:'E12853',desc:'TELA ACOL SATEEN DOWN PROOF 300H',notas:'Prioridad hotel',cant:190,met:'1',bloq:false,fechaTela:'2026-04-05',fechaInsumos:'',ref_guata:'IN-GU-320',cant_guata:'60.8 kg',rqt_telas:'RQT-10061',
+       ops:[{nro:10,nom:'ACOLCHADO',fecha:''}]}
     ]
   }
 };
@@ -1677,6 +2277,7 @@ function renderPrograma(id){
   const hdrs=[
     {lbl:'N° OP',cls:'p-col-nop op-sticky',style:'text-align:left;padding:0 8px'},
     {lbl:'Referencia',cls:'p-col-ref op-sticky',style:'text-align:left;padding:0 6px'},
+    {lbl:'Extensión',cls:'p-col-ext op-sticky',style:'text-align:left;padding:0 6px'},
     {lbl:'Descripción',cls:'p-col-desc op-sticky',style:'text-align:left;padding:0 6px'},
     {lbl:'Cant.',cls:'p-col-cant op-sticky',style:''},
     {lbl:'Notas',cls:'p-col-notas op-sticky',style:'text-align:left;padding:0 6px'},
@@ -1737,6 +2338,10 @@ function renderPrograma(id){
     const refTd=document.createElement('td');refTd.className='p-col-ref op-sticky';
     refTd.innerHTML='<span style="font-size:10px;font-weight:600">'+row.ref+'</span>';
     tr2.appendChild(refTd);
+    // Extensión
+    const extTd=document.createElement('td');extTd.className='p-col-ext op-sticky';
+    extTd.innerHTML='<span style="font-size:10px;color:var(--text2)">'+(row.ext||'—')+'</span>';
+    tr2.appendChild(extTd);
     // Descripción (truncada con tooltip)
     const descTd=document.createElement('td');descTd.className='p-col-desc op-sticky';
     descTd.title=row.desc;
@@ -2331,17 +2936,8 @@ function showToast(msg,persistent){
 }
 function hideToast(){document.getElementById('toast').classList.remove('show');}
 
-// ══ AUTH ══
-function handleLogout(){
-  clearSession();
-  window.location.replace('login.html');
-}
-
 // Inicializar al cargar
 document.addEventListener('DOMContentLoaded',()=>{
-  // Mostrar nombre del usuario en el nav
-  var s=window._authSession;
-  if(s){document.getElementById('nav-user-name').textContent=s.name;}
   initTbSidePanel();
   renderPrograma('DI-1223');
   renderTablero('DI-1223');
