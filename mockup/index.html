@@ -271,6 +271,14 @@ tr.prog-selected td.p-col-prog{background:#EDEBFE}
 /* legend */
 .prog-legend{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:10px;color:var(--text2);margin-top:8px}
 .prog-legend span{display:flex;align-items:center;gap:4px}
+/* ── TOOLTIP IMAGEN OP ACOLCHADO ── */
+#acol-img-tooltip{position:fixed;z-index:9999;background:#fff;border:1.5px solid var(--border);border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.18);padding:10px;min-width:180px;max-width:230px;pointer-events:none;display:none}
+#acol-img-tooltip.show{display:block}
+.acol-tip-ref{font-size:10px;font-weight:700;color:var(--primary);margin-bottom:2px}
+.acol-tip-desc{font-size:9px;color:var(--text2);margin-bottom:7px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.acol-tip-img{max-width:100%;max-height:150px;object-fit:contain;border-radius:6px;display:block;border:1px solid var(--border);margin-bottom:4px}
+.acol-tip-noimg{font-size:10px;color:var(--text2);text-align:center;padding:18px 8px;font-style:italic}
+.acol-tip-hint{font-size:9px;color:var(--text2);text-align:center;margin-top:4px}
 </style>
 </head>
 <body>
@@ -278,6 +286,14 @@ tr.prog-selected td.p-col-prog{background:#EDEBFE}
   <div class="spinner"></div>
   <span id="toast-msg"></span>
   <button class="toast-close" onclick="hideToast()">✕</button>
+</div>
+<!-- Tooltip imagen referencia — Acolchado -->
+<div id="acol-img-tooltip">
+  <div class="acol-tip-ref" id="acol-tip-ref"></div>
+  <div class="acol-tip-desc" id="acol-tip-desc"></div>
+  <img class="acol-tip-img" id="acol-tip-img" src="" alt="" style="display:none"/>
+  <div class="acol-tip-noimg" id="acol-tip-noimg">📷 Sin imagen cargada</div>
+  <div class="acol-tip-hint" id="acol-tip-hint"></div>
 </div>
 
 <nav class="nav">
@@ -739,17 +755,9 @@ tr.prog-selected td.p-col-prog{background:#EDEBFE}
   <div id="planta-confeccion" style="display:none"><div class="card"><div class="card-title"><span class="badge badge-o">Confección</span></div><div class="alert alert-info"><span class="alert-icon">ℹ</span><div>Mínimo 15 días después del retorno de terceros.</div></div><div class="cap-row"><div class="cap-label">Sem 2</div><div class="cap-bar-bg"><div class="cap-bar-fill" style="width:72%;background:#3B82F6">72%</div></div><div class="cap-pct" style="color:#1D4ED8">72%</div></div></div></div>
   <div id="planta-relleno" style="display:none">
 
-    <!-- ── Barra de período ── -->
-    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:8px 12px;margin-bottom:8px">
-      <span style="font-weight:700;font-size:13px;color:var(--primary)">🧵 Planta Relleno</span>
-      <div style="display:flex;gap:0;border:1px solid var(--border);border-radius:6px;overflow:hidden;margin-left:6px">
-        <button id="rl-btn-sem" onclick="rlSetView('semana')" style="padding:4px 12px;border:none;background:var(--primary);color:#fff;font-size:10px;font-weight:700;cursor:pointer">Semana</button>
-        <button id="rl-btn-mes" onclick="rlSetView('mes')" style="padding:4px 12px;border:none;background:#fff;color:var(--text2);font-size:10px;font-weight:600;cursor:pointer">Mes</button>
-      </div>
-      <button onclick="rlNavPeriod(-1)" style="padding:3px 10px;border:1px solid var(--border);border-radius:6px;background:#fff;cursor:pointer;font-size:12px;color:var(--text2)">◀</button>
-      <span id="rl-period-label" style="font-size:12px;font-weight:600;color:var(--text);min-width:150px;text-align:center">—</span>
-      <button onclick="rlNavPeriod(1)" style="padding:3px 10px;border:1px solid var(--border);border-radius:6px;background:#fff;cursor:pointer;font-size:12px;color:var(--text2)">▶</button>
-      <button onclick="rlGoToday()" style="padding:3px 10px;border:1px solid var(--primary);border-radius:6px;background:var(--primary-light);color:var(--primary);font-size:10px;font-weight:600;cursor:pointer">Hoy</button>
+    <div class="page-header" style="margin-bottom:10px">
+      <h2>🧵 Módulo Relleno</h2>
+      <p>OPs programadas con operación Relleno · Capacidad 1 840 min/día (2 turnos)</p>
     </div>
 
     <!-- ── KPIs ── -->
@@ -765,14 +773,48 @@ tr.prog-selected td.p-col-prog{background:#EDEBFE}
 
     <!-- ── Gantt ── -->
     <div class="card" style="padding:10px;margin-bottom:8px">
-      <div class="card-title" style="margin-bottom:8px">
-        <span class="badge badge-o">Gantt · días hábiles</span>
-        <span style="margin-left:auto;display:flex;gap:6px;align-items:center;flex-wrap:wrap">
+      <!-- Navegación estilo Acolchado -->
+      <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:10px">
+        <span class="badge badge-o">Gantt · Relleno</span>
+        <!-- Selector mes -->
+        <div style="display:flex;flex-direction:column;gap:1px">
+          <span style="font-size:9px;color:var(--text2);font-weight:600">Mes</span>
+          <select id="rl-mes-sel" onchange="rlSetMes(this.value)"
+            style="font-size:10px;padding:3px 5px;border:1px solid var(--border);border-radius:5px;background:#fff;color:var(--text);cursor:pointer">
+            <option value="2026-01">Enero 2026</option>
+            <option value="2026-02">Febrero 2026</option>
+            <option value="2026-03" selected>Marzo 2026</option>
+            <option value="2026-04">Abril 2026</option>
+            <option value="2026-05">Mayo 2026</option>
+            <option value="2026-06">Junio 2026</option>
+            <option value="2026-07">Julio 2026</option>
+            <option value="2026-08">Agosto 2026</option>
+            <option value="2026-09">Septiembre 2026</option>
+            <option value="2026-10">Octubre 2026</option>
+            <option value="2026-11">Noviembre 2026</option>
+            <option value="2026-12">Diciembre 2026</option>
+          </select>
+        </div>
+        <!-- Selector semana -->
+        <div style="display:flex;flex-direction:column;gap:1px">
+          <span style="font-size:9px;color:var(--text2);font-weight:600">Semana del año</span>
+          <select id="rl-sem-sel" onchange="rlSetSem(this.value)"
+            style="font-size:10px;padding:3px 5px;border:1px solid var(--border);border-radius:5px;background:#fff;color:var(--text);cursor:pointer;min-width:170px">
+            <!-- poblado por JS -->
+          </select>
+        </div>
+        <!-- Flechas + label -->
+        <button onclick="rlNavWeek(-1)" style="padding:4px 10px;border:1px solid var(--border);border-radius:6px;background:#fff;cursor:pointer;font-size:12px;color:var(--text2)">◀</button>
+        <span id="rl-gantt-label" style="font-size:11px;font-weight:600;color:var(--text);min-width:190px;text-align:center">—</span>
+        <button onclick="rlNavWeek(1)" style="padding:4px 10px;border:1px solid var(--border);border-radius:6px;background:#fff;cursor:pointer;font-size:12px;color:var(--text2)">▶</button>
+        <button onclick="rlGanttToday()" style="padding:4px 10px;border:1px solid var(--primary);border-radius:6px;background:var(--primary-light);color:var(--primary);font-size:10px;font-weight:600;cursor:pointer">Hoy</button>
+        <!-- Leyenda -->
+        <div style="margin-left:auto;display:flex;gap:5px;align-items:center;flex-wrap:wrap">
           <span style="background:#DBEAFE;color:#1E40AF;padding:2px 7px;border-radius:4px;font-size:9px;font-weight:600">Programado</span>
           <span style="background:#FEF3C7;color:#92400E;padding:2px 7px;border-radius:4px;font-size:9px;font-weight:600">En Ejecución</span>
           <span style="background:#D1FAE5;color:#065F46;padding:2px 7px;border-radius:4px;font-size:9px;font-weight:600">Completado</span>
           <span style="background:#FEE2E2;color:#991B1B;padding:2px 7px;border-radius:4px;font-size:9px;font-weight:600">Vencido</span>
-        </span>
+        </div>
       </div>
       <div id="rl-gantt-container">Cargando…</div>
     </div>
@@ -881,6 +923,76 @@ tr.prog-selected td.p-col-prog{background:#EDEBFE}
       </div>
     </div>
 
+    <!-- Tabla OPs Acolchado -->
+    <div class="card" style="margin-bottom:10px">
+      <!-- Barra superior: título + filtro fecha + notificación -->
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px">
+        <span class="badge badge-o" style="font-size:11px">OPs con operación Acolchado</span>
+        <span id="acol-op-count" style="font-size:11px;color:var(--text2)"></span>
+        <!-- Filtro rango de fechas -->
+        <div style="display:flex;align-items:center;gap:5px;background:#FFFBEB;border:1.5px solid #FCD34D;border-radius:8px;padding:5px 10px;margin-left:6px;flex-wrap:wrap">
+          <span style="font-size:10px;font-weight:700;color:#92400E;white-space:nowrap">📅 Rango:</span>
+          <div style="display:flex;flex-direction:column;gap:1px">
+            <span style="font-size:9px;color:#92400E;font-weight:600">Desde</span>
+            <input type="date" id="acol-from" style="width:112px;font-size:11px;padding:3px 6px;border:1px solid #FCD34D;border-radius:5px;background:#fff;color:var(--text)"
+              onchange="filterAcolRange()"/>
+          </div>
+          <span style="color:#92400E;font-size:13px;font-weight:600">→</span>
+          <div style="display:flex;flex-direction:column;gap:1px">
+            <span style="font-size:9px;color:#92400E;font-weight:600">Hasta</span>
+            <input type="date" id="acol-to" style="width:112px;font-size:11px;padding:3px 6px;border:1px solid #FCD34D;border-radius:5px;background:#fff;color:var(--text)"
+              onchange="filterAcolRange()"/>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <button onclick="acolRangoHoy()" style="font-size:9px;padding:2px 7px;border:1px solid #FCD34D;border-radius:5px;background:#fff;color:#92400E;cursor:pointer;white-space:nowrap">Hoy</button>
+            <button onclick="clearAcolFilter()" style="font-size:9px;padding:2px 7px;border:1px solid #FCD34D;border-radius:5px;background:#fff;color:#92400E;cursor:pointer;white-space:nowrap">✕ Todos</button>
+          </div>
+          <div id="acol-range-badge" style="display:none;font-size:9px;font-weight:700;color:var(--green);background:#D1FAE5;padding:2px 8px;border-radius:10px;white-space:nowrap"></div>
+        </div>
+        <!-- Barra de selección y notificación -->
+        <div style="display:flex;align-items:center;gap:8px;margin-left:auto;flex-wrap:wrap">
+          <span id="acol-sel-count" style="font-size:11px;color:var(--text2);white-space:nowrap">0 OPs seleccionadas</span>
+          <button id="acol-notify-btn" onclick="notificarComprasAcol()" disabled
+            style="background:var(--green);color:#fff;border:none;border-radius:8px;padding:6px 14px;font-size:11px;font-weight:700;cursor:pointer;opacity:0.4;transition:opacity .2s;white-space:nowrap">
+            📤 Notificar Analista de Compras
+          </button>
+        </div>
+      </div>
+      <!-- Leyenda SIESA -->
+      <div style="font-size:9px;color:var(--text2);margin-bottom:8px">
+        <span class="tag-siesa tag" style="font-size:9px">S</span> = dato automático desde SIESA &nbsp;·&nbsp; Selecciona OPs y presiona <b>Notificar</b> para enviar la solicitud de compra de guata. &nbsp;·&nbsp; 🖼 Pasa el cursor por el N° OP para ver la imagen del diseño.
+      </div>
+      <div style="overflow-x:auto">
+        <table style="width:100%;border-collapse:collapse;font-size:11px;min-width:1150px">
+          <thead>
+            <tr style="background:#F0EFF8">
+              <th style="padding:5px 8px;border:1px solid var(--border);width:32px;text-align:center;position:sticky;top:0;background:#F0EFF8;z-index:2">
+                <input type="checkbox" id="acol-cb-all" title="Seleccionar / Deseleccionar todos" onchange="toggleAcolAll(this)" style="cursor:pointer;width:13px;height:13px"/>
+              </th>
+              <th style="padding:5px 8px;border:1px solid var(--border);text-align:left;min-width:120px;position:sticky;top:0;background:#F0EFF8;z-index:2">N° OP</th>
+              <th style="padding:5px 8px;border:1px solid var(--border);text-align:left;min-width:80px;position:sticky;top:0;background:#F0EFF8;z-index:2">Referencia</th>
+              <th style="padding:5px 8px;border:1px solid var(--border);text-align:left;min-width:68px;position:sticky;top:0;background:#F0EFF8;z-index:2">Extensión</th>
+              <th style="padding:5px 8px;border:1px solid var(--border);text-align:left;min-width:190px;position:sticky;top:0;background:#F0EFF8;z-index:2">Descripción</th>
+              <th style="padding:5px 8px;border:1px solid var(--border);text-align:center;min-width:50px;position:sticky;top:0;background:#F0EFF8;z-index:2">Cant.</th>
+              <th style="padding:5px 8px;border:1px solid var(--border);text-align:left;min-width:100px;position:sticky;top:0;background:#F0EFF8;z-index:2">Notas</th>
+              <th style="padding:5px 8px;border:1px solid var(--border);text-align:center;min-width:95px;position:sticky;top:0;background:#F0EFF8;z-index:2">Ref. Guata <span class="tag-siesa tag" style="font-size:8px">S</span></th>
+              <th style="padding:5px 8px;border:1px solid var(--border);text-align:center;min-width:85px;position:sticky;top:0;background:#F0EFF8;z-index:2">Cant. Guata <span class="tag-siesa tag" style="font-size:8px">S</span></th>
+              <th style="padding:5px 8px;border:1px solid var(--border);text-align:center;min-width:95px;position:sticky;top:0;background:#F0EFF8;z-index:2">N° RQT Telas</th>
+              <th style="padding:5px 8px;border:1px solid var(--border);text-align:center;min-width:120px;position:sticky;top:0;background:#F0EFF8;z-index:2">RQT Tela <span style="font-size:8px;color:#3B6D11;background:#EAF3DE;padding:1px 4px;border-radius:3px;font-weight:700">c/Guata</span></th>
+              <th style="padding:5px 8px;border:1px solid var(--border);text-align:center;min-width:100px;position:sticky;top:0;background:#F0EFF8;z-index:2">F. Acolchado</th>
+              <th style="padding:5px 8px;border:1px solid var(--border);text-align:center;min-width:78px;position:sticky;top:0;background:#F0EFF8;z-index:2">Estado</th>
+            </tr>
+          </thead>
+          <tbody id="acol-ops-tbody"><!-- generado por JS --></tbody>
+        </table>
+      </div>
+      <!-- Resumen selección -->
+      <div id="acol-sel-summary" style="display:none;margin-top:10px;padding:10px 14px;background:#F0FDF4;border:1.5px solid #86EFAC;border-radius:8px;font-size:11px">
+        <b style="color:#065F46">📦 Resumen para Compras:</b>
+        <span id="acol-sel-detail" style="color:var(--text);margin-left:8px"></span>
+      </div>
+    </div>
+
     <!-- Diseño del Acolchado -->
     <div class="grid2" style="align-items:start;margin-bottom:10px">
 
@@ -918,7 +1030,7 @@ tr.prog-selected td.p-col-prog{background:#EDEBFE}
         <div style="display:flex;flex-direction:column;gap:8px">
           <div>
             <div class="lbl">Referencia tela / diseño</div>
-            <input type="text" placeholder="Ej: TE01126 · UFAZ 230H DOWN PROOF"
+            <input type="text" id="acol-spec-ref" placeholder="Ej: TE01126 · UFAZ 230H DOWN PROOF"
               style="width:100%;border:1px solid var(--border);border-radius:6px;padding:5px 8px;font-size:11px;color:var(--text);background:#fff"/>
           </div>
           <div class="grid2" style="gap:8px">
@@ -957,75 +1069,6 @@ tr.prog-selected td.p-col-prog{background:#EDEBFE}
         </div>
       </div>
 
-    </div>
-
-    <!-- Tabla OPs Acolchado -->
-    <div class="card">
-      <!-- Barra superior: título + filtro fecha + notificación -->
-      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px">
-        <span class="badge badge-o" style="font-size:11px">OPs con operación Acolchado</span>
-        <span id="acol-op-count" style="font-size:11px;color:var(--text2)"></span>
-        <!-- Filtro rango de fechas -->
-        <div style="display:flex;align-items:center;gap:5px;background:#FFFBEB;border:1.5px solid #FCD34D;border-radius:8px;padding:5px 10px;margin-left:6px;flex-wrap:wrap">
-          <span style="font-size:10px;font-weight:700;color:#92400E;white-space:nowrap">📅 Rango:</span>
-          <div style="display:flex;flex-direction:column;gap:1px">
-            <span style="font-size:9px;color:#92400E;font-weight:600">Desde</span>
-            <input type="date" id="acol-from" style="width:112px;font-size:11px;padding:3px 6px;border:1px solid #FCD34D;border-radius:5px;background:#fff;color:var(--text)"
-              onchange="filterAcolRange()"/>
-          </div>
-          <span style="color:#92400E;font-size:13px;font-weight:600">→</span>
-          <div style="display:flex;flex-direction:column;gap:1px">
-            <span style="font-size:9px;color:#92400E;font-weight:600">Hasta</span>
-            <input type="date" id="acol-to" style="width:112px;font-size:11px;padding:3px 6px;border:1px solid #FCD34D;border-radius:5px;background:#fff;color:var(--text)"
-              onchange="filterAcolRange()"/>
-          </div>
-          <div style="display:flex;flex-direction:column;gap:3px">
-            <button onclick="acolRangoHoy()" style="font-size:9px;padding:2px 7px;border:1px solid #FCD34D;border-radius:5px;background:#fff;color:#92400E;cursor:pointer;white-space:nowrap">Hoy</button>
-            <button onclick="clearAcolFilter()" style="font-size:9px;padding:2px 7px;border:1px solid #FCD34D;border-radius:5px;background:#fff;color:#92400E;cursor:pointer;white-space:nowrap">✕ Todos</button>
-          </div>
-          <div id="acol-range-badge" style="display:none;font-size:9px;font-weight:700;color:var(--green);background:#D1FAE5;padding:2px 8px;border-radius:10px;white-space:nowrap"></div>
-        </div>
-        <!-- Barra de selección y notificación -->
-        <div style="display:flex;align-items:center;gap:8px;margin-left:auto;flex-wrap:wrap">
-          <span id="acol-sel-count" style="font-size:11px;color:var(--text2);white-space:nowrap">0 OPs seleccionadas</span>
-          <button id="acol-notify-btn" onclick="notificarComprasAcol()" disabled
-            style="background:var(--green);color:#fff;border:none;border-radius:8px;padding:6px 14px;font-size:11px;font-weight:700;cursor:pointer;opacity:0.4;transition:opacity .2s;white-space:nowrap">
-            📤 Notificar Analista de Compras
-          </button>
-        </div>
-      </div>
-      <!-- Leyenda SIESA -->
-      <div style="font-size:9px;color:var(--text2);margin-bottom:8px">
-        <span class="tag-siesa tag" style="font-size:9px">S</span> = dato automático desde SIESA &nbsp;·&nbsp; Selecciona OPs y presiona <b>Notificar</b> para enviar la solicitud de compra de guata.
-      </div>
-      <div style="overflow-x:auto">
-        <table style="width:100%;border-collapse:collapse;font-size:11px;min-width:1020px">
-          <thead>
-            <tr style="background:#F0EFF8">
-              <th style="padding:5px 8px;border:1px solid var(--border);width:32px;text-align:center;position:sticky;top:0;background:#F0EFF8;z-index:2">
-                <input type="checkbox" id="acol-cb-all" title="Seleccionar / Deseleccionar todos" onchange="toggleAcolAll(this)" style="cursor:pointer;width:13px;height:13px"/>
-              </th>
-              <th style="padding:5px 8px;border:1px solid var(--border);text-align:left;min-width:120px;position:sticky;top:0;background:#F0EFF8;z-index:2">N° OP</th>
-              <th style="padding:5px 8px;border:1px solid var(--border);text-align:left;min-width:80px;position:sticky;top:0;background:#F0EFF8;z-index:2">Referencia</th>
-              <th style="padding:5px 8px;border:1px solid var(--border);text-align:left;min-width:68px;position:sticky;top:0;background:#F0EFF8;z-index:2">Extensión</th>
-              <th style="padding:5px 8px;border:1px solid var(--border);text-align:left;min-width:190px;position:sticky;top:0;background:#F0EFF8;z-index:2">Descripción</th>
-              <th style="padding:5px 8px;border:1px solid var(--border);text-align:center;min-width:50px;position:sticky;top:0;background:#F0EFF8;z-index:2">Cant.</th>
-              <th style="padding:5px 8px;border:1px solid var(--border);text-align:left;min-width:100px;position:sticky;top:0;background:#F0EFF8;z-index:2">Notas</th>
-              <th style="padding:5px 8px;border:1px solid var(--border);text-align:center;min-width:95px;position:sticky;top:0;background:#F0EFF8;z-index:2">Ref. Guata <span class="tag-siesa tag" style="font-size:8px">S</span></th>
-              <th style="padding:5px 8px;border:1px solid var(--border);text-align:center;min-width:85px;position:sticky;top:0;background:#F0EFF8;z-index:2">Cant. Guata <span class="tag-siesa tag" style="font-size:8px">S</span></th>
-              <th style="padding:5px 8px;border:1px solid var(--border);text-align:center;min-width:95px;position:sticky;top:0;background:#F0EFF8;z-index:2">N° RQT Telas</th>
-              <th style="padding:5px 8px;border:1px solid var(--border);text-align:center;min-width:100px;position:sticky;top:0;background:#F0EFF8;z-index:2">F. Acolchado</th>
-              <th style="padding:5px 8px;border:1px solid var(--border);text-align:center;min-width:78px;position:sticky;top:0;background:#F0EFF8;z-index:2">Estado</th>
-            </tr>
-          </thead>
-          <tbody id="acol-ops-tbody"><!-- generado por JS --></tbody>
-        </table>
-      </div>
-      <!-- Resumen selección -->
-      <div id="acol-sel-summary" style="display:none;margin-top:10px;padding:10px 14px;background:#F0FDF4;border:1.5px solid #86EFAC;border-radius:8px;font-size:11px">
-        <b style="color:#065F46">📦 Resumen para Compras:</b>
-        <span id="acol-sel-detail" style="color:var(--text);margin-left:8px"></span>
-      </div>
     </div>
 
   </div>
@@ -1199,24 +1242,19 @@ const RL_GAMMAS = [
 ];
 
 const RL_OPS = [
-  {nop:'OPS-22794', ref:'C03-1019', gamma:'ALM GAMA 1',      cant:480, ini:'2026-03-03', fin:'2026-03-14', est:'En Ejecución', minDia:96,  forros:'listo',     forrosNota:''},
-  {nop:'OPS-22795', ref:'C03-1020', gamma:'ALM GAMA 2',      cant:360, ini:'2026-03-05', fin:'2026-03-17', est:'En Ejecución', minDia:72,  forros:'listo',     forrosNota:''},
-  {nop:'OPS-22796', ref:'C03-1083', gamma:'ALM ESSENCIAL',   cant:240, ini:'2026-03-07', fin:'2026-03-14', est:'Vencido',      minDia:60,  forros:'pendiente', forrosNota:'RQT pendiente envío'},
-  {nop:'OPS-22797', ref:'C03-1021', gamma:'ALM GAMA 3',      cant:600, ini:'2026-03-12', fin:'2026-03-21', est:'Programado',   minDia:120, forros:'parcial',   forrosNota:'420/600 uds'},
-  {nop:'OPS-22798', ref:'C03-1084', gamma:'ALM PLUSS',       cant:180, ini:'2026-03-18', fin:'2026-03-24', est:'Programado',   minDia:45,  forros:'listo',     forrosNota:''},
-  {nop:'OPS-22800', ref:'1032',     gamma:'COJIN RELLENO',   cant:300, ini:'2026-03-10', fin:'2026-03-20', est:'En Ejecución', minDia:80,  forros:'listo',     forrosNota:''},
-  {nop:'OPS-22801', ref:'1033',     gamma:'COJIN TV',        cant:150, ini:'2026-03-17', fin:'2026-03-25', est:'Programado',   minDia:50,  forros:'listo',     forrosNota:''},
-  {nop:'OPS-22803', ref:'C03-1085', gamma:'ALM HOTEL EXP.',  cant:200, ini:'2026-03-20', fin:'2026-03-28', est:'Programado',   minDia:55,  forros:'listo',     forrosNota:''},
-  {nop:'OPS-22805', ref:'C03-1086', gamma:'ALM SWEET HOME',  cant:120, ini:'2026-03-24', fin:'2026-04-01', est:'Programado',   minDia:40,  forros:'listo',     forrosNota:''},
+  {nop:'OPS-22794', ref:'C03-1019', ext:'E10094', cliente:'Hilton Cartagena',   gamma:'ALM GAMA 1',     cant:480, sam:0.033, ini:'2026-03-03', fin:'2026-03-14', est:'En Ejecución', minDia:96,  rqt_insumos:'RQT-8821', est_rqt:'Comprometido',         forros_est:'listo',     forrosNota:'',                  forros_det:[{ref:'PT01833',ext:'E10094',cant:480}]},
+  {nop:'OPS-22795', ref:'C03-1020', ext:'E10094', cliente:'Éxito Cali',         gamma:'ALM GAMA 2',     cant:360, sam:0.033, ini:'2026-03-05', fin:'2026-03-17', est:'En Ejecución', minDia:72,  rqt_insumos:'RQT-8834', est_rqt:'Comprometido',         forros_est:'listo',     forrosNota:'',                  forros_det:[{ref:'PT02024',ext:'E10094',cant:360}]},
+  {nop:'OPS-22796', ref:'C03-1083', ext:'E12853', cliente:'Falabella Bogotá',   gamma:'ALM ESSENCIAL',  cant:240, sam:0.025, ini:'2026-03-07', fin:'2026-03-14', est:'Vencido',      minDia:60,  rqt_insumos:'RQT-8840', est_rqt:'En Elaboración',       forros_est:'pendiente', forrosNota:'RQT pendiente envío', forros_det:[{ref:'PT06287',ext:'E12853',cant:240}]},
+  {nop:'OPS-22797', ref:'C03-1021', ext:'E10094', cliente:'Alkosto Nacional',   gamma:'ALM GAMA 3',     cant:600, sam:0.033, ini:'2026-03-12', fin:'2026-03-21', est:'Programado',   minDia:120, rqt_insumos:'RQT-8855', est_rqt:'Comprometido Parcial', forros_est:'parcial',   forrosNota:'420/600 uds',       forros_det:[{ref:'PT07110',ext:'E10094',cant:420},{ref:'PT07111',ext:'E10094',cant:180}]},
+  {nop:'OPS-22798', ref:'C03-1084', ext:'E11200', cliente:'Makro Colombia',     gamma:'ALM PLUSS',      cant:180, sam:0.042, ini:'2026-03-18', fin:'2026-03-24', est:'Programado',   minDia:45,  rqt_insumos:'RQT-8867', est_rqt:'Aprobado',             forros_est:'listo',     forrosNota:'',                  forros_det:[{ref:'PT08032',ext:'E11200',cant:180}]},
+  {nop:'OPS-22800', ref:'1032',     ext:'E10094', cliente:'Almacenes La 14',    gamma:'COJIN RELLENO',  cant:300, sam:0.044, ini:'2026-03-10', fin:'2026-03-20', est:'En Ejecución', minDia:80,  rqt_insumos:'RQT-8849', est_rqt:'Comprometido',         forros_est:'listo',     forrosNota:'',                  forros_det:[{ref:'PT09513',ext:'E10094',cant:300}]},
+  {nop:'OPS-22801', ref:'1033',     ext:'E11200', cliente:'Flamingo S.A.',      gamma:'COJIN TV',       cant:150, sam:0.056, ini:'2026-03-17', fin:'2026-03-25', est:'Programado',   minDia:50,  rqt_insumos:'RQT-8871', est_rqt:'Aprobado',             forros_est:'listo',     forrosNota:'',                  forros_det:[{ref:'PT10012',ext:'E11200',cant:150}]},
+  {nop:'OPS-22803', ref:'C03-1085', ext:'E13371', cliente:'Olímpica S.A.',      gamma:'ALM HOTEL EXP.', cant:200, sam:0.046, ini:'2026-03-20', fin:'2026-03-28', est:'Programado',   minDia:55,  rqt_insumos:'RQT-8880', est_rqt:'En Elaboración',       forros_est:'listo',     forrosNota:'',                  forros_det:[{ref:'PT10013',ext:'E13371',cant:200}]},
+  {nop:'OPS-22805', ref:'C03-1086', ext:'E12853', cliente:'Éxito Medellín',     gamma:'ALM SWEET HOME', cant:120, sam:0.056, ini:'2026-03-24', fin:'2026-04-01', est:'Programado',   minDia:40,  rqt_insumos:'RQT-8892', est_rqt:'Cumplido',             forros_est:'listo',     forrosNota:'',                  forros_det:[{ref:'PT10013',ext:'E12853',cant:120}]},
 ];
 
-let rlViewMode = 'semana';
-let rlPeriodStart = (function(){
-  const h = new Date(RL_HOY);
-  const dow = h.getDay();
-  h.setDate(h.getDate() + (dow===0 ? -6 : 1-dow));
-  return h;
-})();
+// Estado de navegación — semana actual en el Gantt
+// window.rlCurrentMonday se inicializa en renderPlantaRelleno
 
 // ── Helpers ──
 function rlDayStr(d){ return d.toISOString().split('T')[0]; }
@@ -1234,9 +1272,10 @@ function rlMonthWorkingDays(year, month){
 }
 
 function rlCurrentDays(){
-  return rlViewMode==='semana'
-    ? rlWorkingDays(rlPeriodStart, 5)
-    : rlMonthWorkingDays(rlPeriodStart.getFullYear(), rlPeriodStart.getMonth());
+  const mon = window.rlCurrentMonday || rlGetMonday(new Date(RL_HOY));
+  const days=[];
+  for(let i=0;i<6;i++){const d=new Date(mon);d.setDate(d.getDate()+i);days.push(d);}
+  return days;
 }
 
 function rlCellState(op, dayStr){
@@ -1263,117 +1302,203 @@ function rlGammaBadge(gamma){
   return '<span style="'+s+';padding:1px 6px;border-radius:4px;font-size:9px;font-weight:600;white-space:nowrap">'+gamma+'</span>';
 }
 
-// ── Navegación ──
-function rlNavPeriod(dir){
-  rlPeriodStart = new Date(rlPeriodStart);
-  if(rlViewMode==='semana') rlPeriodStart.setDate(rlPeriodStart.getDate()+dir*7);
-  else rlPeriodStart.setMonth(rlPeriodStart.getMonth()+dir);
-  renderPlantaRelleno();
+// ── Helpers ISO-week Relleno ──
+const RL_DIAS_CORTOS=['L','M','X','J','V','S'];
+function rlGetMonday(date){
+  const d=new Date(date);d.setHours(0,0,0,0);
+  const day=d.getDay();d.setDate(d.getDate()+(day===0?-6:1-day));return d;
 }
-
-function rlGoToday(){
-  const h=new Date(RL_HOY);
-  if(rlViewMode==='semana'){ const dow=h.getDay(); h.setDate(h.getDate()+(dow===0?-6:1-dow)); rlPeriodStart=h; }
-  else rlPeriodStart=new Date(h.getFullYear(), h.getMonth(), 1);
-  renderPlantaRelleno();
+function rlFmtShort(d){return d.getDate()+' '+RL_MESES[d.getMonth()];}
+function rlISOWeek(date){
+  const d=new Date(Date.UTC(date.getFullYear(),date.getMonth(),date.getDate()));
+  const day=d.getUTCDay()||7;d.setUTCDate(d.getUTCDate()+4-day);
+  const y=new Date(Date.UTC(d.getUTCFullYear(),0,1));
+  return Math.ceil((((d-y)/86400000)+1)/7);
 }
-
-function rlSetView(mode){
-  rlViewMode=mode;
-  ['sem','mes'].forEach(k=>{
-    const b=document.getElementById('rl-btn-'+k);
-    if(b){ b.style.background=(k[0]+k.slice(1)===mode.slice(0,k.length)?mode.startsWith(k):'')
-      ? 'var(--primary)':'#fff';
-      b.style.color=(mode==='semana'&&k==='sem'||mode==='mes'&&k==='mes')? '#fff':'var(--text2)';
-      b.style.fontWeight=(mode==='semana'&&k==='sem'||mode==='mes'&&k==='mes')? '700':'600';
+function rlMondayOfISOWeek(year,week){
+  const jan4=new Date(year,0,4);
+  const mon1=rlGetMonday(jan4);
+  const r=new Date(mon1);r.setDate(r.getDate()+(week-1)*7);return r;
+}
+function rlUpdateSemSelect(year,month){
+  const sel=document.getElementById('rl-sem-sel');if(!sel)return;
+  const first=new Date(year,month,1),last=new Date(year,month+1,0);
+  const weeks=[];const seen=new Set();
+  let d=new Date(first);
+  while(d<=last){
+    const mon=rlGetMonday(d);const w=rlISOWeek(mon);
+    if(!seen.has(w)){
+      seen.add(w);
+      const sat=new Date(mon);sat.setDate(sat.getDate()+5);
+      weeks.push({w,mon,sat});
     }
-  });
-  rlGoToday();
+    d.setDate(d.getDate()+1);
+  }
+  sel.innerHTML=weeks.map(({w,mon,sat})=>
+    '<option value="'+w+'">Sem. '+w+' ('+rlFmtShort(mon)+' – '+rlFmtShort(sat)+')</option>'
+  ).join('');
 }
 
-// ── Render principal ──
+// ── Render principal (inicializa y delega a renderRlGantt) ──
 function renderPlantaRelleno(){
-  const days = rlCurrentDays();
-  const hoyStr = rlDayStr(RL_HOY);
-
-  // Etiqueta de período
-  let label;
-  if(rlViewMode==='semana'){
-    const last=days[days.length-1];
-    label = days[0].getDate()+' – '+last.getDate()+' '+RL_MESES[last.getMonth()]+' '+last.getFullYear();
-  } else {
-    label = RL_MESES[rlPeriodStart.getMonth()]+' '+rlPeriodStart.getFullYear();
+  if(!window.rlCurrentMonday){
+    window.rlCurrentMonday = rlGetMonday(new Date(RL_HOY));
   }
-  const lbl=document.getElementById('rl-period-label'); if(lbl) lbl.textContent=label;
+  renderRlGantt(window.rlCurrentMonday);
+}
 
-  // Botones activos
-  const bSem=document.getElementById('rl-btn-sem'), bMes=document.getElementById('rl-btn-mes');
-  if(bSem){ bSem.style.background=rlViewMode==='semana'?'var(--primary)':'#fff'; bSem.style.color=rlViewMode==='semana'?'#fff':'var(--text2)'; bSem.style.fontWeight=rlViewMode==='semana'?'700':'600'; }
-  if(bMes){ bMes.style.background=rlViewMode==='mes'?'var(--primary)':'#fff'; bMes.style.color=rlViewMode==='mes'?'#fff':'var(--text2)'; bMes.style.fontWeight=rlViewMode==='mes'?'700':'600'; }
+// ── renderRlGantt: construye el Gantt completo para una semana ──
+function renderRlGantt(monday){
+  window.rlCurrentMonday = monday;
 
-  // Estilos columnas fijas (sticky positions)
-  const SH = (left,w,extra)=>'padding:5px 6px;border:1px solid var(--border);font-weight:600;color:var(--text2);white-space:nowrap;min-width:'+w+'px;text-align:left;position:sticky;left:'+left+'px;z-index:6;background:#F0EFF8;'+(extra||'');
-  const ST = (left,w,bg,extra)=>'padding:4px 6px;border:1px solid var(--border);vertical-align:middle;min-width:'+w+'px;position:sticky;left:'+left+'px;z-index:2;white-space:nowrap;background:'+bg+';'+(extra||'');
-  const dw = rlViewMode==='mes' ? 26 : 40;
+  // 6 columnas (Lun-Sáb)
+  const cols=[];
+  for(let i=0;i<6;i++){
+    const d=new Date(monday);d.setDate(d.getDate()+i);
+    cols.push({label:RL_DIAS_CORTOS[i]+d.getDate(), date:rlDayStr(d), day:d});
+  }
+  const saturday=new Date(monday);saturday.setDate(saturday.getDate()+5);
+  const wn=rlISOWeek(monday);
 
-  let html = '<div style="overflow-x:auto;overflow-y:auto;max-height:calc(100vh - 450px);border-radius:8px;border:1px solid var(--border)">';
-  html += '<table style="border-collapse:collapse;font-size:10px;min-width:350px">';
+  // Actualizar label y selectores
+  const label='Sem. '+wn+' · '+rlFmtShort(monday)+' – '+rlFmtShort(saturday)+' '+monday.getFullYear();
+  const labelEl=document.getElementById('rl-gantt-label');if(labelEl)labelEl.textContent=label;
+  const mesVal=monday.getFullYear()+'-'+String(monday.getMonth()+1).padStart(2,'0');
+  const mesSel=document.getElementById('rl-mes-sel');if(mesSel)mesSel.value=mesVal;
+  rlUpdateSemSelect(monday.getFullYear(),monday.getMonth());
+  const semSel=document.getElementById('rl-sem-sel');if(semSel)semSel.value=String(wn);
+
+  const hoyStr=rlDayStr(RL_HOY);
+  const dw=38;// ancho columna día
+
+  // Helpers de estilo
+  const SH=(left,w,extra)=>'padding:4px 5px;border:1px solid var(--border);font-weight:600;color:var(--text2);white-space:nowrap;min-width:'+w+'px;text-align:left;position:sticky;left:'+left+'px;z-index:6;background:#F0EFF8;'+(extra||'');
+  const ST=(left,w,bg,extra)=>'padding:4px 5px;border:1px solid var(--border);vertical-align:middle;min-width:'+w+'px;position:sticky;left:'+left+'px;z-index:2;white-space:nowrap;background:'+bg+';'+(extra||'');
+  const NH=(w,extra)=>'padding:4px 5px;border:1px solid var(--border);font-weight:600;color:var(--text2);white-space:nowrap;min-width:'+w+'px;background:#F0EFF8;position:sticky;top:0;z-index:3;'+(extra||'');
+  const NT=(w,bg,extra)=>'padding:4px 5px;border:1px solid var(--border);vertical-align:middle;min-width:'+w+'px;background:'+bg+';white-space:nowrap;'+(extra||'');
+
+  // Badge estado RQT
+  const estRqtBadge=(est)=>{
+    const m={'Aprobado':'background:#D1FAE5;color:#065F46','Comprometido':'background:#DBEAFE;color:#1E40AF',
+      'Comprometido Parcial':'background:#FEF3C7;color:#92400E','Anulado':'background:#FEE2E2;color:#991B1B',
+      'Cumplido':'background:#D1FAE5;color:#085041','En Elaboración':'background:#EDE9FE;color:#5B21B6'};
+    return '<span style="'+(m[est]||'background:var(--bg);color:var(--text2)')+';padding:2px 5px;border-radius:4px;font-size:9px;font-weight:600;white-space:nowrap">'+est+'</span>';
+  };
+
+  let html='<div style="overflow-x:auto;overflow-y:auto;max-height:calc(100vh - 400px);border-radius:8px;border:1px solid var(--border)">';
+  html+='<table style="border-collapse:collapse;font-size:10px;min-width:600px">';
 
   // Encabezado
-  html += '<thead><tr style="background:#F0EFF8;position:sticky;top:0;z-index:5">';
-  html += '<th style="'+SH(0,108)+'">N° OP</th>';
-  html += '<th style="'+SH(108,76)+'">Ref.</th>';
-  html += '<th style="'+SH(184,96)+'">Gamma</th>';
-  html += '<th style="'+SH(280,46,'border-right:2px solid #C4BFFF;text-align:center')+'">Cant.</th>';
-  days.forEach(day=>{
-    const ds=rlDayStr(day), isH=ds===hoyStr;
-    html += '<th style="padding:3px 1px;border:1px solid var(--border);text-align:center;font-size:8px;font-weight:'+(isH?'700':'500')+';min-width:'+dw+'px;max-width:'+dw+'px;'+(isH?'background:#EEEDFE;color:#3C3489;':'color:var(--text2)')+'">'+
-      day.getDate()+'<div style="font-size:7px;font-weight:400">'+RL_MESES[day.getMonth()].toLowerCase()+'</div></th>';
+  html+='<thead><tr style="background:#F0EFF8;position:sticky;top:0;z-index:7">';
+  html+='<th style="'+SH(0,110)+'z-index:8">N° OP</th>';
+  html+='<th style="'+SH(110,80)+'z-index:8">Ref.</th>';
+  html+='<th style="'+SH(190,68)+'border-right:2px solid #C4BFFF;z-index:8">Ext.</th>';
+  html+='<th style="'+NH(100)+'text-align:left">Cliente</th>';
+  html+='<th style="'+NH(90)+'text-align:left">Gamma</th>';
+  html+='<th style="'+NH(46)+'text-align:center">Cant.</th>';
+  html+='<th style="'+NH(85)+'text-align:center">Min. Totales</th>';
+  html+='<th style="'+NH(95)+'text-align:center">RQT Ins. <span style="font-size:8px;color:#0369A1;background:#F0F9FF;padding:1px 3px;border-radius:3px;font-weight:700">S</span></th>';
+  html+='<th style="'+NH(110)+'text-align:center;border-right:2px solid #C4BFFF">Est. RQT</th>';
+  html+='<th style="'+NH(165)+'text-align:left;white-space:normal">Forros (Ref · Ext · Cant)</th>';
+  cols.forEach(col=>{
+    const isH=col.date===hoyStr;
+    html+='<th style="padding:3px 1px;border:1px solid var(--border);text-align:center;font-size:8px;font-weight:'+(isH?'700':'500')+';min-width:'+dw+'px;max-width:'+dw+'px;position:sticky;top:0;z-index:3;'+(isH?'background:#EEEDFE;color:#3C3489':'background:#F0EFF8;color:var(--text2)')+'">'+
+      col.label+'<div style="font-size:7px;font-weight:400">'+RL_MESES[col.day.getMonth()].toLowerCase()+'</div></th>';
   });
-  html += '</tr></thead><tbody>';
+  html+='</tr></thead><tbody>';
+
+  // Fila de capacidad diaria
+  html+='<tr style="background:#F8F7FF;border-bottom:2px solid #C4BFFF">';
+  html+='<td colspan="10" style="padding:3px 8px;border:1px solid var(--border);font-size:9px;font-weight:700;color:var(--primary);background:#F0EFF8;position:sticky;left:0;z-index:2;white-space:nowrap">Cap. diaria<br><span style="font-weight:400;font-size:8px;color:var(--text2)">1 840 min/día</span></td>';
+  cols.forEach(col=>{
+    const isH=col.date===hoyStr;
+    const p=rlDayCapPct(col.date);
+    const clr=p===0?'#9CA3AF':p<70?'#10B981':p<90?'#F59E0B':'#EF4444';
+    const lbl=p===0?'Libre':p+'%';
+    const td_bg=p===0?'':'background:'+(p<70?'#D1FAE5':p<90?'#FEF3C7':'#FEE2E2')+';';
+    html+='<td style="border:1px solid var(--border);'+td_bg+'vertical-align:bottom;padding:2px 1px;text-align:center;'+(isH?'outline:2px solid #4B3FC5;outline-offset:-2px;':'')+'">'+
+      '<div style="display:inline-flex;flex-direction:column;align-items:center;gap:1px">'+
+      '<div style="font-size:8px;font-weight:700;color:'+clr+'">'+lbl+'</div>'+
+      '<div style="width:20px;height:32px;background:#E5E7EB;border-radius:3px 3px 0 0;position:relative;overflow:hidden">'+
+        '<div style="position:absolute;bottom:0;width:100%;height:'+p+'%;background:'+clr+';transition:height .4s"></div>'+
+      '</div>'+
+      '<div style="font-size:7px;color:'+clr+';background:'+clr+'22;border-radius:0 0 3px 3px;width:20px;text-align:center;padding:1px 0">'+p+'%</div>'+
+      '</div></td>';
+  });
+  html+='</tr>';
 
   // Filas de OPs
   RL_OPS.forEach((op,i)=>{
-    const bg = i%2!==0 ? '#FAFAFA' : '#fff';
-    html += '<tr>';
-    html += '<td style="'+ST(0,108,bg)+'"><span style="color:var(--primary);font-weight:700;font-size:10px">'+op.nop+'</span></td>';
-    html += '<td style="'+ST(108,76,bg)+'font-size:9px;color:var(--text2)">'+op.ref+'</td>';
-    html += '<td style="'+ST(184,96,bg)+'">'+rlGammaBadge(op.gamma)+'</td>';
-    html += '<td style="'+ST(280,46,bg)+'text-align:center;font-size:9px;border-right:2px solid #C4BFFF">'+op.cant+'</td>';
-    days.forEach(day=>{
-      const ds=rlDayStr(day), st=rlCellState(op,ds), isH=ds===hoyStr;
-      const CSTYLE={P:{bg:'#DBEAFE',cl:'#1E40AF',ic:''},E:{bg:'#FEF3C7',cl:'#92400E',ic:'▶'},C:{bg:'#D1FAE5',cl:'#065F46',ic:'✓'},V:{bg:'#FEE2E2',cl:'#991B1B',ic:'!'}};
-      const cs=st?CSTYLE[st]:null;
-      html += '<td style="min-width:'+dw+'px;max-width:'+dw+'px;height:26px;border:1px solid var(--border);text-align:center;vertical-align:middle;font-size:9px;font-weight:700;cursor:default;'+
+    const bg=i%2!==0?'#FAFAFA':'#fff';
+    const minTot=Math.round(op.sam*60*op.cant);
+    const forrosHtml=op.forros_det&&op.forros_det.length
+      ?op.forros_det.map(f=>'<span style="display:inline-block;font-size:9px;background:var(--olive-light);color:var(--olive);padding:1px 5px;border-radius:3px;margin:1px;white-space:nowrap">'+f.ref+' · '+f.ext+' · '+f.cant+' uds</span>').join('<br>')
+      :'<span style="font-size:9px;color:var(--text2);font-style:italic">—</span>';
+    html+='<tr>';
+    html+='<td style="'+ST(0,110,bg)+'"><span style="color:var(--primary);font-weight:700;font-size:10px">'+op.nop+'</span></td>';
+    html+='<td style="'+ST(110,80,bg)+'font-size:9px;font-weight:600">'+op.ref+'</td>';
+    html+='<td style="'+ST(190,68,bg)+'font-size:9px;border-right:2px solid #C4BFFF;color:var(--text2)">'+op.ext+'</td>';
+    html+='<td style="'+NT(100,bg)+'font-size:9px">'+op.cliente+'</td>';
+    html+='<td style="'+NT(90,bg)+'">'+rlGammaBadge(op.gamma)+'</td>';
+    html+='<td style="'+NT(46,bg)+'text-align:center;font-weight:700;font-size:10px">'+op.cant+'</td>';
+    html+='<td style="'+NT(85,bg)+'text-align:center;font-size:10px;font-weight:700;color:var(--primary)">'+minTot.toLocaleString()+'</td>';
+    html+='<td style="'+NT(95,bg)+'text-align:center;font-size:9px;font-weight:600;color:var(--primary)">'+op.rqt_insumos+'</td>';
+    html+='<td style="'+NT(110,bg)+'text-align:center;border-right:2px solid #C4BFFF">'+estRqtBadge(op.est_rqt)+'</td>';
+    html+='<td style="padding:3px 5px;border:1px solid var(--border);background:'+bg+';vertical-align:middle;min-width:165px;white-space:normal">'+forrosHtml+'</td>';
+    // Celdas de días
+    cols.forEach(col=>{
+      const st=rlCellState(op,col.date),isH=col.date===hoyStr;
+      const CS={P:{bg:'#DBEAFE',cl:'#1E40AF',ic:''},E:{bg:'#FEF3C7',cl:'#92400E',ic:'▶'},C:{bg:'#D1FAE5',cl:'#065F46',ic:'✓'},V:{bg:'#FEE2E2',cl:'#991B1B',ic:'!'}};
+      const cs=st?CS[st]:null;
+      html+='<td style="min-width:'+dw+'px;max-width:'+dw+'px;height:28px;border:1px solid var(--border);text-align:center;vertical-align:middle;font-size:9px;font-weight:700;cursor:default;'+
         (cs?'background:'+cs.bg+';color:'+cs.cl+';':'')+
         (isH?'outline:2px solid #4B3FC5;outline-offset:-2px;':'')+'"'+
-        (st?' title="'+op.nop+' · '+ds+'"':'')+'>'+
+        (st?' title="'+op.nop+' · '+col.date+'"':'')+'>'+
         (cs?cs.ic:'')+'</td>';
     });
-    html += '</tr>';
+    html+='</tr>';
   });
 
-  // Fila capacidad diaria
-  html += '<tr style="border-top:2px solid #C4BFFF">';
-  html += '<td colspan="4" style="padding:3px 7px;border:1px solid var(--border);font-size:9px;font-weight:700;color:var(--primary);background:#F0EFF8;position:sticky;left:0;z-index:2;white-space:nowrap">Cap. diaria</td>';
-  days.forEach(day=>{
-    const ds=rlDayStr(day), isH=ds===hoyStr;
-    const p=rlDayCapPct(ds);
-    const capBg=p>=90?'#FEE2E2':p>=70?'#FEF3C7':'#D1FAE5';
-    const barC=p>=90?'#991B1B':p>=70?'#92400E':'#0F6E56';
-    html += '<td style="border:1px solid var(--border);background:'+capBg+';vertical-align:middle;padding:2px;'+(isH?'outline:2px solid #4B3FC5;outline-offset:-2px;':'')+'">'+
-      '<div style="height:8px;background:'+barC+';border-radius:2px;width:'+p+'%;margin:0 auto 1px"></div>'+
-      '<div style="font-size:7px;text-align:center;color:'+barC+';font-weight:600">'+p+'%</div></td>';
+  // Fila libre
+  html+='<tr>';
+  html+='<td colspan="10" style="padding:3px 8px;border:1px solid var(--border);font-size:9px;font-style:italic;color:var(--text2);background:#F8F7FF;position:sticky;left:0;z-index:2">— Libre —</td>';
+  cols.forEach(col=>{
+    const ocup=RL_OPS.some(op=>rlCellState(op,col.date));
+    const isH=col.date===hoyStr;
+    html+='<td style="min-width:'+dw+'px;height:22px;border:1px solid var(--border);'+
+      (ocup?'':'background:#DCFCE7;')+
+      (isH?'outline:2px solid #4B3FC5;outline-offset:-2px;':'')+'"></td>';
   });
-  html += '</tr></tbody></table></div>';
+  html+='</tr>';
 
-  const cont=document.getElementById('rl-gantt-container'); if(cont) cont.innerHTML=html;
+  html+='</tbody></table></div>';
+  const cont=document.getElementById('rl-gantt-container');if(cont)cont.innerHTML=html;
 
-  rlRenderKpis(days);
+  rlRenderKpis(cols.map(c=>c.day));
   rlRenderAlerts();
   rlRenderForros();
   rlRenderInventario();
 }
+
+// ── Navegación Gantt Relleno ──
+function rlNavWeek(dir){
+  const cur=window.rlCurrentMonday||rlGetMonday(new Date(RL_HOY));
+  const nxt=new Date(cur);nxt.setDate(nxt.getDate()+dir*7);
+  renderRlGantt(nxt);
+}
+function rlSetMes(val){
+  const[yr,mo]=val.split('-').map(Number);
+  const mon=rlGetMonday(new Date(yr,mo-1,1));
+  rlUpdateSemSelect(yr,mo-1);
+  renderRlGantt(mon);
+}
+function rlSetSem(weekStr){
+  const w=parseInt(weekStr);
+  const mesSel=document.getElementById('rl-mes-sel');
+  const yr=mesSel?parseInt(mesSel.value.split('-')[0]):new Date().getFullYear();
+  renderRlGantt(rlMondayOfISOWeek(yr,w));
+}
+function rlGanttToday(){renderRlGantt(rlGetMonday(new Date()));}
 
 function rlRenderKpis(days){
   const hoyStr=rlDayStr(RL_HOY);
@@ -1382,7 +1507,7 @@ function rlRenderKpis(days){
   const minPct=Math.round(minHoy/RL_TOTAL_MIN*100);
   const daysStr=days.map(d=>rlDayStr(d));
   const opsEnPer=RL_OPS.filter(op=>daysStr.some(ds=>rlCellState(op,ds)));
-  const sinForros=RL_OPS.filter(op=>op.forros!=='listo'&&daysStr.some(ds=>rlCellState(op,ds)));
+  const sinForros=RL_OPS.filter(op=>op.forros_est!=='listo'&&daysStr.some(ds=>rlCellState(op,ds)));
   const totalInv=RL_GAMMAS.reduce((s,g)=>s+g.inv,0);
   const bajo=RL_GAMMAS.filter(g=>g.inv<g.reorden);
   const vencidas=RL_OPS.filter(o=>o.est==='Vencido');
@@ -1402,9 +1527,9 @@ function rlRenderAlerts(){
   const alerts=[];
   RL_OPS.filter(o=>o.est==='Vencido').forEach(o=>
     alerts.push({cls:'alert-err', msg:'🚫 '+o.nop+' ('+o.gamma+'): vencida — sin completar en fecha programada.'}));
-  RL_OPS.filter(o=>o.forros==='pendiente').forEach(o=>
+  RL_OPS.filter(o=>o.forros_est==='pendiente').forEach(o=>
     alerts.push({cls:'alert-err', msg:'🚫 '+o.nop+': forros sin confirmar — '+o.forrosNota+'. Bloquea programación.'}));
-  RL_OPS.filter(o=>o.forros==='parcial').forEach(o=>
+  RL_OPS.filter(o=>o.forros_est==='parcial').forEach(o=>
     alerts.push({cls:'alert-warn', msg:'⚠ '+o.nop+': forros parciales — '+o.forrosNota+'.'}));
   RL_GAMMAS.filter(g=>g.inv<g.reorden).forEach(g=>
     alerts.push({cls:'alert-warn', msg:'⚠ Punto de reorden: '+g.nom+' ('+g.inv+' uds — mín. '+g.reorden+')'}));
@@ -1426,7 +1551,7 @@ function rlRenderForros(){
     pendiente:{bg:'#FEE2E2',cl:'#991B1B',txt:'🚫 Sin confirmar'},
   };
   cont.innerHTML=RL_OPS.map(op=>{
-    const fs=FStyle[op.forros]||FStyle.pendiente;
+    const fs=FStyle[op.forros_est]||FStyle.pendiente;
     const nota=op.forrosNota?' <span style="color:var(--text2);font-size:9px">'+op.forrosNota+'</span>':'';
     return '<div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid var(--border);gap:6px">'
       +'<span style="font-weight:600;color:var(--primary);font-size:10px;white-space:nowrap">'+op.nop+'</span>'
@@ -1531,6 +1656,10 @@ function renderAcolchado(){
     const sinFechaRow=!fechaAcol;
     const rowBg=sinFechaRow?'background:#FFF7ED':'';
     const cantGuataVal=row.cant_guata?parseFloat(row.cant_guata):0;
+    // Celda RQT Tela (solo para OPs con ref_guata)
+    const rqtTelaHtml=row.telas_rqt_guata
+      ?'<span style="font-size:10px;font-weight:600;color:var(--olive);background:var(--olive-light);padding:2px 5px;border-radius:4px;white-space:nowrap">'+row.telas_rqt_guata+'</span>'
+      :(row.ref_guata?'<span class="db-ro-empty">Sin RQT tela</span>':'<span class="db-ro-empty">—</span>');
     return '<tr style="'+rowBg+'" data-fecha="'+fechaAcol+'">'
       // Checkbox
       +'<td style="padding:5px 8px;border:1px solid var(--border);text-align:center;width:32px">'
@@ -1538,7 +1667,7 @@ function renderAcolchado(){
         +'data-nop="'+row.nop+'" data-guata="'+cantGuataVal+'" data-ref="'+row.ref+'" data-fecha="'+fechaAcol+'" '
         +'onchange="updateAcolSelCount()"/>'
       +'</td>'
-      +'<td style="padding:5px 8px;border:1px solid var(--border)"><b style="color:var(--primary);font-size:10px">'+row.nop+'</b>'+(row.bloq?' <span style="color:#EF4444">🔒</span>':'')+'<br><span style="font-size:9px;color:var(--text2)">'+row.progId+'</span></td>'
+      +'<td style="padding:5px 8px;border:1px solid var(--border);cursor:default" data-imgref="'+row.ref+'" data-imgnop="'+row.nop+'" data-imgdesc="'+row.desc.replace(/"/g,"'")+'" onmouseenter="showAcolOpTooltip(event)" onmouseleave="hideAcolOpTooltip()"><b style="color:var(--primary);font-size:10px">'+row.nop+'</b>'+(row.bloq?' <span style="color:#EF4444">🔒</span>':'')+'<br><span style="font-size:9px;color:var(--text2)">'+row.progId+'</span></td>'
       +'<td style="padding:5px 8px;border:1px solid var(--border);font-weight:600">'+row.ref+'</td>'
       +'<td style="padding:5px 8px;border:1px solid var(--border);color:var(--text2)">'+(row.ext||'—')+'</td>'
       +'<td style="padding:5px 8px;border:1px solid var(--border);max-width:190px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="'+row.desc+'">'+row.desc+'</td>'
@@ -1547,6 +1676,7 @@ function renderAcolchado(){
       +'<td style="padding:5px 8px;border:1px solid var(--border);text-align:center">'+(row.ref_guata?'<span class="db-ro-val">'+row.ref_guata+'</span>':'<span class="db-ro-empty">—</span>')+'</td>'
       +'<td style="padding:5px 8px;border:1px solid var(--border);text-align:center">'+(row.cant_guata?'<span class="db-ro-val">'+row.cant_guata+'</span>':'<span class="db-ro-empty">—</span>')+'</td>'
       +'<td style="padding:5px 8px;border:1px solid var(--border);text-align:center">'+(row.rqt_telas?'<span style="font-size:10px;font-weight:600;color:var(--primary)">'+row.rqt_telas+'</span>':'<span class="db-ro-empty">—</span>')+'</td>'
+      +'<td style="padding:5px 8px;border:1px solid var(--border);text-align:center">'+rqtTelaHtml+'</td>'
       +'<td style="padding:5px 8px;border:1px solid var(--border);text-align:center">'+(fechaAcol?'<span class="db-ro-val">'+fechaAcol+'</span>':'<span style="color:#EF4444;font-size:10px;font-weight:600">Sin asignar</span>')+'</td>'
       +'<td style="padding:5px 8px;border:1px solid var(--border);text-align:center">'+estadoHtml+'</td>'
       +'</tr>';
@@ -1710,6 +1840,9 @@ function acolSetSem(weekStr){
 function acolGanttToday(){renderAcolGantt(acolGetMonday(new Date()));}
 
 // ── DISEÑO DEL ACOLCHADO — imagen ──
+// Almacén de imágenes por referencia de tela
+window.acolRefImages={};
+
 function loadAcolDesignImg(input){
   if(!input.files||!input.files[0])return;
   const reader=new FileReader();
@@ -1718,6 +1851,18 @@ function loadAcolDesignImg(input){
     const ph=document.getElementById('acol-design-placeholder');
     if(img){img.src=e.target.result;img.style.display='block';}
     if(ph)ph.style.display='none';
+    // Guardar imagen asociada a la referencia especificada en el panel
+    const refInput=document.getElementById('acol-spec-ref');
+    let refCode='';
+    if(refInput&&refInput.value.trim()){
+      // Extraer código de referencia (antes del primer espacio o ·)
+      refCode=refInput.value.trim().split(/[\s·]/)[0].trim();
+    }
+    if(refCode){
+      window.acolRefImages[refCode]=e.target.result;
+    }
+    // Siempre guardar como imagen "default" para tooltip
+    window.acolRefImages['__last__']=e.target.result;
   };
   reader.readAsDataURL(input.files[0]);
 }
@@ -1728,6 +1873,42 @@ function clearAcolDesignImg(){
   if(img){img.src='';img.style.display='none';}
   if(ph)ph.style.display='block';
   if(fi)fi.value='';
+}
+
+// ── TOOLTIP IMAGEN OP ACOLCHADO ──
+function showAcolOpTooltip(e){
+  const td=e.currentTarget;
+  const ref=td.dataset.imgref||'';
+  const nop=td.dataset.imgnop||'';
+  const desc=td.dataset.imgdesc||'';
+  const tt=document.getElementById('acol-img-tooltip');
+  if(!tt)return;
+  const tipRef=document.getElementById('acol-tip-ref');
+  const tipDesc=document.getElementById('acol-tip-desc');
+  const tipImg=document.getElementById('acol-tip-img');
+  const tipNoimg=document.getElementById('acol-tip-noimg');
+  const tipHint=document.getElementById('acol-tip-hint');
+  if(tipRef)tipRef.textContent=nop+' · '+ref;
+  if(tipDesc)tipDesc.textContent=desc;
+  const imgSrc=window.acolRefImages[ref]||window.acolRefImages['__last__']||'';
+  if(imgSrc){
+    if(tipImg){tipImg.src=imgSrc;tipImg.style.display='block';}
+    if(tipNoimg)tipNoimg.style.display='none';
+    if(tipHint)tipHint.textContent='';
+  } else {
+    if(tipImg){tipImg.src='';tipImg.style.display='none';}
+    if(tipNoimg){tipNoimg.style.display='block';tipNoimg.textContent='📷 Sin imagen para '+ref;}
+    if(tipHint)tipHint.textContent='Carga una imagen en "Diseño del Acolchado"';
+  }
+  // Posicionar tooltip cerca del cursor sin salirse de la ventana
+  const x=e.clientX+16, y=e.clientY+10;
+  tt.style.left=Math.min(x, window.innerWidth-240)+'px';
+  tt.style.top=Math.min(y, window.innerHeight-220)+'px';
+  tt.classList.add('show');
+}
+function hideAcolOpTooltip(){
+  const tt=document.getElementById('acol-img-tooltip');
+  if(tt)tt.classList.remove('show');
 }
 
 // ── FILTRO RANGO DE FECHAS — TABLA ACOLCHADO ──
@@ -1892,7 +2073,7 @@ const programasData={
        ops:[{nro:10,nom:'CORTE',fecha:''},{nro:20,nom:'CONFECCION',fecha:''}]},
       {nop:'OPS-21682',ref:'PT09513',ext:'E12853',desc:'COBIJA PLUMON 100%ALG 285X240',notas:'Tela pendiente — sin MP',cant:60,met:'1',bloq:true,fechaTela:'',fechaInsumos:'',
        ops:[{nro:10,nom:'CORTE',fecha:''},{nro:20,nom:'CONFECCION',fecha:''}]},
-      {nop:'OPN-150076',ref:'TE01126',ext:'E10094',desc:'TELA ACOL UFAZ 230H DOWN PROOF',notas:'',cant:154,met:'1',bloq:false,fechaTela:'2026-03-15',fechaInsumos:'',ref_guata:'IN-GU-280',cant_guata:'43.1 kg',rqt_telas:'RQT-10024',
+      {nop:'OPN-150076',ref:'TE01126',ext:'E10094',desc:'TELA ACOL UFAZ 230H DOWN PROOF',notas:'',cant:154,met:'1',bloq:false,fechaTela:'2026-03-15',fechaInsumos:'',ref_guata:'IN-GU-280',cant_guata:'43.1 kg',rqt_telas:'RQT-10024',telas_rqt_guata:'TE01126 · TE01091',
        ops:[{nro:10,nom:'ACOLCHADO',fecha:'2026-03-12'}]},
       {nop:'OPN-150550',ref:'PT05865',ext:'E11200',desc:'CORTINA DE BAÑO 180X190 100% POL',notas:'',cant:30,met:'1',bloq:false,fechaTela:'2026-03-18',fechaInsumos:'2026-03-17',
        ops:[{nro:10,nom:'CORTE',fecha:''},{nro:20,nom:'CONFECCION',fecha:''},{nro:30,nom:'SERVICIO OJALETE',fecha:''}]},
@@ -1909,7 +2090,7 @@ const programasData={
        ops:[{nro:10,nom:'CORTE',fecha:''},{nro:20,nom:'CONFECCION',fecha:''}]},
       {nop:'OPN-156002',ref:'PT10013',ext:'E10094',desc:'SABANA QUEEN 200H 100% ALG',notas:'Confirmar diseño',cant:30,met:'1',bloq:false,fechaTela:'',fechaInsumos:'2026-04-03',
        ops:[{nro:10,nom:'CORTE',fecha:''},{nro:20,nom:'ESTAMPADO',fecha:''},{nro:30,nom:'CONFECCION',fecha:''}]},
-      {nop:'OPN-156010',ref:'TE02014',ext:'E10094',desc:'TELA ACOL MICROFIBRA 200H PREMIUM',notas:'',cant:280,met:'1',bloq:false,fechaTela:'2026-03-28',fechaInsumos:'',ref_guata:'IN-GU-300',cant_guata:'84.0 kg',rqt_telas:'RQT-10048',
+      {nop:'OPN-156010',ref:'TE02014',ext:'E10094',desc:'TELA ACOL MICROFIBRA 200H PREMIUM',notas:'',cant:280,met:'1',bloq:false,fechaTela:'2026-03-28',fechaInsumos:'',ref_guata:'IN-GU-300',cant_guata:'84.0 kg',rqt_telas:'RQT-10048',telas_rqt_guata:'TE02014 · TE01822',
        ops:[{nro:10,nom:'ACOLCHADO',fecha:'2026-04-01'}]}
     ]
   },
@@ -1918,7 +2099,7 @@ const programasData={
     ops:[
       {nop:'OPN-157001',ref:'PT11020',ext:'E12853',desc:'DUVET BORDADO KING 300H',notas:'',cant:25,met:'2',bloq:false,fechaTela:'2026-04-08',fechaInsumos:'2026-04-08',
        ops:[{nro:10,nom:'CORTE',fecha:''},{nro:20,nom:'BORDADO',fecha:''},{nro:30,nom:'CONFECCION EXTERNA',fecha:''}]},
-      {nop:'OPN-157010',ref:'TE01430',ext:'E12853',desc:'TELA ACOL SATEEN DOWN PROOF 300H',notas:'Prioridad hotel',cant:190,met:'1',bloq:false,fechaTela:'2026-04-05',fechaInsumos:'',ref_guata:'IN-GU-320',cant_guata:'60.8 kg',rqt_telas:'RQT-10061',
+      {nop:'OPN-157010',ref:'TE01430',ext:'E12853',desc:'TELA ACOL SATEEN DOWN PROOF 300H',notas:'Prioridad hotel',cant:190,met:'1',bloq:false,fechaTela:'2026-04-05',fechaInsumos:'',ref_guata:'IN-GU-320',cant_guata:'60.8 kg',rqt_telas:'RQT-10061',telas_rqt_guata:'TE01430 · TE01195',
        ops:[{nro:10,nom:'ACOLCHADO',fecha:''}]}
     ]
   }
